@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh" data-lang="zh" data-theme="dark">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ReadyPlayer — 会员 | Member app</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cline x1='14' y1='14' x2='14' y2='50' stroke='%232ea043' stroke-width='4'/%3E%3Cline x1='14' y1='14' x2='50' y2='32' stroke='%232ea043' stroke-width='4'/%3E%3Cline x1='14' y1='50' x2='50' y2='32' stroke='%232ea043' stroke-width='4'/%3E%3Ccircle cx='14' cy='14' r='8' fill='%233fb950'/%3E%3Ccircle cx='14' cy='50' r='8' fill='%233fb950'/%3E%3Ccircle cx='50' cy='32' r='8' fill='%2358a6ff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=20261122">
+<link rel="stylesheet" href="assets/app.css?v=20261122">
+<script>
+// Upgrade to https before anything else runs.
+//
+// GitHub Pages "Enforce HTTPS" is on for this site, but it is a setting on
+// someone else's dashboard and it propagates on its own schedule — app.beagle.chat
+// has it off and serves plain http to this day. Over http, location.origin is
+// "http://app.readyplayer.network", which the API does not allow and which a
+// launch assertion is not signed over: sign-in fails and looks exactly like
+// "Beagle did not answer".
+//
+// The fragment is carried across deliberately. It is where an Apps-tab launch
+// puts its assertion, and dropping it here would silently downgrade someone who
+// arrived already signed in into someone who has to sign in again.
+if (location.protocol === "http:" && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) {
+  location.replace("https://" + location.host + location.pathname + location.search + location.hash);
+}
+</script>
+<script src="assets/site.js?v=20261122"></script>
+<script src="assets/config.js?v=20261124"></script>
+<script type="module" src="assets/app.js?v=20261124"></script>
+</head>
+
+<body>
+
+  <nav
+    style="position:sticky;top:0;z-index:50;background:var(--nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)">
+    <div class="navbar-inner"
+      style="max-width:1080px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px">
+      <a id="site-home-link" href="https://readyplayer.network"
+        style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt)">
+        <svg width="26" height="26" viewBox="0 0 64 64">
+          <line x1="14" y1="14" x2="14" y2="50" stroke="var(--acc-line)" stroke-width="4"></line>
+          <line x1="14" y1="14" x2="50" y2="32" stroke="var(--acc-line)" stroke-width="4"></line>
+          <line x1="14" y1="50" x2="50" y2="32" stroke="var(--acc-line)" stroke-width="4"></line>
+          <circle cx="14" cy="14" r="8" fill="var(--acc)"></circle>
+          <circle cx="14" cy="50" r="8" fill="var(--acc)"></circle>
+          <circle cx="50" cy="32" r="8" fill="var(--acc2)"></circle>
+        </svg>
+        <span
+          style="font-family:'JetBrains Mono',monospace;font-weight:800;font-size:15px;letter-spacing:.5px">READYPLAYER<span
+            style="color:var(--dim);font-weight:400">.network</span></span>
+      </a>
+      <div style="flex:1"></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button id="nav-chat" class="nav-cta" type="button" hidden style="border:0;cursor:pointer">
+          <span class="zh">聊天 ▸</span><span class="en">Chat ▸</span>
+        </button>
+        <div
+          style="display:flex;border:1px solid var(--line3);border-radius:6px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:12px">
+          <button class="langbtn zh-btn" onclick="rpSetLang('zh')">中</button>
+          <button class="langbtn en-btn" onclick="rpSetLang('en')">EN</button>
+        </div>
+        <button class="themebtn" onclick="rpToggleTheme()" aria-label="theme"><span class="ic-dark">☀</span><span
+            class="ic-light">☾</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div id="banner" class="banner" hidden></div>
+
+    <!-- 1. still deciding who this is -->
+    <div id="loading" class="card">
+      <p class="lead" style="margin:0"><span class="zh">正在确认身份…</span><span class="en">Checking who you are…</span></p>
+    </div>
+
+    <!-- 2. signed out: zero-install site key, or an existing Beagle -->
+    <div id="signedout" hidden>
+      <div class="card">
+        <h2><span class="zh">用你自己的密钥登录</span><span class="en">Sign in with your own key</span></h2>
+        <p class="lead">
+          <span class="zh">没有密码,没有账号。可以直接在这里生成浏览器密钥立即进入,也可以用你已有的 Beagle 签一次名:</span>
+          <span class="en">No password, no account. Start right now with a key stored in this browser, or sign in with
+            an existing Beagle:</span>
+        </p>
+        <div class="signin-choices">
+          <button class="choice primary" data-signin="site">
+            <b><span class="zh">立即进入(免安装 · 本浏览器密钥)</span><span class="en">Start right now (no install · browser
+                key)</span></b>
+            <span class="zh">一键生成你的 Carrier 密钥并留在本地,可随时导出带走或绑定到 Beagle</span><span class="en">Creates a real Carrier key
+              in this browser — export it or link your Beagle anytime</span>
+          </button>
+          <button class="choice" data-signin="local">
+            <b><span class="zh">这台电脑上的 Beagle</span><span class="en">Beagle on this computer</span></b>
+            <span class="zh">桌面版或命令行 · 127.0.0.1:8766</span><span class="en">Desktop app or CLI · 127.0.0.1:8766</span>
+          </button>
+          <button class="choice" data-signin="web">
+            <b><span class="zh">Beagle 网页版</span><span class="en">Beagle web</span></b>
+            <span class="zh">app.beagle.chat · 密钥存在 app.beagle.chat</span><span class="en">app.beagle.chat · key kept on
+              app.beagle.chat</span>
+          </button>
+        </div>
+        <p class="lead" style="margin:14px 0 0;font-size:13px">
+          <span class="zh">如果你平时已经在桌面版或 app.beagle.chat 聊天,请直接选对应入口,保持同一个身份。还没装?<a href="https://beagle.chat"
+              target="_blank" rel="noopener">beagle.chat</a></span>
+          <span class="en">Already chatting in desktop Beagle or app.beagle.chat? Pick that one to keep your identity.
+            Not installed? <a href="https://beagle.chat" target="_blank" rel="noopener">beagle.chat</a></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- 3. signed in -->
+    <div id="member" hidden>
+
+      <!-- who you are -->
+      <div class="card">
+        <div class="row" style="justify-content:space-between;align-items:flex-start">
+          <div class="row" style="align-items:center">
+            <img id="avatar" alt="" hidden width="52" height="52" class="avatar">
+            <span id="avatar-fallback" class="avatar avatar-fallback" aria-hidden="true" hidden></span>
+            <div>
+              <div class="row" style="gap:10px;align-items:center">
+                <h2 style="margin:0" id="who"></h2>
+                <span class="pill" id="plan"></span>
+              </div>
+              <p class="mono" style="margin:4px 0 0;color:var(--faint)" id="ens"></p>
+            </div>
+          </div>
+          <div class="row" style="gap:8px">
+            <button id="open-chat" class="btn-quiet" type="button">
+              <span class="zh">打开对话 ▸</span><span class="en">Open chat ▸</span>
+            </button>
+            <a id="open-beagle" class="btn-quiet link-btn" target="_blank" rel="noopener" hidden>
+              <span class="zh">打开 Beagle 聊天 ↗</span><span class="en">Open Beagle chat ↗</span>
+            </a>
+            <button id="signout" class="btn-quiet"><span class="zh">退出</span><span class="en">Sign out</span></button>
+          </div>
+        </div>
+        <details style="margin-top:10px">
+          <summary class="mono" style="cursor:pointer;color:var(--faint)"><span class="zh">密钥与地址</span><span
+              class="en">Key and address</span></summary>
+          <p class="mono" style="margin:8px 0 2px" id="userid"></p>
+          <p class="mono" style="margin:0;color:var(--faint)" id="addr"></p>
+        </details>
+      </div>
+
+      <!-- site-made key controls: export key file or link to desktop/web Beagle -->
+      <div class="card" id="site-key-card" hidden>
+        <h2><span class="zh">浏览器密钥 · 备份或绑定 Beagle</span><span class="en">Browser key · backup or link Beagle</span></h2>
+        <p class="lead">
+          <span class="zh">你当前使用的是本浏览器生成的密钥。导出密钥文件可导入到桌面版/手机版 Beagle；如果你已有 Beagle,也可以直接绑定并合并资料。</span>
+          <span class="en">You are signed in with a key made in this browser. Export it to import into desktop/mobile
+            Beagle, or sign in with an existing Beagle to link both keys and carry your profile over.</span>
+        </p>
+        <div class="row" style="gap:10px">
+          <button id="key-export" class="btn-quiet" type="button"><span class="zh">导出密钥文件</span><span class="en">Export
+              key file</span></button>
+          <button class="btn-quiet" type="button" data-signin="local"><span class="zh">绑定本机 Beagle</span><span
+              class="en">Link desktop Beagle</span></button>
+          <button class="btn-quiet" type="button" data-signin="web"><span class="zh">绑定 Beagle 网页版</span><span
+              class="en">Link Beagle web</span></button>
+        </div>
+      </div>
+
+      <!-- what we have to ask for.
+         Up while email / LinkedIn-or-resume / location are unanswered, and
+         everything below is hidden while it is up (gate() in app.js). "Later"
+         is a real escape hatch — someone who already joined the group must not
+         be locked out of it by a form — but it lasts this browser session only,
+         so the ask comes back at the next sign-in.
+
+         Role and purpose are in the same form and do NOT block: this is the one
+         moment we have their attention, and an empty role column makes the
+         directory useless. -->
+      <div class="card" id="intake" hidden>
+        <h2><span class="zh">还有几件事要你填</span><span class="en">A few things we need from you</span></h2>
+        <p class="lead">
+          <span class="zh">撮合离不开的四件:显示名、邮箱、LinkedIn 或简历、所在地(头像可选)。填完下面的页面就打开了 —— 也可以先跳过,下次登录还会问。</span>
+          <span class="en">Four things matching needs: display name, email, LinkedIn or résumé, and location (avatar is
+            optional). Fill them and the rest of the page opens — or skip for now, and we will ask again next
+            sign-in.</span>
+        </p>
+        <form id="intake-form" novalidate>
+          <label for="i-displayName"><span class="zh">显示名 <b class="req">必填</b></span><span class="en">Display name <b
+                class="req">required</b></span></label>
+          <input id="i-displayName" autocomplete="name" maxlength="64" placeholder="Your name or handle">
+          <label for="i-avatar"><span class="zh">头像 <span class="hint">可选 · 上传图片或填 https 链接</span></span><span
+              class="en">Avatar <span class="hint">optional · upload a photo or paste an https URL</span></span></label>
+          <div class="avatar-picker">
+            <span id="i-avatar-preview" class="avatar-preview" aria-hidden="true"></span>
+            <div class="avatar-picker-fields">
+              <div class="row" style="gap:8px;margin-bottom:8px">
+                <label class="btn-quiet avatar-upload-btn" for="i-avatar-file"><span class="zh">上传图片</span><span
+                    class="en">Upload photo</span></label>
+                <input id="i-avatar-file" class="visually-hidden" type="file" accept="image/*">
+                <button id="i-avatar-clear" class="btn-quiet" type="button" hidden><span class="zh">清除</span><span
+                    class="en">Remove</span></button>
+              </div>
+              <input id="i-avatar" type="text" inputmode="url" autocomplete="off" placeholder="https://… (optional)"
+                style="margin:0">
+            </div>
+          </div>
+          <label for="i-email"><span class="zh">邮箱 <b class="req">必填</b></span><span class="en">Email <b
+                class="req">required</b></span></label>
+          <input id="i-email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com">
+          <label for="i-resume"><span class="zh">LinkedIn 或简历链接 <b class="req">必填</b></span><span class="en">LinkedIn or
+              résumé link <b class="req">required</b></span></label>
+          <input id="i-resume" autocomplete="url" placeholder="https://www.linkedin.com/in/… or handle (e.g. 0xl)">
+          <label for="i-city"><span class="zh">所在地 <b class="req">必填</b> <span
+                class="hint">城市、都会区、国家都算</span></span><span class="en">Location <b class="req">required</b> <span
+                class="hint">a city, a metro or a country</span></span></label>
+          <input id="i-city" autocomplete="address-level2">
+          <label for="i-role"><span class="zh">你是 <span class="hint">可选 · 名录按这个分</span></span><span class="en">You are
+              <span class="hint">optional · the directory sorts on it</span></span></label>
+          <select id="i-role"></select>
+          <label for="i-purpose"><span class="zh">你来做什么 <span class="hint">可选 · 可多选</span></span><span class="en">What
+              you came for <span class="hint">optional · pick any</span></span></label>
+          <div class="checks" id="i-purpose"></div>
+          <div class="row" style="gap:10px">
+            <button id="intake-save" class="btn" type="submit"><span class="zh">保存并继续</span><span class="en">Save and
+                continue</span></button>
+            <button id="intake-later" class="btn-quiet" type="button"><span class="zh">以后再说</span><span
+                class="en">Later</span></button>
+          </div>
+        </form>
+      </div>
+
+      <div id="member-rest">
+
+        <!-- plan -->
+        <div class="card">
+          <h2><span class="zh">你的会员档位</span><span class="en">Your plan</span></h2>
+          <p class="lead">
+            <span class="zh">付费档暂不在线付款:选一个,会员经理会联系你。选之前你的档位不变。</span>
+            <span class="en">Paid plans are not self-serve yet: pick one and the membership manager follows up. Your
+              plan does not change until then.</span>
+          </p>
+          <div id="plans"></div>
+          <p class="lead" id="plan-note" style="margin:12px 0 0;font-size:13px" hidden></p>
+        </div>
+
+        <!-- profile: what Beagle publishes -->
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <h2 style="margin:0"><span class="zh">你的 Beagle 资料</span><span class="en">Your Beagle profile</span></h2>
+            <button id="beagle-refresh" class="btn-quiet"><span class="zh">重新读取</span><span
+                class="en">Refresh</span></button>
+          </div>
+          <p class="lead" style="margin:6px 0 14px">
+            <span class="zh">名字、简介、头像、社交链接都在 Beagle 里改 —— 这里只读取你公开发布的那份,不用再填一遍。</span>
+            <span class="en">Name, bio, avatar and social links live in Beagle — edit them there. This reads what you
+              already published, so you never type it twice.</span>
+          </p>
+          <div id="beagle-view"></div>
+          <div id="beagle-empty" hidden>
+            <p style="margin:0 0 10px;color:var(--body)">
+              <span class="zh">你还没有发布 Beagle 资料。在 Beagle 的"资料"里设置名字、简介和链接,回来点"重新读取"。</span>
+              <span class="en">You have not published a Beagle profile yet. Set your name, bio and links under Profile
+                in Beagle, then come back and hit Refresh.</span>
+            </p>
+          </div>
+          <a id="edit-in-beagle" class="btn-quiet link-btn" target="_blank" rel="noopener" hidden
+            style="margin-top:12px">
+            <span class="zh">在 Beagle 里编辑 ↗</span><span class="en">Edit in Beagle ↗</span>
+          </a>
+        </div>
+
+        <!-- profile: what only ReadyPlayer needs -->
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <h2 style="margin:0"><span class="zh">给 ReadyPlayer 的信息</span><span class="en">For ReadyPlayer</span></h2>
+            <button id="rp-edit" class="btn-quiet"><span class="zh">编辑</span><span class="en">Edit</span></button>
+          </div>
+          <p class="lead" style="margin:6px 0 14px">
+            <span class="zh">只有撮合需要、Beagle 里没有的:邮箱、简历、所在地、你是谁、在找什么、技能。除了邮箱会发验证码,其余都照你写的存、不核实,所以也不打认证标记。</span>
+            <span class="en">Only what matching needs and Beagle does not hold: email, résumé, location, who you are,
+              what you are after, skills. Everything but the email is stored as you wrote it and not verified — so no
+              checkmark we did not earn.</span>
+          </p>
+
+          <div id="rp-view"></div>
+
+          <!-- email verification. Hidden entirely when we have no sending domain
+           configured: a "send me a code" button that cannot send is worse than
+           no button. /api/me says which. -->
+          <div id="email-verify" hidden>
+            <p class="hintline" id="ev-state"></p>
+            <div class="row" style="gap:8px">
+              <button id="ev-send" class="btn-quiet" type="button"><span class="zh">给我发验证码</span><span class="en">Email
+                  me a code</span></button>
+              <input id="ev-code" class="code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6"
+                placeholder="000000" hidden>
+              <button id="ev-check" class="btn-quiet" type="button" hidden><span class="zh">验证</span><span
+                  class="en">Verify</span></button>
+            </div>
+          </div>
+
+          <form id="profile" hidden novalidate>
+            <label for="f-displayName"><span class="zh">显示名</span><span class="en">Display name</span></label>
+            <input id="f-displayName" autocomplete="name" maxlength="64" placeholder="Your name or handle">
+            <label for="f-avatar"><span class="zh">头像 <span class="hint">可选 · 上传图片或填 https 链接</span></span><span
+                class="en">Avatar <span class="hint">optional · upload a photo or paste an https
+                  URL</span></span></label>
+            <div class="avatar-picker">
+              <span id="f-avatar-preview" class="avatar-preview" aria-hidden="true"></span>
+              <div class="avatar-picker-fields">
+                <div class="row" style="gap:8px;margin-bottom:8px">
+                  <label class="btn-quiet avatar-upload-btn" for="f-avatar-file"><span class="zh">上传图片</span><span
+                      class="en">Upload photo</span></label>
+                  <input id="f-avatar-file" class="visually-hidden" type="file" accept="image/*">
+                  <button id="f-avatar-clear" class="btn-quiet" type="button" hidden><span class="zh">清除</span><span
+                      class="en">Remove</span></button>
+                </div>
+                <input id="f-avatar" type="text" inputmode="url" autocomplete="off" placeholder="https://… (optional)"
+                  style="margin:0">
+              </div>
+            </div>
+            <label for="f-email"><span class="zh">邮箱</span><span class="en">Email</span></label>
+            <input id="f-email" type="email" autocomplete="email" inputmode="email">
+            <label for="f-resume"><span class="zh">LinkedIn 或简历链接</span><span class="en">LinkedIn or résumé
+                link</span></label>
+            <input id="f-resume" autocomplete="url">
+            <label for="f-city"><span class="zh">所在地 <span class="hint">城市、都会区、国家都算</span></span><span
+                class="en">Location <span class="hint">a city, a metro or a country</span></span></label>
+            <input id="f-city" autocomplete="address-level2">
+            <label for="f-role"><span class="zh">你是</span><span class="en">You are</span></label>
+            <select id="f-role"></select>
+            <label for="f-purpose"><span class="zh">你来做什么 <span class="hint">可多选</span></span><span class="en">What you
+                came for <span class="hint">pick any</span></span></label>
+            <div class="checks" id="f-purpose"></div>
+            <label for="f-oneLiner"><span class="zh">一句话介绍</span><span class="en">One-liner</span></label>
+            <input id="f-oneLiner" autocomplete="off">
+            <label for="f-whatIBuild"><span class="zh">我在做什么</span><span class="en">What I build</span></label>
+            <textarea id="f-whatIBuild"></textarea>
+            <label for="f-lookingFor"><span class="zh">我在找什么 <span class="hint">合伙人、创始成员、具体的人</span></span><span
+                class="en">What I am looking for <span class="hint">a partner, a founding member, a specific
+                  person</span></span></label>
+            <textarea id="f-lookingFor"></textarea>
+            <label for="f-skills"><span class="zh">技能 <span class="hint">逗号分隔</span></span><span class="en">Skills <span
+                  class="hint">comma separated</span></span></label>
+            <input id="f-skills" autocomplete="off" placeholder="node, carrier, solidity">
+            <label for="f-links"><span class="zh">其他链接 <span class="hint">每行一个;GitHub/X/LinkedIn 已从 Beagle
+                  读取</span></span><span class="en">Other links <span class="hint">one per line; GitHub/X/LinkedIn
+                  already come from Beagle</span></span></label>
+            <textarea id="f-links" placeholder="https://your-project.example"></textarea>
+            <div class="row" style="gap:10px">
+              <button id="save" class="btn" type="submit"><span class="zh">保存</span><span
+                  class="en">Save</span></button>
+              <button id="rp-cancel" class="btn-quiet" type="button"><span class="zh">取消</span><span
+                  class="en">Cancel</span></button>
+            </div>
+          </form>
+        </div>
+
+        <!-- the membership manager: hidden until that identity exists -->
+        <div class="card" id="mgr-wrap" hidden>
+          <h2><span class="zh">会员经理</span><span class="en">The membership manager</span></h2>
+          <p class="lead">
+            <span class="zh">会员经理是 ReadyPlayer 的一个 agent,它会在 Beagle 里给你发好友请求 —— 接受后直接在 Beagle
+              里聊:完善资料、换档位。它只回复你一个人。</span>
+            <span class="en">The manager is a ReadyPlayer agent. It sends you a friend request in Beagle — accept it and
+              chat there to finish your profile or change plan. It replies to you and nobody else.</span>
+          </p>
+          <div class="terminal">
+            <p class="label" id="mgr-name">MEMBERSHIP MANAGER</p>
+            <div class="val" id="mgr-addr"></div>
+            <button class="term-copy" style="float:none;margin-top:12px" id="mgr-copy" data-copy="">copy
+              address</button>
+          </div>
+          <div class="row" style="gap:10px;margin-bottom:10px">
+            <button id="mgr-embed-open" class="btn" type="button">
+              <span class="zh">在页面内跟会员经理聊 ▸</span><span class="en">Chat with manager here ▸</span>
+            </button>
+            <a id="mgr-open" class="btn-quiet link-btn" target="beagle-app" rel="noopener" hidden>
+              <span class="zh">在 Beagle 里打开对话 ↗</span><span class="en">Open the chat in Beagle ↗</span>
+            </a>
+          </div>
+          <p class="lead" style="margin:0;font-size:13px">
+            <span class="zh">在 Beagle 的好友列表里找 <b>ReadyPlayer membership
+                manager</b>,点开就能聊。没收到好友请求?它每位成员只发一次,稍等一分钟再看。</span>
+            <span class="en">In Beagle, look for <b>ReadyPlayer membership manager</b> in your friends and click it. No
+              request yet? It asks each member once — give it a minute.</span>
+          </p>
+        </div>
+
+        <!-- entry point: the group -->
+        <div class="card">
+          <h2><span class="zh">加入总群</span><span class="en">Join the main group</span></h2>
+          <p class="lead" id="group-note" style="font-size:13.5px"></p>
+          <div class="terminal">
+            <p class="label">READYPLAYER · MAIN GROUP</p>
+            <div class="val" id="group-addr"></div>
+            <button class="term-copy" style="float:none;margin-top:12px" id="group-copy" data-copy="">copy
+              address</button>
+          </div>
+          <div class="row">
+            <button id="group-join" class="btn" hidden><span class="zh">加入总群</span><span class="en">Join the
+                group</span></button>
+            <span style="color:var(--faint);font-size:13px"><span id="group-count">0</span> <span
+                class="zh">位成员</span><span class="en">members</span></span>
+          </div>
+          <p class="lead" id="group-joined" hidden style="margin:12px 0 0;font-size:13.5px">
+            <span class="zh"><b style="color:var(--acc)">✓ 你已在群里。</b>"ReadyPlayer main group" 会在 Beagle 里给你发好友请求 ——
+              接受它,然后给它发消息就是对全群说话。</span>
+            <span class="en"><b style="color:var(--acc)">✓ You are in.</b> "ReadyPlayer main group" sends you a friend
+              request in Beagle — accept it, and anything you send it goes to everyone.</span>
+          </p>
+          <div class="row" style="gap:10px;margin-top:10px">
+            <button id="group-embed-open" class="btn" type="button" hidden>
+              <span class="zh">在页面内打开群聊 ▸</span><span class="en">Open group chat here ▸</span>
+            </button>
+            <a id="group-open" class="btn-quiet link-btn" target="beagle-app" rel="noopener" hidden>
+              <span class="zh">在 Beagle 里打开群 ↗</span><span class="en">Open the group in Beagle ↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- entry point: the meeting -->
+        <div class="card" id="meet-wrap" hidden>
+          <h2><span class="zh">进入会议室</span><span class="en">Join the meeting</span></h2>
+          <p class="lead">
+            <span class="zh">会议在 <span class="mono meet-host"></span> 上,用同一把 Beagle 密钥登录,我们不经手任何令牌。</span>
+            <span class="en">The room runs on <span class="mono meet-host"></span>. It signs you in with the same Beagle
+              key — we never handle a token.</span>
+          </p>
+          <a id="meet-link" class="btn" style="display:inline-block;text-decoration:none" target="_blank"
+            rel="noopener">
+            <span class="zh">进入 ReadyPlayer 会议室 ▸</span><span class="en">Enter the ReadyPlayer room ▸</span>
+          </a>
+        </div>
+      </div><!-- /member-rest -->
+    </div>
+  </div>
+
+  <!-- on-demand @decentnetwork/beagle-embed chat panel (loads 0 bytes until opened; single userid & friends list) -->
+  <aside id="chat-dock" class="chat-dock" hidden aria-label="ReadyPlayer chat">
+    <div class="chat-dock-head">
+      <div class="chat-dock-meta">
+        <span id="chat-dock-title"><span class="zh">ReadyPlayer 对话</span><span class="en">ReadyPlayer Chat</span></span>
+        <span id="chat-dock-id" class="chat-dock-id" title="Active userid"></span>
+      </div>
+      <button id="chat-dock-close" class="btn-quiet" type="button" style="padding:3px 10px"
+        aria-label="Close chat">×</button>
+    </div>
+    <div class="chat-dock-tabs" role="group" aria-label="Chat shortcuts">
+      <button type="button" class="chat-dock-tab" data-chat-target="friends" aria-pressed="false">
+        <span class="zh">好友列表</span><span class="en">Friends</span>
+      </button>
+      <button type="button" class="chat-dock-tab" data-chat-target="manager" aria-pressed="false" hidden>
+        <span class="zh">会员经理</span><span class="en">Manager</span>
+      </button>
+      <button type="button" class="chat-dock-tab" data-chat-target="group" aria-pressed="false" hidden>
+        <span class="zh">总群</span><span class="en">Main Group</span>
+      </button>
+    </div>
+    <div id="chat-dock-body" class="chat-dock-body"></div>
+  </aside>
+
+</body>
+
+</html>

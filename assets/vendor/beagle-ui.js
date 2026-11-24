@@ -1,0 +1,8946 @@
+export const BEAGLE_UI_VERSION = "0.2.47";
+// src/icons.jsx
+var ICON_PATHS = {
+  // ---- tab bar (the four must feel like one set) ----
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  grid: '<rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/>',
+  wallet: '<path d="M19 7V6a2 2 0 0 0-2-2H6a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h12a2 2 0 0 0 2-2v-1"/><path d="M3 7a3 3 0 0 0 3 3h13a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-3"/><circle cx="16.5" cy="14" r="1.15" fill="currentColor" stroke="none"/>',
+  userRound: '<circle cx="12" cy="8" r="4.5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+  // ---- actions / chrome ----
+  search: '<circle cx="11" cy="11" r="7.5"/><path d="m21 21-4.3-4.3"/>',
+  plus: '<path d="M5 12h14M12 5v14"/>',
+  chevronRight: '<path d="m9 18 6-6-6-6"/>',
+  chevronLeft: '<path d="m15 18-6-6 6-6"/>',
+  info: '<circle cx="12" cy="12" r="9.5"/><path d="M12 16.5v-5M12 7.6h.01"/>',
+  more: '<circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.4" fill="currentColor" stroke="none"/>',
+  x: '<path d="M18 6 6 18M6 6l12 12"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  checkCheck: '<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.6 7.6L13 16"/>',
+  copy: '<rect x="9" y="9" width="12" height="12" rx="2.4"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/>',
+  // Three linked nodes — an address is for passing ON to someone else, so it
+  // must not wear the same glyph as the userid's plain copy.
+  share: '<circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.3M8.3 13.2l7.4 4.3"/>',
+  refresh: '<path d="M21 12a9 9 0 1 1-2.6-6.3"/><path d="M21 4v4.5h-4.5"/>',
+  clock: '<circle cx="12" cy="12" r="9.5"/><path d="M12 7.5V12l3 2"/>',
+  edit: '<path d="M11 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/>',
+  qr: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17 21h.01M21 17v4"/>',
+  // ---- app tiles ----
+  video: '<path d="m22 8.5-5.4 3.5 5.4 3.5V8.5Z"/><rect x="2" y="6" width="14.5" height="12" rx="3"/>',
+  monitor: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  sparkles: '<path d="M12 3.5 13.6 9 19 10.5 13.6 12 12 17.5 10.4 12 5 10.5 10.4 9 12 3.5Z"/><path d="M19 3.5v3.2M20.6 5.1h-3.2"/><path d="M5 16v2.4M6.2 17.2H3.8"/>',
+  mic: '<rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5v3.5"/>',
+  flask: '<path d="M9.5 3v6.2L4.8 17.4A2 2 0 0 0 6.5 20.5h11a2 2 0 0 0 1.7-3.1L14.5 9.2V3"/><path d="M8.5 3h7"/><path d="M7.3 15h9.4"/>',
+  headphones: '<path d="M3.5 14v-1.5a8.5 8.5 0 0 1 17 0V14"/><path d="M3.5 14.5a2.5 2.5 0 0 1 2.5-2.5h0a1.5 1.5 0 0 1 1.5 1.5v3.5a1.5 1.5 0 0 1-1.5 1.5h0a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M20.5 14.5a2.5 2.5 0 0 0-2.5-2.5h0a1.5 1.5 0 0 0-1.5 1.5v3.5a1.5 1.5 0 0 0 1.5 1.5h0a2.5 2.5 0 0 0 2.5-2.5Z"/>',
+  globe: '<circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5a14 14 0 0 1 0 19 14 14 0 0 1 0-19Z"/>',
+  store: '<path d="M4 9.5V19a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19V9.5"/><path d="M3 6.5 4.5 3.5h15L21 6.5a2.5 2.5 0 0 1-4.5 1.5 2.5 2.5 0 0 1-4.5 0 2.5 2.5 0 0 1-4.5 0A2.5 2.5 0 0 1 3 6.5Z"/>',
+  // ---- chat composer ----
+  camera: '<path d="M14.5 4.5h-5L7.2 7.2H4.5A2.5 2.5 0 0 0 2 9.7V18a2.5 2.5 0 0 0 2.5 2.5h15A2.5 2.5 0 0 0 22 18V9.7a2.5 2.5 0 0 0-2.5-2.5h-2.7L14.5 4.5Z"/><circle cx="12" cy="13.5" r="3.2"/>',
+  phone: '<path d="M16.5 21a2 2 0 0 0 2-2.2 1.9 1.9 0 0 0-.6-1.2l-2-1.7a2 2 0 0 0-2.4-.1l-.9.6a14 14 0 0 1-5-5l.6-.9a2 2 0 0 0-.1-2.4l-1.7-2a1.9 1.9 0 0 0-1.2-.6A2 2 0 0 0 3 5.5 16 16 0 0 0 16.5 21Z"/>',
+  bolt: '<path d="M13 2 4 13h7l-1 9 9-11h-7l1-9Z"/>',
+  arrowUp: '<path d="M12 20V5M6 11l6-6 6 6"/>',
+  send: '<path d="M21.5 4.5 10.5 13.5"/><path d="M21.5 4.5 14.8 21.5 11 13l-8.5-3.8 19-4.7Z"/>',
+  // ---- account ----
+  shield: '<path d="M12 21.5s7.5-3.8 7.5-9.5V5.5L12 2.8 4.5 5.5V12c0 5.7 7.5 9.5 7.5 9.5Z"/>',
+  download: '<path d="M12 3.5v11M7.5 10l4.5 4.5 4.5-4.5"/><path d="M5 20.5h14"/>',
+  // Folder with a magnifier corner — "reveal / show in file manager".
+  folderOpen: '<path d="M3 7.5a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="12" cy="13" r="2.4"/><path d="M13.9 14.9 15.5 16.5"/>',
+  migrate: '<path d="M8 4 4 8l4 4"/><path d="M4 8h13a3 3 0 0 1 3 3v1"/><path d="m16 20 4-4-4-4"/><path d="M20 16H7a3 3 0 0 1-3-3v-1"/>',
+  starCoin: '<circle cx="12" cy="12" r="9"/><path d="m12 7.2 1.4 2.9 3.2.4-2.3 2.2.6 3.1-2.9-1.5-2.9 1.5.6-3.1L8.4 10.5l3.2-.4L12 7.2Z" fill="currentColor" stroke="none"/>',
+  link: '<path d="M10.5 13.5a4 4 0 0 0 5.7 0l2.3-2.3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-2.3 2.3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  trendingUp: '<path d="M22 7.5 13.5 16l-4.5-4.5L2 18.5"/><path d="M16.5 7.5H22v5.5"/>',
+  bell: '<path d="M18 8.5a6 6 0 0 0-12 0c0 6.5-2.5 8-2.5 8h17S18 15 18 8.5Z"/><path d="M13.7 20.5a2 2 0 0 1-3.4 0"/>',
+  bot: '<rect x="3.5" y="9" width="17" height="11" rx="3"/><path d="M12 4.5v4.5"/><circle cx="12" cy="3" r="1.4"/><path d="M8.5 14.5h.01M15.5 14.5h.01"/><path d="M2 13.5v3M22 13.5v3"/>',
+  scan: '<path d="M3 8V6a3 3 0 0 1 3-3h2"/><path d="M16 3h2a3 3 0 0 1 3 3v2"/><path d="M21 16v2a3 3 0 0 1-3 3h-2"/><path d="M8 21H6a3 3 0 0 1-3-3v-2"/><path d="M7 12h10"/>',
+  userPlus: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/>',
+  at: '<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.9 7.9"/>',
+  keyRound: '<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>',
+  alert: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+  chevronDown: '<path d="m6 9 6 6 6-6"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>',
+  trash: '<path d="M3 6h18"/><path d="M8 6V4.5A1.5 1.5 0 0 1 9.5 3h5A1.5 1.5 0 0 1 16 4.5V6"/><path d="M18.5 6l-1 13.5a2 2 0 0 1-2 1.5h-7a2 2 0 0 1-2-1.5L5.5 6"/><path d="M10 10.5v6M14 10.5v6"/>',
+  arrowDown: '<path d="M12 4v15M6 13l6 6 6-6"/>',
+  shrink: '<path d="M4 14h6v6"/><path d="M20 10h-6V4"/><path d="m14 10 7-7"/><path d="m3 21 7-7"/>',
+  maximize: '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
+  theater: '<rect x="2.5" y="6.5" width="19" height="11" rx="2"/>',
+  speaker: '<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M16 9a3 3 0 0 1 0 6"/><path d="M19 7a6 6 0 0 1 0 10"/>',
+  micFill: '<rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5v3.5"/>'
+};
+function Icon({ name, size = 24, stroke = 1.75, color = "currentColor", fill = "none", style, svgPath }) {
+  const d = svgPath || ICON_PATHS[name];
+  if (!d)
+    return null;
+  return /* @__PURE__ */ React.createElement(
+    "svg",
+    {
+      width: size,
+      height: size,
+      viewBox: "0 0 24 24",
+      fill,
+      stroke: color,
+      strokeWidth: stroke,
+      strokeLinecap: "round",
+      strokeLinejoin: "round",
+      style: { display: "block", flexShrink: 0, ...style },
+      dangerouslySetInnerHTML: { __html: d }
+    }
+  );
+}
+Object.assign(window, { Icon, ICON_PATHS });
+
+// src/icons-ext.jsx
+Object.assign(ICON_PATHS, {
+  message: '<path d="M21 12a8.5 8.5 0 0 1-12.2 7.7L3 21l1.3-5.8A8.5 8.5 0 1 1 21 12Z"/>',
+  network: '<circle cx="12" cy="5" r="2.4"/><circle cx="5" cy="19" r="2.4"/><circle cx="19" cy="19" r="2.4"/><path d="M10.6 6.9 6.4 16.7M13.4 6.9l4.2 9.8M7.4 19h9.2"/>',
+  route: '<circle cx="6.5" cy="18.5" r="2.4"/><circle cx="17.5" cy="5.5" r="2.4"/><path d="M9 18.5h5.5a3.5 3.5 0 0 0 0-7h-4a3.5 3.5 0 0 1 0-7H15"/>',
+  globe2: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/>',
+  server: '<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
+  power: '<path d="M12 4v8"/><path d="M7.6 7.2a7 7 0 1 0 8.8 0"/>',
+  ban: '<circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/>',
+  terminal: '<path d="m4.5 17 6-6-6-6"/><path d="M12 18.5h7.5"/>',
+  signal: '<path d="M4.8 12.8a10 10 0 0 1 14.4 0"/><path d="M8.3 16.3a5 5 0 0 1 7.4 0"/><path d="M12 19.6h.01"/>',
+  paperclip: '<path d="m20.5 9-8.7 8.7a4.2 4.2 0 0 1-6-6l8.6-8.6a2.8 2.8 0 0 1 4 4l-8.6 8.6a1.4 1.4 0 0 1-2-2l7.9-7.9"/>',
+  file: '<path d="M14 3v5h5"/><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>',
+  fileText: '<path d="M14 3v5h5"/><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M8.5 13h7M8.5 16.5h5"/>',
+  image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="m4 17 4.5-4.5a2 2 0 0 1 2.8 0L20 21"/>',
+  arrowRight: '<path d="M5 12h13M13 6l6 6-6 6"/>',
+  dotFill: '<circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/>',
+  hash: '<path d="M4 9h16M3.5 15h16M10 4 8 20M16 4l-2 16"/>',
+  sliders: '<path d="M4 6h11M4 12h7M4 18h13"/><circle cx="18" cy="6" r="2"/><circle cx="13.5" cy="12" r="2"/><circle cx="19" cy="18" r="2"/>',
+  unlink: '<path d="M9 15 5.5 18.5a3.5 3.5 0 0 1-5-5L4 10"/><path d="m15 9 3.5-3.5a3.5 3.5 0 0 1 5 5L20 14"/><path d="M8 8 4 4M16 16l4 4M3 11h2M11 3v2"/>',
+  zap: '<path d="M13 2 4 13h7l-1 9 9-11h-7l1-9Z"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+  bellOff: '<path d="M8.7 3.4A6 6 0 0 1 18 8.5c0 3 .5 5 1.1 6.3M6.1 6.1A6 6 0 0 0 6 8.5c0 6.5-2.5 8-2.5 8H16"/><path d="M13.7 20.5a2 2 0 0 1-3.4 0"/><path d="m3 3 18 18"/>',
+  plug: '<path d="M9 2v6M15 2v6"/><path d="M7 8h10v3a5 5 0 0 1-10 0V8Z"/><path d="M12 16v6"/>',
+  // A form with a filled-in field: the glyph for "Fill with Beagle" and any
+  // other host app that puts your identity into someone else's page.
+  // A pane pinned to the right edge — "keep this beside the page".
+  dock: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M14 4v16"/><path d="M17 9.5h1.5M17 13h1.5"/>',
+  form: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5"/><path d="M8 16h3"/><path d="m14.5 17.5 1.6 1.6 3.4-3.6"/>'
+});
+
+// src/ui-host.jsx
+var H = {};
+var hostNeedsWelcome = false;
+var hostPrefersRtcFile = false;
+var hostHasKeyBackup = false;
+var hostEnsWrite = true;
+var hostWalletBind = true;
+var hostAssistant = true;
+var hostBrandHref = "";
+var hostTabs = null;
+var hostHideApps = null;
+var hostApps = null;
+var hostProfileSections = null;
+var hostHeaderActions = null;
+var hostIsProtocolMessage = null;
+function setUiHost(host) {
+  H = host || {};
+  hostTabs = Array.isArray(H.hostTabs) ? H.hostTabs : null;
+  hostHideApps = Array.isArray(H.hideApps) ? H.hideApps : null;
+  hostApps = Array.isArray(H.hostApps) ? H.hostApps : null;
+  hostProfileSections = Array.isArray(H.hostProfileSections) ? H.hostProfileSections : null;
+  hostHeaderActions = Array.isArray(H.hostHeaderActions) ? H.hostHeaderActions : null;
+  hostIsProtocolMessage = typeof H.isProtocolMessage === "function" ? H.isProtocolMessage : null;
+  hostNeedsWelcome = !!H.hostNeedsWelcome;
+  hostPrefersRtcFile = !!H.hostPrefersRtcFile;
+  hostHasKeyBackup = !!H.hostHasKeyBackup;
+  hostEnsWrite = H.hostEnsWrite !== void 0 ? !!H.hostEnsWrite : !H.hostNeedsWelcome;
+  hostWalletBind = H.hostWalletBind !== void 0 ? !!H.hostWalletBind : hostEnsWrite;
+  hostAssistant = H.hostAssistant !== void 0 ? !!H.hostAssistant : true;
+  hostBrandHref = typeof H.hostBrandHref === "string" ? H.hostBrandHref : "";
+}
+function fileUrl(name) {
+  return H.fileUrl ? H.fileUrl(name) : "/api/file-download?name=" + encodeURIComponent(name);
+}
+function fileDownloadUrl(name) {
+  return H.fileDownloadUrl ? H.fileDownloadUrl(name) : fileUrl(name) + "&dl=1";
+}
+async function prefetchThreadFiles(messages) {
+  if (H.prefetchThreadFiles)
+    await H.prefetchThreadFiles(messages);
+}
+function DkWelcome(props) {
+  return H.DkWelcome ? /* @__PURE__ */ React.createElement(H.DkWelcome, { ...props }) : null;
+}
+function DkLockedOut(props) {
+  return H.DkLockedOut ? /* @__PURE__ */ React.createElement(H.DkLockedOut, { ...props }) : null;
+}
+function DkBrowserNotice(props) {
+  return H.DkBrowserNotice ? /* @__PURE__ */ React.createElement(H.DkBrowserNotice, { ...props }) : null;
+}
+
+// src/host-messages.js
+function protocolTest(rule) {
+  if (typeof rule !== "function")
+    return () => false;
+  return (msg) => {
+    if (!msg)
+      return false;
+    try {
+      const v = rule(msg);
+      return typeof v === "string" ? v || true : !!v;
+    } catch (e) {
+      return false;
+    }
+  };
+}
+function stripOwnPrefix(text) {
+  return String(text == null ? "" : text).replace(/^you:\s*/i, "");
+}
+function lastMessageOf(peer) {
+  const raw = String(peer && peer.lastMsg || "");
+  return {
+    text: stripOwnPrefix(raw),
+    dir: peer && peer.lastDir || (/^you:\s*/i.test(raw) ? "out" : "in"),
+    ts: peer && peer.lastTs || 0
+  };
+}
+function lastIsProtocol(peer, isProto) {
+  const last = lastMessageOf(peer);
+  if (!last.text)
+    return false;
+  return isProto(last);
+}
+function newestHumanMessage(msgs, isProto) {
+  const arr = msgs || [];
+  for (let i = arr.length - 1; i >= 0; i--) {
+    const m = arr[i];
+    if (!m)
+      continue;
+    if (m.file)
+      return m;
+    if (!m.text)
+      continue;
+    if (isProto({ text: m.text, dir: m.dir, ts: m.ts }))
+      continue;
+    return m;
+  }
+  return null;
+}
+function humanUnread(msgs, unread, isProto) {
+  const want = Number(unread) || 0;
+  if (want <= 0)
+    return { count: 0, exact: true };
+  const arr = msgs || [];
+  const window2 = arr.slice(Math.max(0, arr.length - want));
+  let n = 0;
+  for (const m of window2) {
+    if (!m || m.dir !== "in")
+      continue;
+    if (m.text && !m.file && isProto({ text: m.text, dir: m.dir, ts: m.ts }))
+      continue;
+    n++;
+  }
+  return { count: n, exact: window2.length >= want };
+}
+function rosterRow(peer, isProto, fix) {
+  const hidden = lastIsProtocol(peer, isProto);
+  if (!hidden) {
+    return {
+      preview: peer && peer.lastMsg || "",
+      lastTime: peer && peer.lastTime || "",
+      unread: Number(peer && peer.unread || 0),
+      activityTs: Number(peer && peer.lastTs || 0),
+      hidden: false
+    };
+  }
+  return {
+    preview: fix && fix.preview || "",
+    lastTime: fix && fix.lastTime || "",
+    unread: fix && fix.unreadExact ? fix.unread : 0,
+    activityTs: fix && fix.ts || 0,
+    hidden: true,
+    pending: !fix
+  };
+}
+function rosterUnreadTotal(peers, isProto, fixes) {
+  return (peers || []).reduce((n, p) => n + rosterRow(p, isProto, fixes && fixes[p.id]).unread, 0);
+}
+function collapseProtocol(thread, isProto, lang) {
+  const out = [];
+  let run = null;
+  const flush = () => {
+    if (!run)
+      return;
+    out.push({
+      protocol: true,
+      id: `proto-${run.first.id || run.startIndex}`,
+      count: run.items.length,
+      label: run.label,
+      dir: run.first.from === "me" ? "out" : "in",
+      text: run.items.map((m) => m.text).join("\n"),
+      line: protocolLine(run, lang)
+    });
+    run = null;
+  };
+  (thread || []).forEach((m, i) => {
+    const hit = m && !m.day ? isProto({ text: m.text, dir: m && m.from === "me" ? "out" : "in", ts: m && m.ts }) : false;
+    if (!hit || m && (m.file || m.kind === "friend-request")) {
+      flush();
+      out.push(m);
+      return;
+    }
+    if (!run)
+      run = { first: m, startIndex: i, items: [], label: typeof hit === "string" ? hit : "" };
+    if (!run.label && typeof hit === "string")
+      run.label = hit;
+    run.items.push(m);
+  });
+  flush();
+  return out;
+}
+function protocolLine(run, lang) {
+  const arrow = run.first.from === "me" ? "\u2192" : "\u2190";
+  const n = run.items.length;
+  if (run.label) {
+    return `\u2699 ${arrow} ${run.label}${n > 1 ? ` \xB7 ${n}` : ""}`;
+  }
+  if (n > 1) {
+    return lang === "zh" ? `\u2699 ${arrow} ${n} \u6761\u534F\u8BAE\u6D88\u606F` : `\u2699 ${arrow} ${n} protocol messages`;
+  }
+  return `\u2699 ${arrow} ${protocolSummary(run.first.text)}`;
+}
+function protocolSummary(text, max = 72) {
+  const s = String(text == null ? "" : text).replace(/\s+/g, " ").trim();
+  return s.length > max ? s.slice(0, max - 1) + "\u2026" : s;
+}
+
+// src/exit-host.js
+function hostHasExits(d) {
+  if (!d || typeof d !== "object")
+    return false;
+  if (d.exitsSupported === false)
+    return false;
+  return !!d.exitFeature && typeof d.exitFeature === "object";
+}
+function desktopPollPath({ wantExits, opened, supported }) {
+  if (!wantExits || supported !== true)
+    return "/api/desktop";
+  return opened ? "/api/desktop?exits=1&open=1" : "/api/desktop?exits=1";
+}
+function exitControls({ exitFeature, routeFallback, exits }) {
+  const has = hostHasExits({ exitFeature });
+  const list = Array.isArray(exits) ? exits : [];
+  const anyFailed = list.some((r) => (r.nodes || []).some((n) => n.status === "failed"));
+  return {
+    refresh: has && list.length > 0,
+    reconnect: has,
+    reconnectAll: has && anyFailed,
+    noExitNotice: has && exitFeature.available === false,
+    fallbackNotice: has && !!(routeFallback && routeFallback.from),
+    anyFailed: has && anyFailed
+  };
+}
+
+// src/group-file.js
+var VOICE_RE = /^voice-(\d+)(?:-(\d+))?\.(m4a|aac|ogg|oga|opus|mp3|wav|caf|amr)$/i;
+function isVoiceName(name) {
+  return VOICE_RE.test(String(name || "").trim());
+}
+function voiceDurationMs(name) {
+  const m = VOICE_RE.exec(String(name || "").trim());
+  if (!m || !m[2])
+    return null;
+  const d = Number(m[2]);
+  return d > 0 && d < 36e5 ? d : null;
+}
+function formatDuration(ms) {
+  if (ms == null || !(ms >= 0))
+    return "";
+  const s = Math.round(ms / 1e3);
+  return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+}
+var EXT_KIND = {
+  image: ["png", "jpg", "jpeg", "gif", "webp", "svg", "heic", "bmp"],
+  video: ["mp4", "mov", "webm", "m4v", "mkv", "avi"],
+  audio: ["mp3", "m4a", "aac", "wav", "ogg", "oga", "flac", "opus", "caf", "amr"]
+};
+function fileMediaKind(name, contentType) {
+  if (isVoiceName(name))
+    return "audio";
+  const ct = String(contentType || "").toLowerCase();
+  if (/^(image|video|audio)\//.test(ct))
+    return ct.split("/")[0];
+  const ext = (String(name || "").split(".").pop() || "").toLowerCase();
+  for (const kind of Object.keys(EXT_KIND))
+    if (EXT_KIND[kind].includes(ext))
+      return kind;
+  return "file";
+}
+function cgpFile(message) {
+  const f = message && typeof message === "object" ? message.file : null;
+  if (!f || typeof f !== "object")
+    return null;
+  const name = typeof f.filename === "string" && f.filename ? f.filename : null;
+  if (!name)
+    return null;
+  const size = Number(f.size);
+  const contentType = typeof f.contentType === "string" ? f.contentType : "";
+  const voice = isVoiceName(name);
+  return {
+    name,
+    size: Number.isFinite(size) && size >= 0 ? size : null,
+    contentType,
+    media: fileMediaKind(name, contentType),
+    voice,
+    durationMs: voice ? voiceDurationMs(name) : null
+  };
+}
+function fileLabel(file, T) {
+  if (!file)
+    return "";
+  if (file.voice) {
+    const d = formatDuration(file.durationMs);
+    return "\u{1F3A4} " + (T && T.voiceMessage || "Voice message") + (d ? " " + d : "");
+  }
+  const icon = file.media === "image" ? "\u{1F5BC} " : file.media === "video" ? "\u{1F3AC} " : "\u{1F4CE} ";
+  return icon + file.name;
+}
+
+// src/data-ipc.jsx
+function dkHash(s) {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function dkRng(a) {
+  return function() {
+    a |= 0;
+    a = a + 1831565813 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function dkIdenticon(seed) {
+  const rnd = dkRng(dkHash(seed || "x"));
+  const hue = Math.floor(rnd() * 360);
+  const grid = [];
+  for (let y = 0; y < 5; y++) {
+    const row = [];
+    for (let x = 0; x < 3; x++)
+      row.push(rnd() > 0.5);
+    grid.push([row[0], row[1], row[2], row[1], row[0]]);
+  }
+  return { cells: grid, hue };
+}
+function dkClock(ts) {
+  if (!ts)
+    return "";
+  const d = new Date(ts);
+  return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+}
+function dkFileSize(n) {
+  if (!n || n < 0)
+    return "0 B";
+  if (n < 1024)
+    return n + " B";
+  if (n < 1024 * 1024)
+    return (n / 1024).toFixed(1) + " KB";
+  if (n < 1024 * 1024 * 1024)
+    return (n / (1024 * 1024)).toFixed(1) + " MB";
+  return (n / (1024 * 1024 * 1024)).toFixed(2) + " GB";
+}
+function dkSpeed(kbps) {
+  if (kbps == null || !(kbps >= 0))
+    return "";
+  return kbps >= 1024 ? (kbps / 1024).toFixed(2) + " MB/s" : Math.round(kbps) + " KB/s";
+}
+function dkPct(p) {
+  return p == null ? "\u2026" : (p >= 100 ? "100" : p.toFixed(2)) + "%";
+}
+var dkFileUrl = fileUrl;
+var dkFileDownloadUrl = fileDownloadUrl;
+function dkFileMediaKind(name, contentType) {
+  return fileMediaKind(name, contentType);
+}
+function dkDayLabel(ts) {
+  if (!ts)
+    return "Today";
+  const d = new Date(ts), now = /* @__PURE__ */ new Date();
+  if (d.toDateString() === now.toDateString())
+    return "Today";
+  const y = new Date(now.getTime() - 864e5);
+  if (d.toDateString() === y.toDateString())
+    return "Yesterday";
+  return d.toLocaleDateString();
+}
+async function dkGet(path) {
+  const r = await fetch(path, { headers: { "cache-control": "no-cache" } });
+  return r.json();
+}
+async function dkPost(path, body) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15e3);
+  try {
+    const r = await fetch(path, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body || {}),
+      signal: ctrl.signal
+    });
+    try {
+      return await r.json();
+    } catch (e) {
+      return { ok: r.ok };
+    }
+  } catch (e) {
+    return { ok: false, error: e && e.name === "AbortError" ? "timed out" : e && e.message || "network error" };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+function dkCopy(text) {
+  const s = text == null ? "" : String(text);
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(s).then(() => true).catch(() => dkCopyLegacy(s));
+  }
+  return Promise.resolve(dkCopyLegacy(s));
+}
+function dkCopyLegacy(s) {
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = s;
+    ta.setAttribute("readonly", "");
+    ta.style.cssText = "position:fixed;top:-1000px;left:-1000px;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, s.length);
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) {
+    return false;
+  }
+}
+var dkApi = {
+  send: (userid, text) => dkPost("/api/chat-send", { userid, text }),
+  retry: (id, userid, text) => dkPost("/api/chat-retry", { id, userid, text }),
+  logLocal: (userid, dir, text) => dkPost("/api/chat-log-local", { userid, dir, text }),
+  add: (address) => dkPost("/api/add", { address }),
+  accept: (userid) => dkPost("/api/accept", { userid }),
+  reject: (userid) => dkPost("/api/reject", { userid }),
+  remove: (userid) => dkPost("/api/friend-remove", { userid }),
+  alias: (userid, alias) => dkPost("/api/friend-alias", { userid, alias }),
+  markRead: (userid) => dkPost("/api/chat-mark-read", { userid }),
+  delFiles: (userid, ids) => dkPost("/api/file-delete", { userid, ids }),
+  // Reveal a received file in the OS file manager (localhost-only on the daemon side).
+  revealFile: (name) => dkPost("/api/file-reveal", { name }),
+  cancelSend: (userid, ids) => dkPost("/api/file-cancel", { userid, ids }),
+  retrySend: (userid, ids) => dkPost("/api/file-retry", { userid, ids }),
+  setProfile: (name, description) => dkPost("/api/set-profile", { name, description }),
+  // Probe a failed exit once, now (or every failed exit with all=true). Exits
+  // that failed three times in a row are never probed again on their own.
+  reconnectExit: (ip) => dkPost("/api/exits/reconnect", { ip }),
+  reconnectAllExits: () => dkPost("/api/exits/reconnect", { all: true }),
+  // Every exit once, now, failed ones included.
+  refreshExits: () => dkPost("/api/exits/refresh", {}),
+  // Used by the browser's welcome flow, which also picks an avatar and marks
+  // first run done. Harmless where there is no welcome flow: nothing calls it.
+  setProfileFull: (p) => dkPost("/api/set-profile", p),
+  // Mint the keypair — the browser mints one in the tab; a desktop peer reads
+  // a keyfile and never calls this.
+  createIdentity: () => dkPost("/api/create-identity", {}),
+  saveWebrtcFile: async (userid, name, blob) => {
+    try {
+      const r = await fetch(
+        "/api/webrtc-file-save?userid=" + encodeURIComponent(userid) + "&name=" + encodeURIComponent(name),
+        { method: "POST", body: blob }
+      );
+      const txt = await r.text();
+      try {
+        return JSON.parse(txt);
+      } catch {
+        return { ok: false, error: (txt || "HTTP " + r.status).slice(0, 120) };
+      }
+    } catch (e) {
+      return { ok: false, error: String(e) };
+    }
+  },
+  sendFile: async (userid, file) => {
+    try {
+      const r = await fetch(
+        "/api/file-send?userid=" + encodeURIComponent(userid) + "&name=" + encodeURIComponent(file.name),
+        { method: "POST", body: file }
+      );
+      const txt = await r.text();
+      try {
+        return JSON.parse(txt);
+      } catch {
+        if (r.status === 404)
+          return { ok: false, error: "file upload not supported \u2014 update & restart `agentnet ui`" };
+        return { ok: false, error: (txt || "HTTP " + r.status).slice(0, 120) };
+      }
+    } catch (e) {
+      return { ok: false, error: String(e) };
+    }
+  }
+};
+var DK_ME_FALLBACK = {
+  name: "\u2026",
+  handle: "@decentnetwork/peer",
+  userId: "",
+  carrier: "",
+  netKey: "",
+  ip: "",
+  online: false,
+  lanVer: "",
+  peerVer: "",
+  channel: "@next",
+  wire: "163"
+};
+var DK_PAGE = 30;
+function dkMsgKey(m) {
+  return m.id || m.ts + ":" + m.dir;
+}
+function dkThreadMsg(m) {
+  return {
+    id: m.id,
+    from: m.dir === "out" ? "me" : "them",
+    time: dkClock(m.ts),
+    text: m.text,
+    file: m.file ? {
+      name: m.file.name,
+      size: dkFileSize(m.file.size),
+      dir: m.dir,
+      media: dkFileMediaKind(m.file.name),
+      // voice-<ms>-<durMs>.m4a: shown as a voice note with its length.
+      voice: isVoiceName(m.file.name),
+      durationMs: voiceDurationMs(m.file.name),
+      status: m.file.status,
+      pct: m.file.status === "sending" && m.file.size ? Math.min(100, (m.file.sent || 0) / m.file.size * 100) : void 0,
+      kbps: m.file.kbps
+    } : void 0,
+    // Pass the real state through. Collapsing everything that was not
+    // 'queued' to 'read' meant a message still in flight — or one that
+    // never went out at all — rendered as delivered.
+    status: m.dir === "out" ? m.status === "queued" || m.status === "sending" || m.status === "failed" || m.status === "sent" ? m.status : "read" : void 0,
+    error: m.error,
+    // Real sender of a file relayed by a group (the thread is the group).
+    origin: m.origin,
+    // false = went to a live session but nobody acknowledged it (one tick).
+    // Dropped here before, so that state could never render.
+    confirmed: m.confirmed,
+    // Delivery path: "online" = live session, "offline" = express relay.
+    // Both directions carry it now; the bubble labels them the same way.
+    via: m.via,
+    // Brief 30: a validated component form, already whitelisted host-side.
+    // Passed through untouched — the renderer treats every string as text,
+    // never markup.
+    components: m.components,
+    // 'friend-request': the accepted request's greeting, merged in by the
+    // host (beagle's friend-greetings.ts); chat.jsx draws its own bubble.
+    kind: m.kind
+  };
+}
+var DK_TAIL_MIN = 30;
+var DK_TAIL_MAX = 200;
+function useProtocolTails(peers, isProtocol, enabled) {
+  const [fixes, setFixes] = React.useState({});
+  const cache = React.useRef(/* @__PURE__ */ new Map());
+  const inFlight = React.useRef(/* @__PURE__ */ new Set());
+  React.useEffect(() => {
+    if (!enabled)
+      return;
+    for (const p of peers || []) {
+      if (!p || !lastIsProtocol(p, isProtocol))
+        continue;
+      const unread = Number(p.unread) || 0;
+      const key = `${p.lastTs || 0}:${unread}`;
+      const had = cache.current.get(p.id);
+      if (had && had.key === key)
+        continue;
+      if (inFlight.current.has(p.id))
+        continue;
+      const limit = Math.min(DK_TAIL_MAX, Math.max(DK_TAIL_MIN, unread + 5));
+      inFlight.current.add(p.id);
+      dkGet("/api/chat-history?peer=" + encodeURIComponent(p.id) + "&limit=" + limit).then((d) => {
+        const msgs = d && d.chats && d.chats[p.id] || [];
+        const human = newestHumanMessage(msgs, isProtocol);
+        const count = humanUnread(msgs, unread, isProtocol);
+        const fix = {
+          preview: human ? (human.dir === "out" ? "you: " : "") + (human.file ? human.file.name : human.text || "") : "",
+          lastTime: human ? dkClock(human.ts) : "",
+          ts: human ? human.ts : 0,
+          unread: count.count,
+          unreadExact: count.exact
+        };
+        cache.current.set(p.id, { key, fix });
+        setFixes((f) => Object.assign({}, f, { [p.id]: fix }));
+      }).catch(() => {
+      }).finally(() => {
+        inFlight.current.delete(p.id);
+      });
+    }
+  }, [peers, isProtocol, enabled]);
+  return fixes;
+}
+function useDaemonData(opts) {
+  const wantExits = !!(opts && opts.exits);
+  const wantExitsRef = React.useRef(wantExits);
+  wantExitsRef.current = wantExits;
+  const exitsOpenedRef = React.useRef(false);
+  const exitsSupportedRef = React.useRef(null);
+  const [snap, setSnap] = React.useState({
+    me: DK_ME_FALLBACK,
+    peers: [],
+    requests: [],
+    exits: [],
+    activeExit: null,
+    exitFeature: null,
+    routeFallback: null,
+    loaded: false,
+    locked: false
+  });
+  const [threads, setThreads] = React.useState({});
+  const refreshRef = React.useRef(null);
+  const refresh = React.useCallback(async () => {
+    var _a, _b, _c;
+    try {
+      const path = desktopPollPath({
+        wantExits: wantExitsRef.current,
+        opened: exitsOpenedRef.current,
+        supported: exitsSupportedRef.current
+      });
+      if (path.includes("open=1"))
+        exitsOpenedRef.current = false;
+      const d = await dkGet(path);
+      if (d && d.locked) {
+        setSnap((s) => ({ ...s, locked: true, loaded: true }));
+        return;
+      }
+      if (d && d.starting) {
+        setTimeout(() => {
+          refreshRef.current && refreshRef.current();
+        }, 300);
+        return;
+      }
+      const had = exitsSupportedRef.current;
+      exitsSupportedRef.current = hostHasExits(d);
+      if (had !== true && exitsSupportedRef.current && wantExitsRef.current && exitsOpenedRef.current) {
+        setTimeout(() => {
+          refreshRef.current && refreshRef.current();
+        }, 0);
+      }
+      setSnap({
+        locked: false,
+        me: d.me || DK_ME_FALLBACK,
+        peers: d.peers || [],
+        requests: d.requests || [],
+        exits: d.exits || [],
+        activeExit: (_a = d.activeExit) != null ? _a : null,
+        exitFeature: (_b = d.exitFeature) != null ? _b : null,
+        routeFallback: (_c = d.routeFallback) != null ? _c : null,
+        loaded: true
+      });
+    } catch (e) {
+    }
+  }, []);
+  React.useEffect(() => {
+    refreshRef.current = refresh;
+    refresh();
+    const t = setInterval(refresh, 2500);
+    return () => clearInterval(t);
+  }, [refresh]);
+  React.useEffect(() => {
+    if (wantExits) {
+      exitsOpenedRef.current = true;
+      refresh();
+    }
+  }, [wantExits, refresh]);
+  const inFlight = React.useRef(/* @__PURE__ */ new Set());
+  const cache = React.useRef({});
+  const [earlier, setEarlier] = React.useState({});
+  const publish = React.useCallback((peerId) => {
+    const c = cache.current[peerId];
+    if (!c)
+      return;
+    const arr = [...c.byId.values()].sort((a, b) => a.ts - b.ts);
+    const withDay = [];
+    let lastDay = null;
+    for (const m of arr) {
+      const day = dkDayLabel(m.ts);
+      if (day !== lastDay) {
+        withDay.push({ day });
+        lastDay = day;
+      }
+      withDay.push(dkThreadMsg(m));
+    }
+    setThreads((t) => Object.assign({}, t, { [peerId]: withDay }));
+    setEarlier((e) => e[peerId] === c.more ? e : Object.assign({}, e, { [peerId]: c.more }));
+  }, []);
+  const loadThread = React.useCallback(async (peerId, opts2) => {
+    if (!peerId)
+      return;
+    if (opts2 && opts2.reset)
+      delete cache.current[peerId];
+    if (inFlight.current.has(peerId))
+      return;
+    inFlight.current.add(peerId);
+    try {
+      const d = await dkGet("/api/chat-history?peer=" + encodeURIComponent(peerId) + "&limit=" + DK_PAGE);
+      const arr = d.chats && d.chats[peerId] || [];
+      await prefetchThreadFiles(arr);
+      let c = cache.current[peerId];
+      if (!c)
+        c = cache.current[peerId] = { byId: /* @__PURE__ */ new Map(), more: arr.length >= DK_PAGE };
+      if (arr.length) {
+        const from = arr[0].ts;
+        for (const [k, m] of c.byId)
+          if (m.ts >= from)
+            c.byId.delete(k);
+      }
+      for (const m of arr)
+        c.byId.set(dkMsgKey(m), m);
+      publish(peerId);
+    } catch (e) {
+    } finally {
+      inFlight.current.delete(peerId);
+    }
+  }, [publish]);
+  const loadEarlier = React.useCallback(async (peerId) => {
+    const c = cache.current[peerId];
+    if (!c || !c.more || c.loadingEarlier)
+      return;
+    let oldest = Infinity;
+    for (const m of c.byId.values())
+      if (m.ts < oldest)
+        oldest = m.ts;
+    if (!Number.isFinite(oldest))
+      return;
+    c.loadingEarlier = true;
+    try {
+      const d = await dkGet("/api/chat-history?peer=" + encodeURIComponent(peerId) + "&limit=" + DK_PAGE + "&before=" + oldest);
+      const arr = d.chats && d.chats[peerId] || [];
+      await prefetchThreadFiles(arr);
+      if (cache.current[peerId] !== c)
+        return;
+      for (const m of arr)
+        c.byId.set(dkMsgKey(m), m);
+      c.more = arr.length >= DK_PAGE;
+      publish(peerId);
+    } catch (e) {
+    } finally {
+      c.loadingEarlier = false;
+    }
+  }, [publish]);
+  return Object.assign({}, snap, { threads, earlier, refresh, loadThread, loadEarlier });
+}
+Object.assign(window, {
+  dkHash,
+  dkIdenticon,
+  dkClock,
+  dkDayLabel,
+  dkApi,
+  useDaemonData,
+  DK_ME_FALLBACK,
+  dkCopy
+});
+
+// src/assistant/actions.json
+var actions_default = {
+  version: 1,
+  scope: "assistant",
+  note: "The Assistant's action list. /help is generated from it, the router dispatches from it, and iOS/Android implement it. A later natural-language layer translates a sentence into one of these actions and nothing else. See docs/assistant/SPEC.md.",
+  actions: [
+    {
+      name: "help",
+      usage: "/help",
+      summary: "List what the Assistant can do.",
+      params: {
+        type: "object",
+        properties: {},
+        required: []
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "friends-list",
+      usage: "/friends list [filter\u2026]",
+      summary: "Show friends as a list: name, last heard from, messages in/out. With no filter, everyone. Service peers are never included \u2014 they are /nodes.",
+      params: {
+        type: "object",
+        properties: {
+          filters: {
+            type: "array",
+            items: {
+              enum: [
+                "never-messaged",
+                "never-replied",
+                "silent",
+                "pending"
+              ]
+            },
+            description: "Several filters are OR'd together."
+          },
+          silentDays: {
+            type: "integer",
+            minimum: 1,
+            default: 90,
+            description: "Argument of the silent filter: nothing from them in this many days."
+          }
+        },
+        required: []
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "friends-remove",
+      usage: "/friends remove <filter\u2026>",
+      summary: "Same list with a tick per row and a Remove button. Nothing is removed by typing alone. Service peers are never matched.",
+      params: {
+        type: "object",
+        properties: {
+          filters: {
+            type: "array",
+            items: {
+              enum: [
+                "never-messaged",
+                "never-replied",
+                "silent",
+                "pending"
+              ]
+            },
+            minItems: 1
+          },
+          silentDays: {
+            type: "integer",
+            minimum: 1,
+            default: 90
+          }
+        },
+        required: [
+          "filters"
+        ]
+      },
+      confirm: "list",
+      scope: "assistant"
+    },
+    {
+      name: "nodes-list",
+      usage: "/nodes list [filter\u2026]",
+      summary: "Service peers \u2014 network nodes and agents \u2014 with their kind and role. The same filters as /friends list.",
+      params: {
+        type: "object",
+        properties: {
+          filters: {
+            type: "array",
+            items: {
+              enum: [
+                "never-messaged",
+                "never-replied",
+                "silent",
+                "pending"
+              ]
+            },
+            description: "Several filters are OR'd together."
+          },
+          silentDays: {
+            type: "integer",
+            minimum: 1,
+            default: 90
+          }
+        },
+        required: []
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "nodes-remove",
+      usage: "/nodes remove <filter\u2026>",
+      summary: "The same table with a tick per row and a Remove button, over service peers only.",
+      params: {
+        type: "object",
+        properties: {
+          filters: {
+            type: "array",
+            items: {
+              enum: [
+                "never-messaged",
+                "never-replied",
+                "silent",
+                "pending"
+              ]
+            },
+            description: "Several filters are OR'd together.",
+            minItems: 1
+          },
+          silentDays: {
+            type: "integer",
+            minimum: 1,
+            default: 90
+          }
+        },
+        required: [
+          "filters"
+        ]
+      },
+      confirm: "list",
+      scope: "assistant"
+    },
+    {
+      name: "nodes-refresh",
+      usage: "/nodes refresh",
+      summary: "Look for friends that are provably service peers (the shipped exit table, this machine's dora roster) and offer to reclassify them. Nothing changes until you tick and confirm.",
+      params: {
+        type: "object",
+        properties: {},
+        required: []
+      },
+      confirm: "list",
+      scope: "assistant"
+    },
+    {
+      name: "find",
+      usage: "/find <text>",
+      summary: "Friends whose name, alias, description or ens name contains the text.",
+      params: {
+        type: "object",
+        properties: {
+          text: {
+            type: "string",
+            minLength: 1
+          }
+        },
+        required: [
+          "text"
+        ]
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "rename",
+      usage: "/rename <friend> <new name>",
+      summary: "Set a friend's alias \u2014 what you see them as, on this device.",
+      params: {
+        type: "object",
+        properties: {
+          friend: {
+            type: "string",
+            description: "Matches name, alias or userid prefix. Ambiguous = nothing happens, the candidates are listed."
+          },
+          alias: {
+            type: "string",
+            minLength: 1
+          }
+        },
+        required: [
+          "friend",
+          "alias"
+        ]
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "mute",
+      usage: "/mute <friend>",
+      summary: "Stop alerts from one conversation.",
+      params: {
+        type: "object",
+        properties: {
+          friend: {
+            type: "string"
+          }
+        },
+        required: [
+          "friend"
+        ]
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "unmute",
+      usage: "/unmute <friend>",
+      summary: "Alerts from that conversation again.",
+      params: {
+        type: "object",
+        properties: {
+          friend: {
+            type: "string"
+          }
+        },
+        required: [
+          "friend"
+        ]
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "sound",
+      usage: "/sound on|off",
+      summary: "Sound on a new message.",
+      params: {
+        type: "object",
+        properties: {
+          on: {
+            type: "boolean"
+          }
+        },
+        required: [
+          "on"
+        ]
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "flash",
+      usage: "/flash on|off",
+      summary: "Flash the window on a new message.",
+      params: {
+        type: "object",
+        properties: {
+          on: {
+            type: "boolean"
+          }
+        },
+        required: [
+          "on"
+        ]
+      },
+      confirm: "none",
+      scope: "assistant"
+    },
+    {
+      name: "status",
+      usage: "/status",
+      summary: "Friends and service peers counted separately, pending requests, how far back the history on this device goes, app version.",
+      params: {
+        type: "object",
+        properties: {},
+        required: []
+      },
+      confirm: "none",
+      scope: "assistant"
+    }
+  ],
+  filters: [
+    {
+      name: "never-messaged",
+      usage: "never-messaged",
+      summary: "No message either way.",
+      guarded: true
+    },
+    {
+      name: "never-replied",
+      usage: "never-replied",
+      summary: "You wrote at least once, they never did.",
+      guarded: true
+    },
+    {
+      name: "silent",
+      usage: "silent [days]",
+      summary: "Nothing from them for this many days (default 90).",
+      guarded: true,
+      arg: {
+        name: "days",
+        type: "integer",
+        default: 90,
+        minimum: 1
+      }
+    },
+    {
+      name: "pending",
+      usage: "pending",
+      summary: "A request you sent that was never accepted.",
+      guarded: false
+    }
+  ],
+  dropped: [
+    {
+      name: "never-called",
+      reason: "The message store holds no call records on any platform, so the predicate cannot be evaluated. /api/assistant/friends returns lastCallTs: null and the filter is not offered."
+    }
+  ],
+  guard: {
+    recentDays: 14,
+    applies: "Filters marked guarded never match a friend accepted (or, with no acceptance stamp, requested) less than recentDays ago; the result says how many were skipped."
+  },
+  servicePeers: {
+    file: "service-peers.json",
+    loader: "loadServicePeers()",
+    rule: "A peer is a service peer if and only if its userid is in this list. The Assistant never infers it from a name or from having no messages. /friends excludes them entirely; /nodes is only them.",
+    later: "A dora / ENS / bridge / directory service returns the same shape; the bundled file is v1.",
+    refresh: "/nodes refresh asks GET /api/assistant/service-candidates for evidence-backed candidates and writes the ticked ones to this machine's overlay (POST /api/assistant/service-peers, stored at <configDir>/service-peers-local.json). The shipped list is never edited at runtime; the overlay wins on the same userid."
+  }
+};
+
+// src/assistant/service-peers.json
+var service_peers_default = {
+  version: 1,
+  source: "static",
+  updated: "2026-09-24",
+  note: "Service providers and network nodes: peers that are infrastructure or agents, not people. The Assistant manages them with /nodes, never /friends. Later this list comes from a service (dora / ENS / bridge / directory) in this same shape; until then it ships inside the app.",
+  peers: [
+    {
+      userid: "7xmbDbouSYEA5mbAgWxV2BTwjc59XGcVPqXSZx6VibUd",
+      name: "lens",
+      kind: "node",
+      role: "bridge + web host"
+    },
+    {
+      userid: "4uNnLnAQHVJ7td657MDaz4UnEuhnTW9sRAPSVeAEEQe4",
+      name: "tokyo",
+      kind: "node",
+      role: "exit + relay + dora + meeting"
+    },
+    {
+      userid: "5Aj6uQMd1cNRb9cGT4AwHCN4RdVZjfaGLtgKGhdP1LzN",
+      name: "cn",
+      kind: "node",
+      role: "exit"
+    },
+    {
+      userid: "DZN2L9RV1YkHjqGHMTA6juZhskKA65AD2RyPt4umZVc7",
+      name: "callpass",
+      kind: "node",
+      role: "server"
+    },
+    {
+      userid: "BcGvk2h5XCxBZWJrYwzKpZ8GbxaZRoakEzt2pQpathyA",
+      name: "gojipower",
+      kind: "node",
+      role: "server"
+    },
+    {
+      userid: "BeMbuKf1poh3U4rjw3eeUAKZsbN2qBSjVZdPSvehmHsw",
+      name: "snoopy",
+      kind: "node",
+      role: "dora + meeting + openclaw host"
+    },
+    {
+      userid: "CzwUZv6LfiGM7EXd9vXr6DutG8ASkA3TnNbqQzjKRJN5",
+      name: "GFAX",
+      kind: "node",
+      role: "server"
+    },
+    {
+      userid: "5SxEBHAx49Hknq1VzrA1HDtZHjW31vetX3iMEi4P6pK3",
+      name: "gfax118",
+      kind: "node",
+      role: "server"
+    },
+    {
+      userid: "72a4A7awtn6BqZnBt3eNhZH9MdYXRkM6Ht5HG2sqoiKR",
+      name: "nv4090-wsl",
+      kind: "node",
+      role: "GPU node"
+    },
+    {
+      userid: "6riqxxw18vjwXZEEtFUxbgNBMMe1dcv2kVHqVRQdihjE",
+      name: "node-3145",
+      kind: "node",
+      role: "GPU node (4090w)"
+    },
+    {
+      userid: "6D1PLSVqbSpcxnDMAd8ZXLWycYveeP2hU4g3igDQEqA7",
+      name: "node-5123",
+      kind: "node",
+      role: "node"
+    },
+    {
+      userid: "5EU9Ee3Vai1XwTr4pGaJFt4wmNVPUoYnJsdBM9LwNhrJ",
+      name: "node-2998",
+      kind: "node",
+      role: "node"
+    },
+    {
+      userid: "GujioyKQRucQgw8mwMPNWtYTdNdrooCuFq3R1D4RqjCW",
+      name: "beagle-help",
+      kind: "agent",
+      role: "product support"
+    },
+    {
+      userid: "FhbohSLrj5UjdyFKCEYNeEWAPq3QD9hRg6hsso5ipag2",
+      name: "help.beagles.eth",
+      kind: "agent",
+      role: "bridge agent"
+    },
+    {
+      userid: "9EaFGWuXH2UfREzYMkPPitzjoH6E8tvey4JvqTKtHFJh",
+      name: "openclaw",
+      kind: "agent",
+      role: "OpenClaw agent"
+    },
+    {
+      userid: "6z2o8ojPVjFGRzcffUdd5btvDYAt4tLuwJ8j1jvMBU8p",
+      name: "ClawAlan",
+      kind: "agent",
+      role: "OpenClaw agent on snoopy"
+    },
+    {
+      userid: "G7s3YjVfNLTY5pKBd83qQLAdzDddS7ZstsfrUySwK2Cb",
+      name: "interview",
+      kind: "agent",
+      role: "interview"
+    },
+    {
+      userid: "6jbXjrUWJ4zYvG8BDLnu8KVpoL7rhsdHYSwWER6WTfdt",
+      name: "interview editor",
+      kind: "agent",
+      role: "interview"
+    },
+    {
+      userid: "8BGemh6uqmh4X7KpnPVMeMSU8hZwAc6ZDo4MBRMFrq2L",
+      name: "readyplayer",
+      kind: "agent",
+      role: "readyplayer"
+    },
+    {
+      userid: "Ev1XmWRwtjQf8n33wgTwEhzXnYEyfqTyanehuDE6nczF",
+      name: "ReadyPlayer membership manager",
+      kind: "agent",
+      role: "readyplayer"
+    },
+    {
+      userid: "7xLPH2kjk7Nn8GrsAt7TYwa6b1WMPLkC2XRx7BzhiXYT",
+      name: "ai-btc-trader",
+      kind: "agent",
+      role: "btc signals (245)"
+    }
+  ]
+};
+
+// src/assistant/filters.js
+var ASSISTANT_ID = "__assistant__";
+var DAY_MS = 864e5;
+var RECENT_DAYS = 14;
+var DEFAULT_SILENT_DAYS = 90;
+var FILTER_NAMES = ["never-messaged", "never-replied", "silent", "pending"];
+var GUARDED = /* @__PURE__ */ new Set(["never-messaged", "never-replied", "silent"]);
+function parseCommand(line) {
+  const text = String(line != null ? line : "").trim();
+  if (!text.startsWith("/"))
+    return null;
+  const parts = text.slice(1).split(/\s+/).filter(Boolean);
+  if (!parts.length)
+    return null;
+  const head = parts[0].toLowerCase();
+  if (head === "friends" || head === "nodes") {
+    const sub = (parts[1] || "").toLowerCase();
+    if (sub === "list" || sub === "remove")
+      return { ok: true, name: `${head}-${sub}`, args: parts.slice(2) };
+    if (head === "nodes" && sub === "refresh")
+      return { ok: true, name: "nodes-refresh", args: parts.slice(2) };
+    return { ok: false, name: head, args: parts.slice(1), error: `${head}-subcommand` };
+  }
+  return { ok: true, name: head, args: parts.slice(1) };
+}
+function parseFilters(args) {
+  const filters = [];
+  const unknown = [];
+  let silentDays = DEFAULT_SILENT_DAYS;
+  const words = (args != null ? args : []).map((a) => String(a).toLowerCase());
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i];
+    if (!FILTER_NAMES.includes(w)) {
+      unknown.push(words[i]);
+      continue;
+    }
+    if (w === "silent") {
+      const n = Number(words[i + 1]);
+      if (Number.isInteger(n) && n > 0) {
+        silentDays = n;
+        i++;
+      }
+    }
+    if (!filters.includes(w))
+      filters.push(w);
+  }
+  return { filters, silentDays, unknown };
+}
+function servicePeerMap(list) {
+  const map = /* @__PURE__ */ new Map();
+  const peers = list && list.peers || [];
+  for (const p of peers) {
+    if (p && typeof p.userid === "string" && p.userid) {
+      map.set(p.userid, { kind: p.kind === "agent" ? "agent" : "node", role: p.role || "", name: p.name || "" });
+    }
+  }
+  return map;
+}
+function mergeServicePeers(bundled, local) {
+  const byId = /* @__PURE__ */ new Map();
+  for (const p of bundled && bundled.peers || [])
+    if (p && p.userid)
+      byId.set(p.userid, { ...p, source: "app" });
+  for (const p of local && local.peers || [])
+    if (p && p.userid)
+      byId.set(p.userid, { ...p, source: "local" });
+  return { version: 1, source: "merged", peers: [...byId.values()] };
+}
+function newCandidates(candidates, svcMap) {
+  return (candidates != null ? candidates : []).filter((c) => c && c.userid && !(svcMap && svcMap.has(c.userid)));
+}
+function partitionPeers(friends, svcMap) {
+  const people = [];
+  const nodes = [];
+  for (const f of friends != null ? friends : []) {
+    if (!f)
+      continue;
+    const svc = svcMap && svcMap.get(f.userid);
+    if (svc)
+      nodes.push(Object.assign({}, f, { kind: svc.kind, role: svc.role, service: true }));
+    else
+      people.push(f);
+  }
+  return { people, nodes };
+}
+var acceptedOrRequestedAt = (f) => f.acceptedAt || f.requestedAt || 0;
+function isRecent(friend, now, recentDays = RECENT_DAYS) {
+  const at = acceptedOrRequestedAt(friend);
+  return at > 0 && now - at < recentDays * DAY_MS;
+}
+function matchesFilter(friend, filter, { now, silentDays = DEFAULT_SILENT_DAYS } = {}) {
+  const inCount = friend.inboundCount || 0;
+  const outCount = friend.outboundCount || 0;
+  switch (filter) {
+    case "never-messaged":
+      return inCount === 0 && outCount === 0;
+    case "never-replied":
+      return outCount > 0 && inCount === 0;
+    case "silent":
+      return !friend.lastInboundTs || now - friend.lastInboundTs > silentDays * DAY_MS;
+    case "pending":
+      return friend.pending === true;
+    default:
+      return false;
+  }
+}
+function selectFriends(friends, filters, { now = Date.now(), silentDays = DEFAULT_SILENT_DAYS, recentDays = RECENT_DAYS } = {}) {
+  const pool = (friends != null ? friends : []).filter((f) => f && f.userid !== ASSISTANT_ID && !f.pinned);
+  if (!filters || !filters.length)
+    return { matched: pool.slice(), skippedRecent: [] };
+  const matched = [];
+  const skippedRecent = [];
+  for (const f of pool) {
+    let hit = false;
+    let guardedOnly = false;
+    for (const filter of filters) {
+      if (!matchesFilter(f, filter, { now, silentDays }))
+        continue;
+      if (GUARDED.has(filter) && isRecent(f, now, recentDays)) {
+        guardedOnly = true;
+        continue;
+      }
+      hit = true;
+      break;
+    }
+    if (hit)
+      matched.push(f);
+    else if (guardedOnly)
+      skippedRecent.push(f);
+  }
+  return { matched, skippedRecent };
+}
+function findFriends(friends, text) {
+  const q = String(text != null ? text : "").trim().toLowerCase();
+  if (!q)
+    return [];
+  return (friends != null ? friends : []).filter((f) => f && f.userid !== ASSISTANT_ID).filter((f) => [f.name, f.alias, f.description, f.ens].some((v) => typeof v === "string" && v.toLowerCase().includes(q)));
+}
+function resolveFriend(friends, token) {
+  const q = String(token != null ? token : "").trim().toLowerCase();
+  if (!q)
+    return { match: null, candidates: [] };
+  const pool = (friends != null ? friends : []).filter((f) => f && f.userid !== ASSISTANT_ID);
+  const exact = pool.filter((f) => [f.name, f.alias].some((v) => typeof v === "string" && v.toLowerCase() === q));
+  if (exact.length === 1)
+    return { match: exact[0], candidates: exact };
+  if (exact.length > 1)
+    return { match: null, candidates: exact };
+  const partial = pool.filter((f) => [f.name, f.alias].some((v) => typeof v === "string" && v.toLowerCase().startsWith(q)) || typeof f.userid === "string" && f.userid.toLowerCase().startsWith(q));
+  if (partial.length === 1)
+    return { match: partial[0], candidates: partial };
+  return { match: null, candidates: partial };
+}
+
+// src/assistant.jsx
+async function loadServicePeers() {
+  try {
+    const local = await fetch("/api/assistant/service-peers").then((r) => r.json());
+    return mergeServicePeers(service_peers_default, local);
+  } catch (e) {
+    return service_peers_default;
+  }
+}
+var ASSISTANT_TS_KEY = "beagle.assistant.lastTs";
+function loadAssistantTs() {
+  try {
+    return Number(localStorage.getItem(ASSISTANT_TS_KEY)) || 0;
+  } catch (e) {
+    return 0;
+  }
+}
+function saveAssistantTs(ts) {
+  try {
+    localStorage.setItem(ASSISTANT_TS_KEY, String(ts));
+  } catch (e) {
+  }
+}
+var ASSISTANT_PEER = {
+  id: ASSISTANT_ID,
+  userId: ASSISTANT_ID,
+  alias: "Beagle Assistant",
+  address: "",
+  // Not a peer, so not "online": there is no session, nothing to be present
+  // on, and no dot is drawn for an `app` row anywhere in the UI.
+  online: false,
+  app: true,
+  agent: false,
+  pending: false,
+  via: null,
+  ping: null,
+  ip: "",
+  unread: 0,
+  lastMsg: "",
+  lastTime: "",
+  lastTs: 0,
+  lastDir: null,
+  acceptedAt: 0,
+  requestedAt: 0,
+  wire: "163",
+  avatarUrl: null,
+  punkId: null
+};
+var fmtDate = (ts, lang) => !ts ? lang === "zh" ? "\u4ECE\u672A" : "never" : new Date(ts).toLocaleDateString(lang === "zh" ? "zh-CN" : "en-GB", { year: "numeric", month: "short", day: "numeric" });
+var fmtAgo = (ts, now, lang) => {
+  if (!ts)
+    return lang === "zh" ? "\u4ECE\u672A" : "never";
+  const days = Math.floor((now - ts) / 864e5);
+  if (days <= 0)
+    return lang === "zh" ? "\u4ECA\u5929" : "today";
+  if (days === 1)
+    return lang === "zh" ? "1 \u5929\u524D" : "1 day ago";
+  return lang === "zh" ? `${days} \u5929\u524D` : `${days} days ago`;
+};
+var nameOf = (f) => f.alias || f.name || f.userid;
+function sinceLine(historySince, lang) {
+  if (!historySince)
+    return lang === "zh" ? "*\u57FA\u4E8E\u672C\u8BBE\u5907\u4E0A\u7684\u6D88\u606F\uFF08\u672C\u673A\u6682\u65E0\u5386\u53F2\u8BB0\u5F55\uFF09*" : "*based on messages on this device (no history here yet)*";
+  return lang === "zh" ? `*\u57FA\u4E8E\u672C\u8BBE\u5907\u81EA ${fmtDate(historySince, lang)} \u8D77\u7684\u6D88\u606F*` : `*based on messages on this device since ${fmtDate(historySince, lang)}*`;
+}
+function friendTable(rows, now, lang) {
+  return rows.map((f) => {
+    const what = f.service ? ` \`${f.kind}${f.role ? " \xB7 " + f.role : ""}\`` : "";
+    return lang === "zh" ? `- **${nameOf(f)}**${what} \u2014 \u6700\u540E\u6536\u5230 ${fmtAgo(f.lastInboundTs, now, lang)} \xB7 \u6536 ${f.inboundCount || 0} / \u53D1 ${f.outboundCount || 0}` : `- **${nameOf(f)}**${what} \u2014 last heard ${fmtAgo(f.lastInboundTs, now, lang)} \xB7 in ${f.inboundCount || 0} / out ${f.outboundCount || 0}`;
+  }).join("\n");
+}
+function helpText(lang) {
+  const intro = lang === "zh" ? "**Beagle \u52A9\u624B** \u2014 \u53EA\u5728\u672C\u673A\u8FD0\u884C\uFF0C\u4E0D\u4F1A\u628A\u4EFB\u4F55\u5185\u5BB9\u53D1\u5230\u7F51\u7EDC\u4E0A\u3002\n\n\u53EF\u7528\u547D\u4EE4\uFF1A" : "**Beagle Assistant** \u2014 runs on this machine only; nothing here is sent over the network.\n\nCommands:";
+  const cmds = actions_default.actions.map((a) => `- \`${a.usage}\` \u2014 ${a.summary}`).join("\n");
+  const filters = actions_default.filters.map((f) => `- \`${f.usage}\` \u2014 ${f.summary}`).join("\n");
+  const tail = lang === "zh" ? `\u7B5B\u9009\u6761\u4EF6\uFF08\u53EF\u7EC4\u5408\uFF0C\u53D6\u5E76\u96C6\uFF09\uFF1A
+${filters}
+
+\`/rename\`\u3001\`/mute\`\u3001\`/find\` \u5BF9\u597D\u53CB\u548C\u670D\u52A1\u8282\u70B9\u90FD\u9002\u7528\uFF1B\u53EA\u6709\u5217\u8868\u548C\u5220\u9664\u5206\u6210\u4E24\u8FB9\u3002
+\u6700\u8FD1 ${RECENT_DAYS} \u5929\u5185\u6DFB\u52A0\u7684\u597D\u53CB\u4E0D\u4F1A\u88AB"\u4ECE\u672A/\u6C89\u9ED8"\u7C7B\u7B5B\u9009\u9009\u4E2D\uFF0C\u5E76\u4F1A\u5217\u51FA\u88AB\u8DF3\u8FC7\u7684\u540D\u5B57\u3002\u5220\u9664\u6C38\u8FDC\u9700\u8981\u5148\u786E\u8BA4\uFF0C\u53D6\u6D88\u52FE\u9009\u5373\u53EF\u4FDD\u7559\u3002` : `Filters (combine them; a friend matching any one is listed):
+${filters}
+
+\`/rename\`, \`/mute\` and \`/find\` work on friends and service peers alike \u2014 only listing and removing are split in two.
+Friends added in the last ${RECENT_DAYS} days are never matched by the "never/silent" filters, and the ones held back are named. Removal always asks first: untick anyone you want to keep.`;
+  return `${intro}
+${cmds}
+
+${tail}`;
+}
+var SKIP_NAMES_MAX = 10;
+var seq = 0;
+var asMsg = (from, text, extra) => Object.assign({
+  id: `as-${Date.now()}-${seq++}`,
+  from,
+  time: (/* @__PURE__ */ new Date()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+  text
+}, extra);
+function AssistantPanel({ m, T, lang, onRemove, onAdopt }) {
+  const rows = m.assistant.rows || [];
+  const adopt = m.assistant.kind === "adopt";
+  const [sel, setSel] = React.useState(() => new Set(rows.map((r) => r.userid)));
+  const [busy, setBusy] = React.useState(false);
+  const [done, setDone] = React.useState(null);
+  if (!rows.length)
+    return null;
+  const toggle = (id) => setSel((s) => {
+    const n = new Set(s);
+    n.has(id) ? n.delete(id) : n.add(id);
+    return n;
+  });
+  const label = adopt ? lang === "zh" ? `\u52A0\u5165 ${sel.size} \u4E2A` : `Add ${sel.size} as ${sel.size === 1 ? "a node" : "nodes"}` : lang === "zh" ? `\u5220\u9664 ${sel.size} \u4F4D` : `Remove ${sel.size}`;
+  return /* @__PURE__ */ React.createElement("div", { style: { marginTop: 8, border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" } }, rows.map((r) => /* @__PURE__ */ React.createElement("label", { key: r.userid, style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "7px 10px",
+    borderBottom: "1px solid var(--line)",
+    fontSize: 13,
+    cursor: done ? "default" : "pointer"
+  } }, /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "checkbox",
+      checked: sel.has(r.userid),
+      disabled: !!done || busy,
+      onChange: () => toggle(r.userid)
+    }
+  ), /* @__PURE__ */ React.createElement("span", { style: { flex: 1 } }, nameOf(r), r.why && /* @__PURE__ */ React.createElement("span", { style: { color: "var(--faint)", fontSize: 11.5 } }, ` \u2014 ${r.why}`)), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)" } }, r.userid.slice(0, 8), "\u2026"))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "8px 10px" } }, done ? /* @__PURE__ */ React.createElement("span", { style: { fontSize: 12.5, color: "var(--faint)" } }, done) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Btn, { size: "sm", tone: adopt ? "solid" : "danger", disabled: busy || !sel.size, onClick: () => {
+    setBusy(true);
+    const picked = rows.filter((r) => sel.has(r.userid));
+    const run = adopt ? onAdopt(picked) : onRemove([...sel]);
+    run.then((r) => {
+      setDone(adopt ? lang === "zh" ? `\u5DF2\u52A0\u5165 ${r.added} \u4E2A\u670D\u52A1\u8282\u70B9` : `Added ${r.added} as service peers` : lang === "zh" ? `\u5DF2\u5220\u9664 ${r.removed} \u4F4D${r.failed ? `\uFF0C${r.failed} \u4F4D\u5931\u8D25` : ""}` : `Removed ${r.removed}${r.failed ? `, ${r.failed} failed` : ""}`);
+    }).finally(() => setBusy(false));
+  } }, busy ? T.working || "Working\u2026" : label), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 12, color: "var(--faint)" } }, adopt ? lang === "zh" ? "\u53D6\u6D88\u52FE\u9009\u5373\u4FDD\u6301\u4E3A\u597D\u53CB" : "Untick any you want to keep as a friend" : lang === "zh" ? "\u53D6\u6D88\u52FE\u9009\u53EF\u4FDD\u7559" : "Untick anyone you want to keep"))));
+}
+function useAssistant({ lang, T, muted, onToggleMute, sound, flash, setAlert, onReloadFriends, onActivity }) {
+  const [thread, setThread] = React.useState(() => [{ day: (/* @__PURE__ */ new Date()).toLocaleDateString() }, asMsg("them", helpText(lang))]);
+  const bump = React.useCallback(() => {
+    const ts = Date.now();
+    saveAssistantTs(ts);
+    if (onActivity)
+      onActivity(ts);
+  }, [onActivity]);
+  const append = React.useCallback((...ms) => {
+    bump();
+    setThread((t) => t.concat(ms));
+  }, [bump]);
+  React.useEffect(() => {
+    setThread((t) => t.length === 2 ? [t[0], asMsg("them", helpText(lang))] : t);
+  }, [lang]);
+  const fetchFriends = async () => {
+    const r = await fetch("/api/assistant/friends").then((x) => x.json());
+    const svcMap = servicePeerMap(await loadServicePeers());
+    const { people, nodes } = partitionPeers(r.friends || [], svcMap);
+    return {
+      friends: people,
+      nodes,
+      all: r.friends || [],
+      svcMap,
+      historySince: r.historySince || null,
+      now: r.now || Date.now(),
+      ver: r.beagleVer || ""
+    };
+  };
+  const skipLine = (skipped) => {
+    if (!skipped.length)
+      return "";
+    const shown = skipped.slice(0, SKIP_NAMES_MAX).map(nameOf);
+    const more = skipped.length - shown.length;
+    const names = shown.join(", ") + (more > 0 ? lang === "zh" ? ` \u7B49 ${more} \u4F4D` : `, and ${more} more` : "");
+    return lang === "zh" ? `
+
+*\u8DF3\u8FC7\u4E86 ${skipped.length} \u4F4D\u6700\u8FD1 ${RECENT_DAYS} \u5929\u5185\u6DFB\u52A0\u7684\u597D\u53CB\uFF1A${names}\u3002*` : `
+
+*Skipped ${skipped.length} added in the last ${RECENT_DAYS} days: ${names}.*`;
+  };
+  const listReply = (rows, skipped, data, title) => {
+    if (!rows.length) {
+      return `${title}
+
+${lang === "zh" ? "\u6CA1\u6709\u7B26\u5408\u7684\u597D\u53CB\u3002" : "No friends match."}${skipLine(skipped)}
+
+${sinceLine(data.historySince, lang)}`;
+    }
+    return `${title}
+
+${friendTable(rows, data.now, lang)}${skipLine(skipped)}
+
+${sinceLine(data.historySince, lang)}`;
+  };
+  const ambiguous = (cands) => lang === "zh" ? `\u6709 ${cands.length} \u4F4D\u597D\u53CB\u7B26\u5408\uFF0C\u8BF7\u8BF4\u5F97\u66F4\u5177\u4F53\u4E00\u4E9B\uFF1A
+${cands.map((c) => `- ${nameOf(c)}`).join("\n")}` : `That matches ${cands.length} friends \u2014 be more specific:
+${cands.map((c) => `- ${nameOf(c)}`).join("\n")}`;
+  const notFound = (tok) => lang === "zh" ? `\u6CA1\u6709\u627E\u5230\u597D\u53CB "${tok}"\u3002` : `No friend matches "${tok}".`;
+  const handle = React.useCallback(async (text) => {
+    append(asMsg("me", text, { status: "read" }));
+    const cmd = parseCommand(text);
+    if (!cmd) {
+      return append(asMsg("them", lang === "zh" ? "\u6211\u53EA\u8BA4\u8BC6\u4EE5 `/` \u5F00\u5934\u7684\u547D\u4EE4\u3002\u8F93\u5165 `/help` \u770B\u770B\u80FD\u505A\u4EC0\u4E48\u3002" : "I only understand commands starting with `/`. Type `/help` to see them."));
+    }
+    if (cmd.ok === false) {
+      return append(asMsg("them", lang === "zh" ? `\`/${cmd.name}\` \u9700\u8981 \`list\` \u6216 \`remove\`\uFF0C\u4F8B\u5982 \`/${cmd.name} list silent 90\`\u3002` : `\`/${cmd.name}\` needs \`list\` or \`remove\`, for example \`/${cmd.name} list silent 90\`.`));
+    }
+    try {
+      switch (cmd.name) {
+        case "help":
+          return append(asMsg("them", helpText(lang)));
+        case "status": {
+          const d = await fetchFriends();
+          const pending = d.all.filter((f) => f.pending).length;
+          const nodeCount = d.nodes.filter((n) => n.kind === "node").length;
+          const agentCount = d.nodes.length - nodeCount;
+          return append(asMsg("them", lang === "zh" ? `**\u72B6\u6001**
+
+- \u597D\u53CB\uFF1A${d.friends.length}
+- \u670D\u52A1\u8282\u70B9\uFF1A${d.nodes.length}\uFF08\u8282\u70B9 ${nodeCount} \xB7 \u667A\u80FD\u4F53 ${agentCount}\uFF09\uFF0C\u7528 \`/nodes list\` \u67E5\u770B
+- \u5F85\u5BF9\u65B9\u63A5\u53D7\uFF1A${pending}
+- \u672C\u673A\u5386\u53F2\u8D77\u81EA\uFF1A${fmtDate(d.historySince, lang)}
+- \u7248\u672C\uFF1A${d.ver}` : `**Status**
+
+- Friends: ${d.friends.length}
+- Service peers: ${d.nodes.length} (${nodeCount} node${nodeCount === 1 ? "" : "s"} \xB7 ${agentCount} agent${agentCount === 1 ? "" : "s"}) \u2014 see \`/nodes list\`
+- Waiting to be accepted: ${pending}
+- History on this device since: ${fmtDate(d.historySince, lang)}
+- Version: ${d.ver}`));
+        }
+        case "nodes-refresh": {
+          const d = await fetchFriends();
+          const r = await fetch("/api/assistant/service-candidates").then((x) => x.json());
+          const fresh = newCandidates(r.candidates || [], d.svcMap);
+          const src = r.sources || {};
+          const where = lang === "zh" ? `\u67E5\u8BE2\u6765\u6E90\uFF1A\u5185\u7F6E\u51FA\u53E3\u8868\uFF08${src.exits || 0} \u6761\uFF09${src.dora == null ? "\uFF0C\u672C\u673A\u4E0D\u662F dora" : `\uFF0C\u672C\u673A dora \u540D\u518C\uFF08${src.dora} \u6761\uFF09`}` : `Looked at: the shipped exit table (${src.exits || 0})${src.dora == null ? ", and this machine is not a dora" : `, and this machine's dora roster (${src.dora})`}`;
+          if (!fresh.length) {
+            return append(asMsg("them", lang === "zh" ? `**\u6CA1\u6709\u65B0\u7684\u670D\u52A1\u8282\u70B9**
+
+\u73B0\u6709 ${d.nodes.length} \u4E2A\u5DF2\u8BC6\u522B\u3002${where}\u3002
+
+*\u53EA\u91C7\u7528\u8BC1\u636E\uFF0C\u4E0D\u9760\u540D\u5B57\u731C\u6D4B\u3002*` : `**Nothing new**
+
+${d.nodes.length} service peers are already classified. ${where}.
+
+*Evidence only \u2014 names are never guessed from.*`));
+          }
+          const title = lang === "zh" ? `**\u53D1\u73B0 ${fresh.length} \u4E2A\u53EF\u4EE5\u6807\u4E3A\u670D\u52A1\u8282\u70B9\u7684\u597D\u53CB** \u2014 \u52FE\u9009\u540E\u624D\u4F1A\u751F\u6548
+
+${where}\u3002` : `**${fresh.length === 1 ? "1 friend looks" : `${fresh.length} friends look`} like service peers** \u2014 nothing changes until you tick and confirm
+
+${where}.`;
+          const lines = fresh.map((c) => `- **${c.name}** \`${c.kind}${c.role ? " \xB7 " + c.role : ""}\` \u2014 ${c.why}`).join("\n");
+          return append(asMsg("them", `${title}
+
+${lines}`, { assistant: { kind: "adopt", rows: fresh } }));
+        }
+        case "nodes-list":
+        case "friends-list": {
+          const nodesMode = cmd.name === "nodes-list";
+          const { filters, silentDays, unknown } = parseFilters(cmd.args);
+          if (unknown.length) {
+            return append(asMsg("them", lang === "zh" ? `\u4E0D\u8BA4\u8BC6\u7684\u7B5B\u9009\u6761\u4EF6\uFF1A${unknown.join(", ")}\u3002\u53EF\u7528\uFF1A${actions_default.filters.map((f) => f.name).join(", ")}\u3002` : `I don't know the filter${unknown.length > 1 ? "s" : ""} ${unknown.join(", ")}. Try: ${actions_default.filters.map((f) => f.name).join(", ")}.`));
+          }
+          const d = await fetchFriends();
+          const pool = nodesMode ? d.nodes : d.friends;
+          const { matched, skippedRecent } = selectFriends(pool, filters, { now: d.now, silentDays });
+          const all = nodesMode ? lang === "zh" ? `**\u5168\u90E8\u670D\u52A1\u8282\u70B9** \u2014 ${matched.length}` : `**All service peers** \u2014 ${matched.length}` : lang === "zh" ? `**\u5168\u90E8\u597D\u53CB** \u2014 ${matched.length}` : `**All friends** \u2014 ${matched.length}`;
+          const title = filters.length ? `**${nodesMode ? (lang === "zh" ? "\u670D\u52A1\u8282\u70B9" : "service peers") + ": " : ""}${filters.join(" + ")}**${filters.includes("silent") ? ` (${silentDays}d)` : ""} \u2014 ${matched.length}` : all;
+          return append(asMsg("them", listReply(matched, skippedRecent, d, title)));
+        }
+        case "nodes-remove":
+        case "friends-remove": {
+          const nodesMode = cmd.name === "nodes-remove";
+          const { filters, silentDays, unknown } = parseFilters(cmd.args);
+          if (unknown.length || !filters.length) {
+            return append(asMsg("them", lang === "zh" ? `\u5220\u9664\u9700\u8981\u7B5B\u9009\u6761\u4EF6\uFF0C\u4F8B\u5982 \`/friends remove never-messaged\`\u3002\u53EF\u7528\uFF1A${actions_default.filters.map((f) => f.name).join(", ")}\u3002` : `Removing needs a filter, for example \`/friends remove never-messaged\`. Available: ${actions_default.filters.map((f) => f.name).join(", ")}.`));
+          }
+          const d = await fetchFriends();
+          const { matched, skippedRecent } = selectFriends(nodesMode ? d.nodes : d.friends, filters, { now: d.now, silentDays });
+          const what = nodesMode ? lang === "zh" ? "\u4E2A\u670D\u52A1\u8282\u70B9" : `service peer${matched.length === 1 ? "" : "s"}` : lang === "zh" ? "\u4F4D\u597D\u53CB" : `friend${matched.length === 1 ? "" : "s"}`;
+          const title = lang === "zh" ? `**\u5C06\u8981\u5220\u9664 ${matched.length} ${what}** \u2014 \u8BF7\u5148\u6838\u5BF9\u8FD9\u4EFD\u540D\u5355` : `**${matched.length} ${what} to remove** \u2014 check the list first`;
+          return append(asMsg(
+            "them",
+            listReply(matched, skippedRecent, d, title),
+            matched.length ? { assistant: { kind: "confirm", rows: matched } } : void 0
+          ));
+        }
+        case "find": {
+          const q = cmd.args.join(" ");
+          if (!q)
+            return append(asMsg("them", lang === "zh" ? "\u7528\u6CD5\uFF1A`/find <\u6587\u5B57>`" : "Usage: `/find <text>`"));
+          const d = await fetchFriends();
+          const rows = findFriends(d.friends.concat(d.nodes), q);
+          const title = lang === "zh" ? `**"${q}"** \u2014 ${rows.length} \u4F4D` : `**"${q}"** \u2014 ${rows.length} found`;
+          return append(asMsg("them", listReply(rows, [], d, title)));
+        }
+        case "rename": {
+          const [tok, ...rest] = cmd.args;
+          const alias = rest.join(" ").trim();
+          if (!tok || !alias)
+            return append(asMsg("them", lang === "zh" ? "\u7528\u6CD5\uFF1A`/rename <\u597D\u53CB> <\u65B0\u540D\u5B57>`" : "Usage: `/rename <friend> <new name>`"));
+          const d = await fetchFriends();
+          const { match, candidates } = resolveFriend(d.friends.concat(d.nodes), tok);
+          if (!match)
+            return append(asMsg("them", candidates.length ? ambiguous(candidates) : notFound(tok)));
+          const was = nameOf(match);
+          await dkApi.alias(match.userid, alias);
+          if (onReloadFriends)
+            onReloadFriends();
+          return append(asMsg("them", lang === "zh" ? `\u5DF2\u628A "${was}" \u6539\u540D\u4E3A "${alias}"\u3002` : `Renamed "${was}" to "${alias}".`));
+        }
+        case "mute":
+        case "unmute": {
+          const tok = cmd.args.join(" ").trim();
+          if (!tok)
+            return append(asMsg("them", `${lang === "zh" ? "\u7528\u6CD5" : "Usage"}: \`/${cmd.name} <friend>\``));
+          const d = await fetchFriends();
+          const { match, candidates } = resolveFriend(d.friends.concat(d.nodes), tok);
+          if (!match)
+            return append(asMsg("them", candidates.length ? ambiguous(candidates) : notFound(tok)));
+          const isMuted = (muted || []).includes(match.userid);
+          const want = cmd.name === "mute";
+          if (isMuted !== want)
+            onToggleMute(match.userid);
+          return append(asMsg("them", want ? lang === "zh" ? `\u5DF2\u9759\u97F3 "${nameOf(match)}"\u3002` : `Muted "${nameOf(match)}".` : lang === "zh" ? `\u5DF2\u53D6\u6D88\u9759\u97F3 "${nameOf(match)}"\u3002` : `Unmuted "${nameOf(match)}".`));
+        }
+        case "sound":
+        case "flash": {
+          const word = (cmd.args[0] || "").toLowerCase();
+          if (word !== "on" && word !== "off") {
+            return append(asMsg("them", `${lang === "zh" ? "\u7528\u6CD5" : "Usage"}: \`/${cmd.name} on|off\``));
+          }
+          const on = word === "on";
+          setAlert(cmd.name, on);
+          const what = cmd.name === "sound" ? lang === "zh" ? "\u63D0\u793A\u97F3" : "Sound" : lang === "zh" ? "\u7A97\u53E3\u95EA\u70C1" : "Window flash";
+          return append(asMsg("them", lang === "zh" ? `${what}\u5DF2${on ? "\u5F00\u542F" : "\u5173\u95ED"}\u3002` : `${what} ${on ? "on" : "off"}.`));
+        }
+        default:
+          return append(asMsg("them", lang === "zh" ? `\u4E0D\u8BA4\u8BC6\u7684\u547D\u4EE4 \`/${cmd.name}\`\u3002\u8F93\u5165 \`/help\` \u770B\u770B\u53EF\u7528\u547D\u4EE4\u3002` : `I don't know \`/${cmd.name}\`. Type \`/help\` for the list.`));
+      }
+    } catch (e) {
+      return append(asMsg("them", lang === "zh" ? `\u51FA\u9519\u4E86\uFF1A${e && e.message || e}` : `That failed: ${e && e.message || e}`));
+    }
+  }, [append, lang, muted, onToggleMute, setAlert, onReloadFriends]);
+  const adoptServicePeers = React.useCallback(async (rows) => {
+    const add = rows.map((r) => ({ userid: r.userid, name: r.name, kind: r.kind, role: r.role }));
+    let added = 0;
+    try {
+      const r = await fetch("/api/assistant/service-peers", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ add })
+      }).then((x) => x.json());
+      added = r && r.ok ? add.length : 0;
+    } catch (e) {
+      added = 0;
+    }
+    if (onReloadFriends)
+      onReloadFriends();
+    append(asMsg("them", added ? lang === "zh" ? `\u5DF2\u628A ${added} \u4F4D\u6807\u4E3A\u670D\u52A1\u8282\u70B9\uFF0C\u5B83\u4EEC\u4E0D\u518D\u51FA\u73B0\u5728 \`/friends\` \u4E2D\u3002` : `${added} now count as service peers \u2014 they no longer appear in \`/friends\`.` : lang === "zh" ? "\u5199\u5165\u5931\u8D25\uFF0C\u6CA1\u6709\u4EFB\u4F55\u6539\u52A8\u3002" : "That write failed; nothing changed."));
+    return { added };
+  }, [append, lang, onReloadFriends]);
+  const removeFriends = React.useCallback(async (ids) => {
+    let removed = 0;
+    const failed = [];
+    for (const id of ids) {
+      try {
+        const r = await dkApi.remove(id);
+        if (r && r.ok === false)
+          failed.push(id);
+        else
+          removed++;
+      } catch (e) {
+        failed.push(id);
+      }
+    }
+    if (onReloadFriends)
+      onReloadFriends();
+    append(asMsg("them", failed.length ? lang === "zh" ? `\u5DF2\u5220\u9664 ${removed} \u4F4D\uFF0C${failed.length} \u4F4D\u5931\u8D25\u3002` : `Removed ${removed}, ${failed.length} failed.` : lang === "zh" ? `\u5DF2\u5220\u9664 ${removed} \u4F4D\u597D\u53CB\u3002` : `Removed ${removed} friend${removed === 1 ? "" : "s"}.`));
+    return { removed, failed: failed.length };
+  }, [append, lang, onReloadFriends]);
+  return { thread, handle, removeFriends, adoptServicePeers };
+}
+
+// src/request-avatar.js
+var REQUEST_AVATAR_HOST = "ens-gateway.beaglechat.workers.dev";
+var MAX_URL = 2048;
+function requestAvatarUrl(r) {
+  const u = r && r.avatarUrl;
+  if (typeof u !== "string" || !u || u.length > MAX_URL)
+    return null;
+  let parsed;
+  try {
+    parsed = new URL(u);
+  } catch {
+    return null;
+  }
+  if (parsed.protocol !== "https:" || parsed.host !== REQUEST_AVATAR_HOST)
+    return null;
+  if (parsed.username || parsed.password)
+    return null;
+  return parsed.href;
+}
+function requestPunkId(r) {
+  const p = r && r.punkId;
+  return typeof p === "number" && Number.isInteger(p) && p >= 0 ? p : null;
+}
+function requestAvatarSource(r, skipUrl = false) {
+  const url = skipUrl ? null : requestAvatarUrl(r);
+  if (url)
+    return { kind: "url", url };
+  const id = requestPunkId(r);
+  if (id != null)
+    return { kind: "punk", id };
+  return { kind: "ens" };
+}
+
+// src/request-greeting.js
+var REQUEST_TRANSPORTS = ["lan", "carrier", "direct", "relay", "express", "webrtc", "online", "offline", "tcp", "udp", "p2p"];
+function unquote(s) {
+  const m = /^"([\s\S]*)"$/.exec(s);
+  return m ? m[1] : s;
+}
+function requestGreeting(r) {
+  const hello = r && typeof r.hello === "string" ? r.hello.trim() : "";
+  const via = r && typeof r.via === "string" ? r.via.trim() : "";
+  const isTransport = !!via && REQUEST_TRANSPORTS.includes(via.toLowerCase());
+  const isName = !!via && !!r && typeof r.name === "string" && r.name.trim() === via;
+  return {
+    greeting: hello || (via && !isTransport && !isName ? unquote(via).trim() : ""),
+    transport: isTransport ? via : ""
+  };
+}
+var GREETING_KIND = "friend-request";
+function isGreetingItem(m) {
+  return !!m && m.kind === GREETING_KIND;
+}
+
+// src/file-send-queue.js
+var nextId = 1;
+function createFileSendQueue({ onChange, onFinish } = {}) {
+  let items = [];
+  let running = false;
+  const view = () => items.map(({ file, sender, ...rest }) => ({ ...rest }));
+  const emit = () => {
+    if (onChange)
+      onChange(view());
+  };
+  async function run() {
+    running = true;
+    for (; ; ) {
+      const it = items.find((x) => x.status === "waiting");
+      if (!it)
+        break;
+      it.status = "sending";
+      it.pct = 0;
+      emit();
+      const onProgress = (p) => {
+        if (!p || it.status !== "sending")
+          return;
+        if (p.pct != null)
+          it.pct = p.pct;
+        if (p.sent != null)
+          it.sent = p.sent;
+        if (p.size)
+          it.size = p.size;
+        if (p.kbps != null)
+          it.kbps = p.kbps;
+        emit();
+      };
+      try {
+        const r = await it.sender(it.file, onProgress);
+        if (r && r.ok === false) {
+          it.status = "failed";
+          it.error = r.error && String(r.error) || "send failed";
+        } else {
+          it.status = "sent";
+          it.pct = 100;
+        }
+      } catch (e) {
+        it.status = "failed";
+        it.error = e && e.message || String(e);
+      }
+      emit();
+    }
+    const done = view();
+    items = [];
+    running = false;
+    emit();
+    if (onFinish)
+      onFinish(done);
+  }
+  return {
+    /** Queue every file in `files` (a FileList or an array) for `sender`.
+     *  `meta` (`via`, `peerId`) rides on each item for the UI. The FileList
+     *  is copied now: the caller clears its <input> right after. */
+    add(files, sender, meta = {}) {
+      const list = Array.from(files || []).filter(Boolean);
+      if (!list.length || typeof sender !== "function")
+        return 0;
+      for (const file of list) {
+        items.push({
+          id: nextId++,
+          name: file.name || "file",
+          size: file.size || 0,
+          sent: 0,
+          pct: null,
+          kbps: null,
+          status: "waiting",
+          error: null,
+          via: meta.via,
+          peerId: meta.peerId,
+          file,
+          sender
+        });
+      }
+      emit();
+      if (!running)
+        run();
+      return list.length;
+    },
+    get running() {
+      return running;
+    },
+    get items() {
+      return view();
+    }
+  };
+}
+function failureReport(done, lang) {
+  const failed = (done || []).filter((x) => x.status === "failed");
+  if (!failed.length)
+    return null;
+  const zh = lang === "zh";
+  if (done.length === 1)
+    return (zh ? "\u53D1\u9001\u5931\u8D25: " : "Send failed: ") + (failed[0].error || "");
+  const head = zh ? `${done.length} \u4E2A\u6587\u4EF6\u4E2D\u6709 ${failed.length} \u4E2A\u6CA1\u6709\u53D1\u9001:` : `${failed.length} of ${done.length} files did not send:`;
+  return head + "\n\n" + failed.map((x) => `\u2022 ${x.name} \u2014 ${x.error || (zh ? "\u53D1\u9001\u5931\u8D25" : "send failed")}`).join("\n");
+}
+function successFlash(done, lang) {
+  const n = (done || []).length;
+  const zh = lang === "zh";
+  const rtc = n > 0 && done.every((x) => x.via === "webrtc");
+  if (n <= 1)
+    return rtc ? zh ? "WebRTC \u6587\u4EF6\u53D1\u9001\u5B8C\u6210" : "WebRTC file sent" : zh ? "\u6587\u4EF6\u5DF2\u63D0\u4EA4\u53D1\u9001" : "File send started";
+  return rtc ? zh ? `\u5DF2\u901A\u8FC7 WebRTC \u53D1\u9001 ${n} \u4E2A\u6587\u4EF6` : `${n} files sent via WebRTC` : zh ? `\u5DF2\u63D0\u4EA4\u53D1\u9001 ${n} \u4E2A\u6587\u4EF6` : `${n} file sends started`;
+}
+
+// src/wallet-proof.js
+var PROOF_KEY = { eth: "proof.eth", sol: "proof.sol" };
+var HEAD = "Beagle wallet binding";
+var LINE = "I bind this wallet to my Beagle identity.";
+var ADDRESS_RE = { eth: /^0x[0-9a-fA-F]{40}$/, sol: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/ };
+var USERID_RE = /^[1-9A-HJ-NP-Za-km-z]{32,48}$/;
+var ISSUED_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
+function isWalletAddress(chain, address) {
+  const re = ADDRESS_RE[chain];
+  return !!re && typeof address === "string" && re.test(address);
+}
+function proofTime(date = /* @__PURE__ */ new Date()) {
+  return new Date(Math.floor(date.getTime() / 1e3) * 1e3).toISOString().replace(".000Z", "Z");
+}
+function walletProofMessage({ userid, chain, address, issued }) {
+  if (!USERID_RE.test(String(userid || "")))
+    throw new Error("wallet proof: bad userid");
+  if (!isWalletAddress(chain, address))
+    throw new Error("wallet proof: bad chain or address");
+  if (!ISSUED_RE.test(String(issued || "")))
+    throw new Error("wallet proof: bad issued time");
+  return [HEAD, "", LINE, "", `userid: ${userid}`, `chain: ${chain}`, `address: ${address}`, `issued: ${issued}`].join("\n");
+}
+var B58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+function base58Encode(bytes) {
+  const digits = [];
+  for (const b of bytes) {
+    let carry = b;
+    for (let j = 0; j < digits.length; j++) {
+      carry += digits[j] << 8;
+      digits[j] = carry % 58;
+      carry = carry / 58 | 0;
+    }
+    while (carry > 0) {
+      digits.push(carry % 58);
+      carry = carry / 58 | 0;
+    }
+  }
+  let out = "";
+  for (const b of bytes) {
+    if (b !== 0)
+      break;
+    out += "1";
+  }
+  for (let i = digits.length - 1; i >= 0; i--)
+    out += B58[digits[i]];
+  return out;
+}
+function base58Decode(str2) {
+  const bytes = [];
+  for (const c of String(str2)) {
+    let carry = B58.indexOf(c);
+    if (carry < 0)
+      throw new Error("not base58");
+    for (let j = 0; j < bytes.length; j++) {
+      carry += bytes[j] * 58;
+      bytes[j] = carry & 255;
+      carry >>= 8;
+    }
+    while (carry > 0) {
+      bytes.push(carry & 255);
+      carry >>= 8;
+    }
+  }
+  for (const c of String(str2)) {
+    if (c !== "1")
+      break;
+    bytes.push(0);
+  }
+  return Uint8Array.from(bytes.reverse());
+}
+var utf8Hex = (s) => "0x" + Array.from(new TextEncoder().encode(s), (b) => b.toString(16).padStart(2, "0")).join("");
+async function signEthProof(provider, { userid, address, issued = proofTime() }) {
+  const message = walletProofMessage({ userid, chain: "eth", address, issued });
+  const signature = await provider.request({ method: "personal_sign", params: [utf8Hex(message), address] });
+  return { message, signature: String(signature) };
+}
+async function signSolProof(wallet, { userid, address, issued = proofTime() }) {
+  const message = walletProofMessage({ userid, chain: "sol", address, issued });
+  const r = await wallet.signMessage(new TextEncoder().encode(message), "utf8");
+  const sig = r && r.signature ? r.signature : r;
+  return { message, signature: base58Encode(Uint8Array.from(sig)) };
+}
+
+// src/name-card.js
+function stripNul(text) {
+  return String(text == null ? "" : text).replace(/\0+$/u, "");
+}
+function parseBeagleContact(raw) {
+  const text = stripNul(raw);
+  const shape = (j) => ({
+    name: j.name || "",
+    ens: j.ens || "",
+    userid: j.userid || j.userId || "",
+    address: j.address || "",
+    avatar: j.avatar || j.avatarUrl || "",
+    description: j.description || "",
+    kind: j.kind || ""
+  });
+  const fence = /```\s*beagle-contact\s*\n([\s\S]*?)\n```/i.exec(text);
+  if (fence) {
+    try {
+      const j = JSON.parse(fence[1].trim());
+      if (j && (j.type === "beagle_contact" || j.type === "beagle-contact"))
+        return shape(j);
+    } catch (e) {
+    }
+  }
+  if (/^\s*BCR1\s+/i.test(text)) {
+    try {
+      const j = JSON.parse(text.replace(/^\s*BCR1\s+/i, "").trim());
+      if (j && j.type === "beagle_contact")
+        return shape(j);
+    } catch (e) {
+    }
+  }
+  return null;
+}
+function isCarrierAddress(addr) {
+  const s = String(addr || "").trim();
+  if (s.length < 48 || s.length > 56)
+    return false;
+  let b;
+  try {
+    b = base58Decode(s);
+  } catch (e) {
+    return false;
+  }
+  if (b.length !== 38)
+    return false;
+  const c = [0, 0];
+  for (let i = 0; i < 36; i++)
+    c[i % 2] ^= b[i];
+  return b[36] === c[0] && b[37] === c[1];
+}
+function isUserId(id) {
+  const s = String(id || "").trim();
+  if (s.length < 40 || s.length > 46)
+    return false;
+  try {
+    return base58Decode(s).length === 32;
+  } catch (e) {
+    return false;
+  }
+}
+function cardFriend(card, peers) {
+  if (!card)
+    return null;
+  const ids = [card.userid, card.address].filter(Boolean);
+  if (!ids.length)
+    return null;
+  return (peers || []).find((p) => p && !p.pending && (ids.includes(p.userId) || p.address && ids.includes(p.address))) || null;
+}
+function nameCardView(card, peers) {
+  const c = card || {};
+  const address = isCarrierAddress(c.address) ? String(c.address).trim() : "";
+  const userid = c.userid || (!address && isUserId(c.address) ? String(c.address).trim() : "");
+  const isGroup = c.kind === "group" || c.type === "group";
+  const friend = cardFriend(c, peers);
+  const action = friend ? "chat" : address ? isGroup ? "join" : "add" : null;
+  return { userid, address, isGroup, friend, action };
+}
+
+// src/ens-verify.js
+var ENS_GATEWAY = "https://ens-gateway.beaglechat.workers.dev";
+function cleanName(name) {
+  return String(name == null ? "" : name).replace(/[\u0000-\u001f\u007f]+/g, "").trim();
+}
+function ensLabel(name) {
+  return cleanName(name).toLowerCase().replace(/\.beagles\.eth$/, "");
+}
+function claimsBeaglesName(name) {
+  return /\.beagles\.eth$/i.test(cleanName(name));
+}
+function ensVerdict(shown, record) {
+  const label = cleanName(shown);
+  const out = { label, mark: false, hint: null, claimed: null };
+  if (!label || record === void 0)
+    return out;
+  const gw = record && typeof record.name === "string" && record.name ? record.name : null;
+  if (gw && ensLabel(label) === ensLabel(gw))
+    return { ...out, mark: true };
+  if (!claimsBeaglesName(label))
+    return out;
+  if (gw)
+    return { label: gw, mark: true, hint: null, claimed: label };
+  return { ...out, hint: "self-claimed" };
+}
+function createEnsVerifier({
+  fetchImpl = typeof fetch === "function" ? fetch.bind(globalThis) : null,
+  gateway = ENS_GATEWAY,
+  ttlMs = 30 * 6e4,
+  failTtlMs = 2 * 6e4,
+  concurrency = 4,
+  now = () => Date.now()
+} = {}) {
+  const cache = /* @__PURE__ */ new Map();
+  const inflight = /* @__PURE__ */ new Map();
+  const queue = [];
+  let running = 0;
+  const pump = () => {
+    while (running < concurrency && queue.length) {
+      const job = queue.shift();
+      running++;
+      job().finally(() => {
+        running--;
+        pump();
+      });
+    }
+  };
+  const fetchRecord = async (userid) => {
+    if (!fetchImpl)
+      return void 0;
+    try {
+      const r = await fetchImpl(`${gateway}/getAddress/${encodeURIComponent(userid)}`);
+      if (r.status === 404)
+        return null;
+      if (!r.ok)
+        return void 0;
+      const j = await r.json();
+      if (!j || typeof j.name !== "string" || !j.name)
+        return null;
+      const owner = j.texts && j.texts.carrierUserId;
+      if (owner && owner !== userid)
+        return null;
+      return { name: j.name, displayName: j.texts && j.texts.displayName || null };
+    } catch (e) {
+      return void 0;
+    }
+  };
+  const peek = (userid) => {
+    const hit = userid ? cache.get(userid) : null;
+    return hit && hit.until > now() ? hit.value : void 0;
+  };
+  const lookup = (userid) => {
+    if (!userid)
+      return Promise.resolve(void 0);
+    const hit = cache.get(userid);
+    if (hit && hit.until > now())
+      return Promise.resolve(hit.value);
+    let p = inflight.get(userid);
+    if (p)
+      return p;
+    p = new Promise((resolve) => {
+      queue.push(() => fetchRecord(userid).then((value) => {
+        cache.set(userid, { value, until: now() + (value === void 0 ? failTtlMs : ttlMs) });
+        inflight.delete(userid);
+        resolve(value);
+      }));
+      pump();
+    });
+    inflight.set(userid, p);
+    return p;
+  };
+  return { lookup, peek };
+}
+
+// src/ens-name.jsx
+var verifier = createEnsVerifier();
+function useEnsRecord(userid) {
+  const [rec, setRec] = React.useState(() => verifier.peek(userid));
+  React.useEffect(() => {
+    let live = true;
+    setRec(verifier.peek(userid));
+    if (userid)
+      verifier.lookup(userid).then((r) => {
+        if (live)
+          setRec(r);
+      });
+    return () => {
+      live = false;
+    };
+  }, [userid]);
+  return rec;
+}
+function verifiedLabel(userid, name) {
+  if (!name)
+    return name;
+  return ensVerdict(name, verifier.peek(userid)).label || name;
+}
+function useEnsVerdict(userid, name) {
+  return ensVerdict(name, useEnsRecord(userid));
+}
+function DkEnsMark({ verdict, T, size = 12 }) {
+  if (verdict.mark) {
+    const title = verdict.claimed ? (T && T.ensVerifiedReplaced || "Registered beagles.eth name for this user. Their device shows {claimed}, which is not registered to them.").replace("{claimed}", verdict.claimed) : T && T.ensVerified || "Verified: this beagles.eth name is registered to this user.";
+    return /* @__PURE__ */ React.createElement("span", { title, "aria-label": title, style: { display: "inline-flex", flexShrink: 0, color: "var(--accent)" } }, /* @__PURE__ */ React.createElement(Icon, { name: "check", size, stroke: 2.6, color: "var(--accent)" }));
+  }
+  if (verdict.hint === "self-claimed") {
+    const title = T && T.ensSelfClaimedTip || "Shown by their device. This beagles.eth name is not registered to this user.";
+    return /* @__PURE__ */ React.createElement("span", { title, style: {
+      flexShrink: 0,
+      fontFamily: "var(--ui)",
+      fontSize: 10,
+      color: "var(--faint)",
+      border: "1px solid var(--line)",
+      borderRadius: 4,
+      padding: "0 4px",
+      lineHeight: "14px",
+      whiteSpace: "nowrap"
+    } }, T && T.ensSelfClaimed || "self-claimed");
+  }
+  return null;
+}
+function DkVerifiedName({ userid, name, fallback, T, style, markSize }) {
+  const v = useEnsVerdict(userid, name);
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style, title: v.claimed ? v.claimed + " \u2192 " + v.label : void 0 }, v.label || fallback), /* @__PURE__ */ React.createElement(DkEnsMark, { verdict: v, T, size: markSize }));
+}
+
+// src/native-media.js
+var NATIVE_MEDIA_MIME = {
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".png": "image/png",
+  ".gif": "image/gif",
+  ".webp": "image/webp",
+  ".heic": "image/heic",
+  ".heif": "image/heif",
+  ".bmp": "image/bmp",
+  ".m4a": "audio/mp4",
+  ".aac": "audio/aac",
+  ".mp3": "audio/mpeg",
+  ".wav": "audio/wav",
+  ".caf": "audio/x-caf",
+  ".amr": "audio/amr",
+  ".ogg": "audio/ogg",
+  ".opus": "audio/ogg",
+  ".mp4": "video/mp4",
+  ".mov": "video/quicktime",
+  ".m4v": "video/x-m4v",
+  ".3gp": "video/3gpp",
+  ".webm": "video/webm"
+};
+var GROUP_TS_RE = /\n?\[(20\d{2}-\d{1,2}-\d{1,2}\s+\d{1,2}:\d{2}:\d{2})\]\s*$/;
+function stripGroupTs(text) {
+  const m = GROUP_TS_RE.exec(text);
+  return m ? { body: text.slice(0, m.index), ts: m[1] } : { body: text, ts: null };
+}
+function splitGroupSender(text) {
+  const m = /^([^:\n]{1,48}):\s([\s\S]+)$/.exec(text);
+  return m ? { sender: m[1], body: m[2] } : null;
+}
+function nativeMediaKind(type, ext) {
+  const t = String(type || "").toLowerCase();
+  if (t === "image" || t === "photo" || t === "picture")
+    return "image";
+  if (t === "audio" || t === "voice")
+    return "audio";
+  if (t === "video")
+    return "video";
+  const mime = NATIVE_MEDIA_MIME[String(ext || "").toLowerCase()];
+  return mime ? mime.split("/")[0] : null;
+}
+function unwrapCGP1(text) {
+  if (!text.startsWith("CGP1 "))
+    return null;
+  let j = null;
+  try {
+    j = JSON.parse(text.slice(5));
+  } catch (e) {
+    return null;
+  }
+  if (!j || typeof j !== "object" || !j.message || typeof j.message.text !== "string")
+    return null;
+  const origin = j.origin || {};
+  const senderId = origin.userid || origin.friendid || null;
+  const sender = origin.nickname || origin.user_info && origin.user_info.name || (senderId ? senderId.slice(0, 10) : null);
+  return { text: j.message.text, sender, senderId };
+}
+var MEDIA_SHAPE_RE = /^\{[\s\S]*"(?:fileExtension|fileName)"\s*:[\s\S]*"data"\s*:\s*"|^\{[\s\S]*"data"\s*:\s*"[A-Za-z0-9+/\\]{64}/;
+function nativeMediaFromText(input) {
+  let text = String(input == null ? "" : input).trim();
+  let sender = null;
+  let senderId = null;
+  const cgp = unwrapCGP1(text);
+  if (cgp) {
+    text = cgp.text;
+    sender = cgp.sender;
+    senderId = cgp.senderId;
+  }
+  let body = stripGroupTs(text).body.trim();
+  if (body.length < 32)
+    return null;
+  if (!body.startsWith("{")) {
+    const split = splitGroupSender(body);
+    if (!split || !split.body.trim().startsWith("{"))
+      return null;
+    sender = sender || split.sender;
+    body = split.body.trim();
+  }
+  if (!MEDIA_SHAPE_RE.test(body))
+    return null;
+  const extMatch = /"fileExtension"\s*:\s*"([^"]{0,16})"/.exec(body);
+  const nameMatch = /"fileName"\s*:\s*"([^"]{0,200})"/.exec(body);
+  const typeMatch = /"type"\s*:\s*"([^"]{0,32})"/.exec(body);
+  let j = null;
+  try {
+    j = body.endsWith("}") ? JSON.parse(body) : null;
+  } catch (e) {
+    j = null;
+  }
+  if (!j || typeof j !== "object" || typeof j.data !== "string" || j.data.length < 16) {
+    if (!extMatch && !nameMatch)
+      return null;
+    const ext2 = extMatch ? extMatch[1].toLowerCase() : "";
+    const kind2 = nativeMediaKind(typeMatch && typeMatch[1], ext2) || "file";
+    return { sender, senderId, kind: kind2, name: (nameMatch ? nameMatch[1] : "file") + ext2, broken: true };
+  }
+  const ext = String(j.fileExtension || "").toLowerCase();
+  const named = typeof j.fileName === "string" || typeof j.fileExtension === "string";
+  const typed = nativeMediaKind(j.type, "");
+  if (!named && !typed)
+    return null;
+  const kind = nativeMediaKind(j.type, ext) || "file";
+  const mime = NATIVE_MEDIA_MIME[ext] || (kind === "file" ? "application/octet-stream" : kind + "/*");
+  const name = String(j.fileName || "file") + ext;
+  return { sender, senderId, kind, name, url: "data:" + mime + ";base64," + j.data.replace(/\s+/g, "") };
+}
+function nativeMediaLabel(media) {
+  if (!media)
+    return "";
+  const word = media.kind === "image" ? "image" : media.kind === "audio" ? "voice" : media.kind === "video" ? "video" : "file";
+  return "[" + word + "] " + media.name;
+}
+
+// src/chat.jsx
+var DK_CMD_HIST_KEY = "beagle.assistant.history";
+var DK_CMD_HIST_MAX = 50;
+function RequestsBlock({ T, requests, onAct }) {
+  const [acted, setActed] = React.useState({});
+  const [failed, setFailed] = React.useState({});
+  const act = (r, kind) => {
+    if (acted[r.id])
+      return;
+    setActed((a) => ({ ...a, [r.id]: kind }));
+    setFailed((f) => {
+      const n = { ...f };
+      delete n[r.id];
+      return n;
+    });
+    Promise.resolve(onAct(r.id, kind)).then((res) => {
+      if (res && res.ok === false) {
+        setActed((a) => {
+          const n = { ...a };
+          delete n[r.id];
+          return n;
+        });
+        setFailed((f) => ({ ...f, [r.id]: res.error || "failed" }));
+      }
+    }).catch((e) => {
+      setActed((a) => {
+        const n = { ...a };
+        delete n[r.id];
+        return n;
+      });
+      setFailed((f) => ({ ...f, [r.id]: String(e && e.message || e) }));
+    });
+  };
+  const visible = requests.filter((r) => !acted[r.id]);
+  if (!visible.length)
+    return null;
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "4px 0 8px" } }, /* @__PURE__ */ React.createElement(Section, { label: T.requests, count: visible.length, style: { margin: "4px 4px 8px" } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6 } }, visible.map((r) => /* @__PURE__ */ React.createElement("div", { key: r.id, style: {
+    padding: "9px 10px",
+    borderRadius: 8,
+    background: "var(--panel-2)",
+    border: "1px solid var(--line)",
+    display: "flex",
+    flexDirection: "column",
+    gap: 8
+  } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement(DkRequestAvatar, { r, size: 30, radius: 7 }), /* @__PURE__ */ React.createElement("div", { style: { minWidth: 0, flex: 1 } }, r.name ? /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "var(--ui)",
+    fontSize: 13,
+    fontWeight: 600,
+    color: "var(--text)",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
+  } }, r.name) : /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)", fontStyle: "italic" } }, T.noName || "no name given"), /* @__PURE__ */ React.createElement(Mono, { size: 11, copy: r.carrier, title: r.carrier }, shortKey(r.carrier, 8, 6)), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--faint)", marginTop: 2 } }, requestGreeting(r).transport ? "via " + requestGreeting(r).transport + " \xB7 " : "", r.time))), /* @__PURE__ */ React.createElement(DkRequestGreeting, { T, text: requestGreeting(r).greeting }), r.descr && /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "var(--ui)",
+    fontSize: 12,
+    color: "var(--dim, var(--faint))",
+    lineHeight: 1.5,
+    borderLeft: "2px solid var(--line)",
+    paddingLeft: 8
+  } }, r.descr), failed[r.id] && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 11, color: "var(--danger)" } }, failed[r.id]), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6 } }, /* @__PURE__ */ React.createElement(Btn, { tone: "ok", icon: "check", size: "sm", onClick: () => act(r, "accept"), style: { flex: 1 } }, T.accept), /* @__PURE__ */ React.createElement(Btn, { tone: "danger", icon: "x", size: "sm", onClick: () => act(r, "reject"), style: { flex: 1 } }, T.reject))))));
+}
+function DkRequestGreeting({ T, text }) {
+  const [open, setOpen] = React.useState(false);
+  const [clipped, setClipped] = React.useState(false);
+  const ref = React.useRef(null);
+  React.useLayoutEffect(() => {
+    const el = ref.current;
+    if (el && !open)
+      setClipped(el.scrollHeight > el.clientHeight + 1);
+  }, [text, open]);
+  if (!text)
+    return null;
+  const toggle = () => {
+    try {
+      const sel = window.getSelection && window.getSelection();
+      if (sel && String(sel).length)
+        return;
+    } catch (e) {
+    }
+    if (clipped || open)
+      setOpen((o) => !o);
+  };
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      onClick: toggle,
+      title: !open && clipped ? T.showAll || "show all" : void 0,
+      style: { cursor: clipped || open ? "pointer" : "text" }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: { background: "var(--bub-them)", border: "1px solid var(--line)", borderRadius: 8, padding: "6px 9px" } }, /* @__PURE__ */ React.createElement("div", { ref, style: {
+      fontFamily: "var(--ui)",
+      fontSize: 12.5,
+      color: "var(--text)",
+      lineHeight: 1.45,
+      whiteSpace: "pre-wrap",
+      overflowWrap: "anywhere",
+      userSelect: "text",
+      WebkitUserSelect: "text",
+      ...open ? { maxHeight: 240, overflowY: "auto" } : { display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }
+    } }, text)),
+    (clipped || open) && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 11, color: "var(--accent)", marginTop: 3 } }, open ? T.showLess || "show less" : T.showAll || "show all")
+  );
+}
+function DkGreetingMsg({ m, peer, T }) {
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-start", alignItems: "flex-end", gap: 8, margin: "3px 0 10px" } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer, size: 24, radius: 6, dot: false }), /* @__PURE__ */ React.createElement("div", { style: {
+    maxWidth: "75%",
+    padding: "8px 12px",
+    borderRadius: 12,
+    borderBottomLeftRadius: 4,
+    background: "var(--panel-2)",
+    border: "1px dashed var(--accent)",
+    color: "var(--text)"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+    marginBottom: 4,
+    fontFamily: "var(--mono)",
+    fontSize: 10.5,
+    color: "var(--accent)",
+    fontWeight: 600
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: "userPlus", size: 12, stroke: 2.2, color: "var(--accent)" }), /* @__PURE__ */ React.createElement("span", null, T.friendRequestItem || "Friend request"), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--faint)", fontWeight: 400 } }, "\xB7 ", m.time)), /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "var(--ui)",
+    fontSize: 13.5,
+    lineHeight: 1.5,
+    whiteSpace: "pre-wrap",
+    overflowWrap: "anywhere",
+    userSelect: "text",
+    WebkitUserSelect: "text"
+  } }, m.text)));
+}
+function DkRequestAvatar({ r, size, radius }) {
+  const [urlBroken, setUrlBroken] = React.useState(false);
+  const url = requestAvatarUrl(r);
+  React.useEffect(() => {
+    setUrlBroken(false);
+  }, [url]);
+  const src = requestAvatarSource(r, urlBroken);
+  const seed = r.carrier || r.userid || r.id;
+  if (src.kind === "url") {
+    return /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: src.url,
+        alt: "",
+        width: size,
+        height: size,
+        referrerPolicy: "no-referrer",
+        onError: () => setUrlBroken(true),
+        style: { width: size, height: size, borderRadius: radius, objectFit: "cover", flexShrink: 0, background: "var(--panel-2)" }
+      }
+    );
+  }
+  if (src.kind === "punk")
+    return /* @__PURE__ */ React.createElement(DkPunkAvatar, { id: src.id, size, radius, fallbackSeed: seed });
+  return /* @__PURE__ */ React.createElement(DkEnsAvatar, { userid: r.userid || r.id, name: r.name, fallbackSeed: r.carrier, size, radius });
+}
+function PeerRow({ peer, T, active, onClick, muted, isProtocol, fix }) {
+  const name = peer.alias || peer.userId;
+  const row = rosterRow(peer, isProtocol || (() => false), fix);
+  return /* @__PURE__ */ React.createElement("button", { onClick, style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    width: "100%",
+    textAlign: "left",
+    padding: "var(--row-pad)",
+    borderRadius: 8,
+    cursor: "pointer",
+    fontFamily: "inherit",
+    border: "1px solid " + (active ? "var(--line)" : "transparent"),
+    background: active ? "var(--panel-2)" : "transparent"
+  } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer, size: 32, radius: 7 }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, /* @__PURE__ */ React.createElement(DkVerifiedName, { userid: peer.app ? null : peer.userId, name: peer.alias, fallback: shortKey(peer.userId, 8, 5), T, style: {
+    fontFamily: peer.alias ? "var(--ui)" : "var(--mono)",
+    fontSize: 13.5,
+    fontWeight: 600,
+    color: "var(--text)",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  } }), peer.agent && /* @__PURE__ */ React.createElement(Icon, { name: "bot", size: 13, color: "var(--faint)", stroke: 2 }), peer.app && /* @__PURE__ */ React.createElement(Tag, { tone: "accent", style: { height: 15, fontSize: 9.5, padding: "0 4px" } }, "APP"), muted && /* @__PURE__ */ React.createElement(Icon, { name: "bellOff", size: 12, color: "var(--faint)", stroke: 2, title: T && T.mutedTag || "sound muted" }), peer.wire === "64" && /* @__PURE__ */ React.createElement(Tag, { tone: "off", style: { height: 15, fontSize: 9.5, padding: "0 4px" } }, "w64")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6, marginTop: 2 } }, peer.ip ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)" } }, peer.ip), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--line)", fontSize: 11 } }, "\xB7")) : null, /* @__PURE__ */ React.createElement("span", { style: {
+    fontSize: 11,
+    color: "var(--dim)",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    flex: 1,
+    minWidth: 0
+  } }, dkRowPreview(row.preview, T)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--faint)" } }, row.lastTime), peer.app ? null : row.unread ? /* @__PURE__ */ React.createElement(Unread, { n: row.unread }) : peer.pending ? /* @__PURE__ */ React.createElement(Icon, { name: "clock", size: 11, stroke: 2.2, color: "var(--warn, #d29922)", title: "friend request pending" }) : /* @__PURE__ */ React.createElement(StatusDot, { online: peer.online })));
+}
+function dkActivityTs(p, isProtocol, fix) {
+  const row = rosterRow(p, isProtocol || (() => false), fix);
+  return Math.max(row.activityTs, p.acceptedAt || 0, p.requestedAt || 0);
+}
+function PeerSidebar({ T, peers, requests, activeId, onSelect, onAct, onAdd, prefillAddr, onPrefillConsumed, muted, wide, isProtocol, protocolFix }) {
+  const [q, setQ] = React.useState("");
+  const [addr, setAddr] = React.useState("");
+  const [addState, setAddState] = React.useState(null);
+  const [fromDeepLink, setFromDeepLink] = React.useState(false);
+  React.useEffect(() => {
+    if (prefillAddr) {
+      setAddr(prefillAddr);
+      setFromDeepLink(true);
+    } else {
+      setFromDeepLink(false);
+      setAddr("");
+    }
+  }, [prefillAddr]);
+  const dismissDeepLink = () => {
+    setFromDeepLink(false);
+    onPrefillConsumed && onPrefillConsumed();
+  };
+  const submitAddr = () => {
+    const v = addr.trim();
+    if (!v || addState && addState.kind === "sending")
+      return;
+    setAddState({ kind: "sending", msg: T.addSending });
+    Promise.resolve(onAdd(v)).then((r) => {
+      if (r && r.ok) {
+        setAddr("");
+        setFromDeepLink(false);
+        onPrefillConsumed && onPrefillConsumed();
+        setAddState({ kind: "ok", msg: T.addSent });
+      } else {
+        dismissDeepLink();
+        setAddState({ kind: "err", msg: r && r.error ? `${T.addFailed}: ${r.error}` : T.addFailed });
+      }
+    }).catch((e) => {
+      dismissDeepLink();
+      setAddState({ kind: "err", msg: `${T.addFailed}: ${e && e.message || e}` });
+    }).finally(() => {
+      setTimeout(() => setAddState((s) => s && s.kind !== "sending" ? null : s), 6e3);
+    });
+  };
+  const filtered = peers.filter((p) => {
+    if (!q)
+      return true;
+    const s = (p.alias || "") + " " + p.userId + " " + p.ip;
+    return s.toLowerCase().includes(q.toLowerCase());
+  }).slice().sort((a, b) => {
+    if (!!a.pinned !== !!b.pinned)
+      return a.pinned ? -1 : 1;
+    const ta = dkActivityTs(a, isProtocol, protocolFix && protocolFix[a.id]);
+    const tb = dkActivityTs(b, isProtocol, protocolFix && protocolFix[b.id]);
+    if (ta !== tb)
+      return tb - ta;
+    return String(a.alias || a.userId || "").localeCompare(String(b.alias || b.userId || ""));
+  });
+  const online = peers.filter((p) => p.online).length;
+  return /* @__PURE__ */ React.createElement("div", { style: wide ? { flex: 1, minWidth: 0, minHeight: 0, display: "flex", flexDirection: "column", background: "var(--panel)" } : { width: 320, flexShrink: 0, borderRight: "1px solid var(--line)", display: "flex", flexDirection: "column", background: "var(--panel)" } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 12px 10px", borderBottom: "1px solid var(--line)", display: "flex", flexDirection: "column", gap: 8 } }, fromDeepLink && /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "var(--ui)",
+    fontSize: 12,
+    lineHeight: 1.4,
+    color: "var(--text)",
+    background: "color-mix(in oklab, var(--accent), transparent 88%)",
+    border: "1px solid var(--accent)",
+    borderRadius: 8,
+    padding: "7px 10px",
+    display: "flex",
+    alignItems: "flex-start",
+    gap: 8
+  } }, /* @__PURE__ */ React.createElement("span", { style: { flex: 1 } }, T.deepLinkConfirm || "\u901A\u8FC7\u94FE\u63A5\u6DFB\u52A0\u8FD9\u4F4D\u597D\u53CB? \u70B9\u300C\u6DFB\u52A0\u300D\u53D1\u9001\u597D\u53CB\u8BF7\u6C42 / Add this contact from the link? Tap Add to send a friend request."), /* @__PURE__ */ React.createElement(Btn, { size: "sm", icon: "x", title: T.cancel || "Dismiss", onClick: dismissDeepLink, style: { flexShrink: 0 } })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 7 } }, /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      value: addr,
+      onChange: (e) => {
+        setAddr(e.target.value);
+        if (fromDeepLink)
+          setFromDeepLink(false);
+      },
+      onKeyDown: (e) => {
+        if (e.key === "Enter")
+          submitAddr();
+      },
+      placeholder: T.addPlaceholder,
+      style: { ...inputStyle, ...fromDeepLink ? { borderColor: "var(--accent)" } : null }
+    }
+  ), /* @__PURE__ */ React.createElement(Btn, { tone: "solid", icon: "userPlus", onClick: submitAddr }, T.add)), addState && /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "var(--mono)",
+    fontSize: 11.5,
+    lineHeight: 1.35,
+    color: addState.kind === "err" ? "var(--bad, #e5484d)" : addState.kind === "ok" ? "var(--good, #46a758)" : "var(--faint)"
+  } }, addState.msg), /* @__PURE__ */ React.createElement("div", { style: { position: "relative", display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement(Icon, { name: "search", size: 15, color: "var(--faint)", stroke: 2, style: { position: "absolute", left: 9 } }), /* @__PURE__ */ React.createElement("input", { value: q, onChange: (e) => setQ(e.target.value), placeholder: T.search, style: { ...inputStyle, paddingLeft: 30 } }))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, overflow: "auto", padding: "10px 8px 16px" } }, /* @__PURE__ */ React.createElement(RequestsBlock, { T, requests, onAct }), /* @__PURE__ */ React.createElement(Section, { label: T.peers, count: `${online}/${peers.length}`, style: { margin: "6px 4px 8px" } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 2 } }, filtered.map((p) => /* @__PURE__ */ React.createElement(PeerRow, { key: p.id, peer: p, T, active: p.id === activeId, onClick: () => onSelect(p.id), muted: !!muted && muted.includes(p.id), isProtocol, fix: protocolFix && protocolFix[p.id] })), !filtered.length && /* @__PURE__ */ React.createElement("div", { style: { padding: 16, textAlign: "center", fontFamily: "var(--mono)", fontSize: 12, color: "var(--faint)" } }, "no matches"))));
+}
+var inputStyle = {
+  flex: 1,
+  height: 32,
+  borderRadius: 7,
+  border: "1px solid var(--line)",
+  background: "var(--panel-2)",
+  color: "var(--text)",
+  fontFamily: "var(--mono)",
+  fontSize: 12.5,
+  padding: "0 10px",
+  outline: "none",
+  minWidth: 0
+};
+var mediaBtnStyle = {
+  width: 28,
+  height: 28,
+  borderRadius: 8,
+  border: "none",
+  background: "rgba(0,0,0,0.5)",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  lineHeight: 0
+};
+function dkRtcFileFromText(peerId, text) {
+  const m = /^received file via WebRTC: (.+) \(([^)]+)\)$/.exec(String(text || ""));
+  if (!m || !window.__dkRtcFiles)
+    return null;
+  const name = m[1];
+  for (const item of window.__dkRtcFiles.values()) {
+    if (item && item.peerId === peerId && item.name === name)
+      return item;
+  }
+  return null;
+}
+function dkCallFromText(text) {
+  const m = /^WebRTC (audio|video) call: (incoming|outgoing)$/.exec(String(text || ""));
+  return m ? { kind: m[1], direction: m[2] } : null;
+}
+function dkHtmlEscape(s) {
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function dkSafeHref(s) {
+  const href = String(s || "").trim();
+  if (!href)
+    return "";
+  try {
+    const u = new URL(href, window.location.href);
+    if (u.protocol === "http:" || u.protocol === "https:" || u.protocol === "mailto:")
+      return u.href;
+  } catch (e) {
+  }
+  return "";
+}
+function dkTrimUrlTail(raw) {
+  let url = raw;
+  const TAIL = `.,;:!?'"\u3002\uFF0C\u3001\uFF1B\uFF1A\uFF01\uFF1F\u2026\u201D\u2019\u300D\u300F`;
+  const PAIRS = [["(", ")"], ["[", "]"], ["{", "}"], ["\uFF08", "\uFF09"], ["\u3010", "\u3011"], ["\u300A", "\u300B"]];
+  const count = (s, ch) => s.split(ch).length - 1;
+  for (; ; ) {
+    const before = url;
+    while (url && TAIL.indexOf(url[url.length - 1]) >= 0)
+      url = url.slice(0, -1);
+    for (let i = 0; i < PAIRS.length; i += 1) {
+      const open = PAIRS[i][0], close = PAIRS[i][1];
+      if (url.slice(-1) === close && count(url, open) < count(url, close))
+        url = url.slice(0, -1);
+    }
+    if (url === before)
+      return url;
+  }
+}
+function dkInlineMarkdown(s) {
+  const text = String(s == null ? "" : s);
+  const tokenRe = /(`[^`\n]+`|\[[^\]\n]+\]\([^) \n]+(?: [^)]+)?\)|https?:\/\/[A-Za-z0-9\-._~:/?#[\]@!$&'()*+,;=%]+|\*\*[^*\n]+?\*\*|\*[^*\n]+?\*)/g;
+  let out = "";
+  let last = 0;
+  let m;
+  while (m = tokenRe.exec(text)) {
+    out += dkHtmlEscape(text.slice(last, m.index));
+    const tok = m[0];
+    if (tok[0] === "`") {
+      out += "<code>" + dkHtmlEscape(tok.slice(1, -1)) + "</code>";
+    } else if (tok.startsWith("[")) {
+      const lm = /^\[([^\]\n]+)\]\(([^) \n]+)(?: [^)]+)?\)$/.exec(tok);
+      const href = lm && dkSafeHref(lm[2]);
+      out += href ? '<a href="' + dkHtmlEscape(href) + '" target="_blank" rel="noopener">' + dkHtmlEscape(lm[1]) + "</a>" : dkHtmlEscape(tok);
+    } else if (/^https?:\/\//.test(tok)) {
+      const url = dkTrimUrlTail(tok);
+      const href = dkSafeHref(url);
+      const tail = tok.slice(url.length);
+      out += href ? '<a href="' + dkHtmlEscape(href) + '" target="_blank" rel="noopener">' + dkHtmlEscape(url) + "</a>" + dkHtmlEscape(tail) : dkHtmlEscape(tok);
+    } else if (tok.startsWith("**")) {
+      out += "<strong>" + dkHtmlEscape(tok.slice(2, -2)) + "</strong>";
+    } else if (tok.startsWith("*")) {
+      out += "<em>" + dkHtmlEscape(tok.slice(1, -1)) + "</em>";
+    } else {
+      out += dkHtmlEscape(tok);
+    }
+    last = tokenRe.lastIndex;
+  }
+  out += dkHtmlEscape(text.slice(last));
+  return out;
+}
+function dkParseBeagleContact(raw) {
+  return parseBeagleContact(raw);
+}
+function dkEncodeBeagleContact(p) {
+  const j = {
+    v: 1,
+    type: "beagle_contact",
+    name: p.name || "",
+    ens: p.ens || "",
+    userid: p.userid || "",
+    address: p.address || "",
+    avatar: p.avatar || "",
+    description: p.description || ""
+  };
+  const head = "**" + (p.name || p.ens || "Beagle user") + "**" + (p.ens ? " \xB7 `" + p.ens + "`" : "");
+  const bio = p.description ? "\n\n" + p.description : "";
+  const link = "\n\n[Open name card](https://app.beagle.chat/#/chat?address=" + encodeURIComponent(p.address || "") + ")";
+  return head + bio + link + "\n\n```beagle-contact\n" + JSON.stringify(j) + "\n```\n";
+}
+function dkRowPreview(text, T) {
+  const card = dkContactPreview(text);
+  if (card)
+    return card;
+  const s = String(text == null ? "" : text);
+  const mine = /^you:\s*/i.test(s);
+  const media = nativeMediaFromText(s.replace(/^you:\s*/i, ""));
+  if (media)
+    return (mine ? "you: " : "") + (media.sender ? media.sender + ": " : "") + nativeMediaLabel(media);
+  const cgp = dkParseCGP1(s.replace(/^you:\s*/i, ""));
+  if (cgp)
+    return (mine ? "you: " : "") + cgp.sender + ": " + (cgp.file ? fileLabel(cgp.file, T) : cgp.body.replace(/\s+/g, " "));
+  return s;
+}
+function dkContactPreview(text) {
+  const s = String(text == null ? "" : text);
+  if (!/beagle-contact|BCR1\s*\{/i.test(s))
+    return null;
+  const mine = /^you:\s*/i.test(s);
+  const card = dkParseBeagleContact(s.replace(/^you:\s*/i, ""));
+  const label = "\u{1F4C7} " + (card && (card.name || card.ens) || "name card");
+  return mine ? "you: " + label : label;
+}
+function DkContactCardMsg({ card, mine, T, onNameCard }) {
+  return /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => onNameCard && onNameCard(card),
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 11,
+        padding: "10px 13px",
+        minWidth: 220,
+        maxWidth: 320,
+        borderRadius: 12,
+        border: "1px solid var(--line)",
+        cursor: "pointer",
+        textAlign: "left",
+        background: mine ? "var(--bub-me)" : "var(--bub-them)"
+      }
+    },
+    card.avatar ? /* @__PURE__ */ React.createElement(DkImgAvatar, { url: card.avatar, seed: card.userid || card.address || card.name, size: 40, radius: 10 }) : /* @__PURE__ */ React.createElement(DkEnsAvatar, { userid: card.userid || card.address, fallbackSeed: card.userid || card.address || card.name, size: 40, radius: 10 }),
+    /* @__PURE__ */ React.createElement("span", { style: { minWidth: 0, display: "flex", flexDirection: "column", gap: 2 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 13.5, fontWeight: 700, color: mine ? "#fff" : "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, card.name || card.ens || shortKey(card.userid || card.address, 8, 6)), card.ens && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: mine ? "rgba(255,255,255,0.8)" : "var(--accent)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, card.ens), card.description && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 11, color: mine ? "rgba(255,255,255,0.7)" : "var(--dim)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, card.description), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 10, color: mine ? "rgba(255,255,255,0.6)" : "var(--faint)", marginTop: 2, textTransform: "uppercase", letterSpacing: 0.5 } }, T && T.nameCard || "name card", " \u203A"))
+  );
+}
+function dkAddressFromHref(href) {
+  try {
+    const u = new URL(String(href || ""), window.location.href);
+    const a = u.searchParams.get("address");
+    if (a && a.trim())
+      return a.trim();
+    const h = u.hash || "";
+    const qi = h.indexOf("?");
+    if (qi >= 0) {
+      const ha = new URLSearchParams(h.slice(qi + 1)).get("address");
+      if (ha && ha.trim())
+        return ha.trim();
+    }
+  } catch (e) {
+  }
+  return "";
+}
+function dkMarkdownHtml(src) {
+  const lines = String(src == null ? "" : src).replace(/\r\n?/g, "\n").split("\n");
+  let html = "";
+  let i = 0;
+  const isBlockStart = (line) => /^```/.test(line) || /^#{1,6}\s+/.test(line) || /^\s*[-*]\s+/.test(line) || /^\s*\d+\.\s+/.test(line);
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim()) {
+      i += 1;
+      continue;
+    }
+    if (/^```/.test(line)) {
+      const lang = line.replace(/^```/, "").trim().toLowerCase();
+      i += 1;
+      const code = [];
+      while (i < lines.length && !/^```/.test(lines[i])) {
+        code.push(lines[i]);
+        i += 1;
+      }
+      if (i < lines.length)
+        i += 1;
+      if (lang === "beagle-contact")
+        continue;
+      html += "<pre><code>" + dkHtmlEscape(code.join("\n")) + "</code></pre>";
+      continue;
+    }
+    const hm = /^(#{1,6})\s+(.+)$/.exec(line);
+    if (hm) {
+      const level = Math.min(6, hm[1].length);
+      html += "<h" + level + ">" + dkInlineMarkdown(hm[2]) + "</h" + level + ">";
+      i += 1;
+      continue;
+    }
+    if (/^\s*[-*]\s+/.test(line) || /^\s*\d+\.\s+/.test(line)) {
+      const ordered = /^\s*\d+\.\s+/.test(line);
+      html += ordered ? "<ol>" : "<ul>";
+      while (i < lines.length && (ordered ? /^\s*\d+\.\s+/.test(lines[i]) : /^\s*[-*]\s+/.test(lines[i]))) {
+        html += "<li>" + dkInlineMarkdown(lines[i].replace(ordered ? /^\s*\d+\.\s+/ : /^\s*[-*]\s+/, "")) + "</li>";
+        i += 1;
+      }
+      html += ordered ? "</ol>" : "</ul>";
+      continue;
+    }
+    const para = [line];
+    i += 1;
+    while (i < lines.length && lines[i].trim() && !isBlockStart(lines[i])) {
+      para.push(lines[i]);
+      i += 1;
+    }
+    html += "<p>" + para.map(dkInlineMarkdown).join("<br>") + "</p>";
+  }
+  return html || dkHtmlEscape(src);
+}
+function dkParseCGP1(text) {
+  const t = String(text || "").trim();
+  if (!t.startsWith("CGP1 "))
+    return null;
+  let j = null;
+  try {
+    j = JSON.parse(t.slice(5));
+  } catch (e) {
+    return null;
+  }
+  if (!j || j.type !== "carrier_group_message" || j.chat_type !== "group")
+    return null;
+  const origin = j.origin || {};
+  const senderId = origin.userid || origin.friendid || null;
+  const sender = origin.nickname || origin.user_info && origin.user_info.name || (senderId ? senderId.slice(0, 10) : "member");
+  const body = j.message && j.message.text || j.render && j.render.plain || "";
+  const file = cgpFile(j.message);
+  return { sender, senderId, body: String(body), ts: null, strong: true, file };
+}
+function dkGroupParse(text) {
+  const cgp = dkParseCGP1(text);
+  if (cgp)
+    return cgp;
+  const t = String(text || "");
+  const { body: noTs, ts } = stripGroupTs(t);
+  const split = splitGroupSender(noTs.trim());
+  if (!split)
+    return null;
+  return { sender: split.sender, senderId: null, body: split.body.trim(), ts, strong: !!ts };
+}
+function DkGroupSender({ grp, T, avatar }) {
+  const [open, setOpen] = React.useState(false);
+  const [busy, setBusy] = React.useState(false);
+  const [done, setDone] = React.useState(null);
+  const [showProf, setShowProf] = React.useState(false);
+  const seed = grp.senderId || grp.sender;
+  const addFriend = () => {
+    setBusy(true);
+    fetch("/api/add", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ address: grp.senderId }) }).then((r) => r.json()).then((r) => setDone(r.ok ? T && T.addSent || "request sent" : r.error || "failed")).catch((e) => setDone(String(e && e.message || e))).finally(() => setBusy(false));
+  };
+  return /* @__PURE__ */ React.createElement("span", { style: {
+    position: "relative",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 5,
+    margin: avatar ? 0 : "0 3px 2px",
+    alignSelf: avatar ? "flex-start" : void 0
+  } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setOpen((v) => !v),
+      title: grp.sender,
+      style: { display: "inline-flex", alignItems: "center", gap: 5, background: "none", border: "none", padding: 0, cursor: "pointer" }
+    },
+    avatar ? /* @__PURE__ */ React.createElement(DkEnsAvatar, { userid: grp.senderId, name: grp.sender, fallbackSeed: seed, size: 24, radius: 6 }) : /* @__PURE__ */ React.createElement(DkVerifiedName, { userid: grp.senderId, name: grp.sender, T, markSize: 10, style: { fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--faint)" } })
+  ), open && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { onClick: () => setOpen(false), style: { position: "fixed", inset: 0, zIndex: 40 } }), /* @__PURE__ */ React.createElement("span", { style: {
+    position: "absolute",
+    left: 0,
+    top: avatar ? 28 : 20,
+    zIndex: 50,
+    width: 240,
+    padding: 12,
+    borderRadius: 10,
+    background: "var(--panel-2)",
+    border: "1px solid var(--line)",
+    boxShadow: "0 14px 40px rgba(0,0,0,0.4)",
+    display: "flex",
+    flexDirection: "column",
+    gap: 8
+  } }, /* @__PURE__ */ React.createElement("span", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement(DkEnsAvatar, { userid: grp.senderId, name: grp.sender, fallbackSeed: seed, size: 34, radius: 8 }), /* @__PURE__ */ React.createElement(DkVerifiedName, { userid: grp.senderId, name: grp.sender, T, style: { fontFamily: "var(--mono)", fontSize: 12.5, fontWeight: 700, color: "var(--text)", wordBreak: "break-all" } })), grp.senderId ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Mono, { size: 10.5, dim: true, copy: grp.senderId, title: grp.senderId }, shortKey(grp.senderId, 12, 8)), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: addFriend,
+      disabled: busy || !!done,
+      style: {
+        padding: "6px 10px",
+        borderRadius: 8,
+        border: "none",
+        background: "var(--accent)",
+        color: "#fff",
+        fontFamily: "var(--ui)",
+        fontSize: 12,
+        cursor: busy || done ? "default" : "pointer",
+        opacity: busy ? 0.6 : 1
+      }
+    },
+    done || (T && T.add || "Add friend")
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => {
+        setOpen(false);
+        setShowProf(true);
+      },
+      style: {
+        padding: "6px 10px",
+        borderRadius: 8,
+        border: "1px solid var(--line)",
+        background: "transparent",
+        color: "var(--text)",
+        fontFamily: "var(--ui)",
+        fontSize: 12,
+        cursor: "pointer"
+      }
+    },
+    T && T.pubOpen || "View public profile"
+  )) : /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--dim)", lineHeight: 1.45 } }, T && T.groupSenderUnknown || "The group relays only this display name. Register Beagle as a group agent (/agent add <beagle address> in the group) to receive full member identities you can add as friends."))), showProf && grp.senderId && /* @__PURE__ */ React.createElement(DkPublicProfile, { T, userid: grp.senderId, fallbackName: grp.sender, onClose: () => setShowProf(false) }));
+}
+function dkThreadIsGroup(thread) {
+  return (thread || []).some((m) => !m.day && m.dir !== "out" && !m.file && (dkGroupParse(m.text) || {}).strong);
+}
+function MarkdownText({ text, onNameCard }) {
+  const onClick = (e) => {
+    const a = e.target && e.target.closest && e.target.closest("a");
+    if (!a)
+      return;
+    const addr = dkAddressFromHref(a.getAttribute("href") || "");
+    if (!addr)
+      return;
+    e.preventDefault();
+    e.stopPropagation();
+    const card = dkParseBeagleContact(text) || { address: addr };
+    if (!card.address)
+      card.address = addr;
+    if (onNameCard)
+      onNameCard(card);
+  };
+  return /* @__PURE__ */ React.createElement("div", { className: "dk-md", onClick, dangerouslySetInnerHTML: { __html: dkMarkdownHtml(text) } });
+}
+function DkChatForm({ form, submitted, peer, onSubmit }) {
+  const items = form && form.components || [];
+  const [vals, setVals] = React.useState(() => {
+    const init = {};
+    for (const c of items)
+      if (c.type === "select" || c.type === "text")
+        init[c.id] = c.default || "";
+    return init;
+  });
+  const [files, setFiles] = React.useState({});
+  const [busy, setBusy] = React.useState(false);
+  const [step, setStep] = React.useState("");
+  const [err, setErr] = React.useState("");
+  if (submitted) {
+    return /* @__PURE__ */ React.createElement("div", { style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 6,
+      padding: "10px 12px",
+      borderRadius: 12,
+      border: "1px solid var(--line)",
+      background: "var(--bub-them)",
+      opacity: 0.85,
+      minWidth: 240
+    } }, items.filter((c) => window.ChatComponents.INPUT_TYPES.has(c.type)).map((c) => {
+      const raw = submitted.values && submitted.values[c.id] || "";
+      const shown = raw && typeof raw === "object" ? raw.name : ((c.options || []).find((o) => o.value === raw) || {}).label || raw;
+      return /* @__PURE__ */ React.createElement("div", { key: c.id, style: { display: "flex", gap: 8, fontFamily: "var(--mono)", fontSize: 12.5 } }, /* @__PURE__ */ React.createElement("span", { style: { color: "var(--faint)" } }, c.label || c.id), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--text)", fontWeight: 600 } }, shown));
+    }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6, marginTop: 2, color: "var(--faint)", fontSize: 11.5, fontFamily: "var(--mono)" } }, /* @__PURE__ */ React.createElement(Icon, { name: "check", size: 12, stroke: 3, color: "var(--ok, #46d17f)" }), /* @__PURE__ */ React.createElement("span", null, "submitted")));
+  }
+  const attachments = items.filter((c) => c.type === "attachment");
+  const missing = items.filter((c) => c.required && window.ChatComponents.INPUT_TYPES.has(c.type) && (c.type === "attachment" ? !files[c.id] : !vals[c.id]));
+  const send = async (componentId) => {
+    if (missing.length) {
+      setErr("Fill in: " + missing.map((c) => c.label || c.id).join(", "));
+      return;
+    }
+    setBusy(true);
+    setErr("");
+    try {
+      const CC = window.ChatComponents;
+      const answers = { ...vals };
+      for (const c of attachments) {
+        const f = files[c.id];
+        if (!f)
+          continue;
+        setStep("Sending " + f.name + "\u2026");
+        const up = await dkApi.sendFile(peer.userId || peer.id, f);
+        if (!up || !up.ok) {
+          setErr(up && up.error || "file send failed");
+          setBusy(false);
+          setStep("");
+          return;
+        }
+        if (!up.fileId) {
+          setErr("This peer received the file inline, which carries no file id \u2014 send it as a normal message instead.");
+          setBusy(false);
+          setStep("");
+          return;
+        }
+        answers[c.id] = { fileId: up.fileId, name: up.name || f.name, size: up.size != null ? up.size : f.size };
+      }
+      setStep("");
+      const text = CC.encodeInteraction(CC.buildInteraction(form.custom_id, componentId, answers));
+      const r = await dkApi.send(peer.userId || peer.id, text);
+      if (!r.ok) {
+        setErr(r.error || "submit failed");
+        setBusy(false);
+        return;
+      }
+      if (onSubmit)
+        onSubmit();
+    } catch (e) {
+      setErr(String(e && e.message || e));
+      setBusy(false);
+    }
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    padding: "12px 13px",
+    borderRadius: 12,
+    border: "1px solid var(--line)",
+    background: "var(--bub-them)",
+    minWidth: 260
+  } }, items.map((c) => {
+    if (c.type === "select") {
+      return /* @__PURE__ */ React.createElement("label", { key: c.id, style: { display: "flex", flexDirection: "column", gap: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, c.label || c.id, c.required ? " *" : ""), /* @__PURE__ */ React.createElement(
+        "select",
+        {
+          value: vals[c.id] || "",
+          disabled: busy,
+          onChange: (e) => setVals((v) => ({ ...v, [c.id]: e.target.value })),
+          style: {
+            fontFamily: "var(--mono)",
+            fontSize: 13,
+            padding: "7px 8px",
+            borderRadius: 8,
+            border: "1px solid var(--line)",
+            background: "var(--panel)",
+            color: "var(--text)"
+          }
+        },
+        /* @__PURE__ */ React.createElement("option", { value: "" }, c.placeholder || "\u2014"),
+        (c.options || []).map((o) => /* @__PURE__ */ React.createElement("option", { key: o.value, value: o.value }, o.label))
+      ));
+    }
+    if (c.type === "text") {
+      return /* @__PURE__ */ React.createElement("label", { key: c.id, style: { display: "flex", flexDirection: "column", gap: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, c.label || c.id, c.required ? " *" : ""), /* @__PURE__ */ React.createElement(
+        "input",
+        {
+          type: "text",
+          value: vals[c.id] || "",
+          disabled: busy,
+          placeholder: c.placeholder || "",
+          onChange: (e) => setVals((v) => ({ ...v, [c.id]: e.target.value })),
+          style: {
+            fontFamily: "var(--mono)",
+            fontSize: 13,
+            padding: "7px 8px",
+            borderRadius: 8,
+            border: "1px solid var(--line)",
+            background: "var(--panel)",
+            color: "var(--text)"
+          }
+        }
+      ));
+    }
+    if (c.type === "attachment") {
+      const picked = files[c.id];
+      const tooBig = picked && c.max_bytes && picked.size > c.max_bytes;
+      return /* @__PURE__ */ React.createElement("label", { key: c.id, style: { display: "flex", flexDirection: "column", gap: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, c.label || c.id, c.required ? " *" : ""), /* @__PURE__ */ React.createElement(
+        "input",
+        {
+          type: "file",
+          disabled: busy,
+          accept: (c.accept || []).join(",") || void 0,
+          onChange: (e) => setFiles((f) => ({ ...f, [c.id]: e.target.files && e.target.files[0] })),
+          style: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--text)" }
+        }
+      ), picked && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: tooBig ? "#f59e0b" : "var(--faint)" } }, dkFileSize(picked.size), tooBig ? " \u2014 larger than this form asked for" : ""));
+    }
+    if (c.type === "submit") {
+      return /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          key: c.id,
+          onClick: () => send(c.id),
+          disabled: busy,
+          style: {
+            marginTop: 2,
+            padding: "8px 14px",
+            borderRadius: 10,
+            border: "none",
+            cursor: busy ? "default" : "pointer",
+            background: "var(--accent)",
+            color: "#fff",
+            fontFamily: "var(--mono)",
+            fontSize: 13,
+            fontWeight: 700,
+            opacity: busy ? 0.6 : 1
+          }
+        },
+        busy ? step || "\u2026" : c.label || "Submit"
+      );
+    }
+    return null;
+  }), err && /* @__PURE__ */ React.createElement("div", { style: { color: "var(--danger, #ff6b6b)", fontSize: 11.5, fontFamily: "var(--mono)" } }, err));
+}
+function Msg(props) {
+  if (isGreetingItem(props.m))
+    return /* @__PURE__ */ React.createElement(DkGreetingMsg, { m: props.m, peer: props.peer, T: props.T });
+  return /* @__PURE__ */ React.createElement(DkMsgBody, { ...props });
+}
+function DkGroupFileCard({ file, T, offline }) {
+  const voice = file.voice;
+  const label = voice ? (T && T.voiceMessage || "Voice message") + (file.durationMs ? " \xB7 " + formatDuration(file.durationMs) : "") : file.name;
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    padding: "9px 12px",
+    borderRadius: 12,
+    maxWidth: 320,
+    background: offline ? "rgba(245,158,11,0.16)" : "var(--bub-them)",
+    border: "1px solid " + (offline ? "rgba(245,158,11,0.55)" : "var(--line)")
+  } }, /* @__PURE__ */ React.createElement("span", { style: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    flexShrink: 0,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "var(--panel-2)",
+    border: "1px solid var(--line)"
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: voice ? "mic" : file.media === "image" ? "image" : file.media === "video" ? "video" : "file", size: 17, stroke: 2, color: "var(--faint)" })), /* @__PURE__ */ React.createElement("span", { style: { display: "flex", flexDirection: "column", minWidth: 0, gap: 2 } }, /* @__PURE__ */ React.createElement("span", { style: {
+    fontFamily: voice ? "var(--ui)" : "var(--mono)",
+    fontSize: 12.5,
+    fontWeight: 600,
+    color: "var(--text)",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  } }, label), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 11, color: "var(--faint)", lineHeight: 1.35 } }, file.size != null ? dkFileSize(file.size) + " \xB7 " : "", T && T.groupFileNotDelivered || "Not delivered to this device: the group sends agents only a description of files.")));
+}
+function DkMsgBody({ m, peer, T, lang, onTheater, onDelete, onCancel, onRetry, onRetryMsg, onReveal, onOpenFile, onCall, onFormSubmit, onNameCard, onAssistantRemove, onAssistantAdopt, answered, selMode, selected, onToggleSel, busy, isGroup }) {
+  const mine = m.from === "me";
+  const nativeMedia = !m.file ? nativeMediaFromText(m.text) : null;
+  const grp = isGroup && m.dir !== "out" && !m.file && !nativeMedia ? dkGroupParse(m.text) : null;
+  const fileSender = !mine && m.file && m.origin && (m.origin.userid || m.origin.nickname) ? { sender: m.origin.nickname || (m.origin.userid || "").slice(0, 10), senderId: m.origin.userid || null } : null;
+  const grpSender = grp || fileSender || (nativeMedia && nativeMedia.sender ? { sender: nativeMedia.sender, senderId: nativeMedia.senderId || null } : null);
+  const read = window.ChatComponents ? window.ChatComponents.readMessage((grp ? grp.body : m.text) || "") : { text: grp ? grp.body : m.text, form: null, interaction: null };
+  const submitted = read.form && answered ? answered.get(read.form.custom_id) : null;
+  const rtcFile = !mine && !m.file ? dkRtcFileFromText(peer.userId || peer.id, m.text) : null;
+  const callRec = !m.file ? dkCallFromText(m.text) : null;
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      onClick: selMode ? () => onToggleSel(m.id) : void 0,
+      style: {
+        display: "flex",
+        justifyContent: mine ? "flex-end" : "flex-start",
+        alignItems: "flex-end",
+        gap: 8,
+        margin: "3px 0",
+        cursor: selMode ? "pointer" : "default",
+        borderRadius: 8,
+        background: selMode && selected ? "rgba(91,140,255,0.12)" : "transparent",
+        padding: selMode ? "2px 4px" : 0
+      }
+    },
+    selMode && /* @__PURE__ */ React.createElement("div", { style: {
+      alignSelf: "center",
+      width: 18,
+      height: 18,
+      borderRadius: 5,
+      flexShrink: 0,
+      border: "1.5px solid " + (selected ? "var(--accent)" : "var(--line)"),
+      background: selected ? "var(--accent)" : "transparent",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    } }, selected && /* @__PURE__ */ React.createElement(Icon, { name: "check", size: 12, stroke: 3, color: "#fff" })),
+    !mine && (grpSender ? /* @__PURE__ */ React.createElement(DkGroupSender, { grp: grpSender, T, avatar: true }) : /* @__PURE__ */ React.createElement(DkAvatar, { peer, size: 24, radius: 6, dot: false })),
+    /* @__PURE__ */ React.createElement("div", { style: { maxWidth: m.file && (m.file.media === "image" || m.file.media === "video") || rtcFile && (rtcFile.media === "image" || rtcFile.media === "video") ? "min(680px, 88%)" : "75%", display: "flex", flexDirection: "column", alignItems: mine ? "flex-end" : "flex-start" } }, callRec ? /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => onCall && onCall(peer.userId, callRec.kind === "video"),
+        style: { display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderRadius: 12, border: "1px solid var(--line)", background: mine ? "var(--bub-me)" : "var(--bub-them)", color: mine ? "#fff" : "var(--text)", cursor: "pointer", fontFamily: "var(--mono)", fontSize: 12.5 }
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: callRec.kind === "video" ? "video" : "phone", size: 17, stroke: 2, color: mine ? "#fff" : "var(--accent)" }),
+      /* @__PURE__ */ React.createElement("span", null, callRec.direction === "incoming" ? "Incoming" : "Outgoing", " ", callRec.kind, " call"),
+      /* @__PURE__ */ React.createElement("span", { style: { color: mine ? "rgba(255,255,255,0.75)" : "var(--faint)" } }, "\xB7 redial")
+    ) : rtcFile ? /* @__PURE__ */ React.createElement("div", { style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 6,
+      maxWidth: rtcFile.media === "image" || rtcFile.media === "video" ? "100%" : 300,
+      width: rtcFile.media === "image" || rtcFile.media === "video" ? "100%" : void 0,
+      background: "var(--bub-them)",
+      border: "1px solid var(--line)",
+      borderRadius: 12,
+      padding: 6
+    } }, (rtcFile.media === "image" || rtcFile.media === "video") && /* @__PURE__ */ React.createElement("div", { "data-media": true, style: { position: "relative", lineHeight: 0 } }, rtcFile.media === "image" ? /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: rtcFile.url,
+        alt: rtcFile.name,
+        onError: (e) => {
+          const w = e.currentTarget.closest("[data-media]");
+          if (w)
+            w.style.display = "none";
+        },
+        style: { display: "block", width: "100%", maxHeight: "72vh", borderRadius: 8, objectFit: "contain" }
+      }
+    ) : /* @__PURE__ */ React.createElement(
+      "video",
+      {
+        src: rtcFile.url,
+        controls: true,
+        preload: "metadata",
+        onError: (e) => {
+          const w = e.currentTarget.closest("[data-media]");
+          if (w)
+            w.style.display = "none";
+        },
+        style: { display: "block", width: "100%", maxHeight: "72vh", borderRadius: 8, objectFit: "contain", background: "#000" }
+      }
+    ), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 8, right: 8, display: "flex", gap: 6 } }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => onTheater({ kind: rtcFile.media, url: rtcFile.url, name: rtcFile.name }),
+        title: "theater / \u7F51\u9875\u5168\u5C4F",
+        style: mediaBtnStyle
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: "theater", size: 16, stroke: 2, color: "#fff" })
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: (e) => {
+          const w = e.currentTarget.closest("[data-media]");
+          const el = w && w.querySelector("video,img");
+          if (el && el.requestFullscreen)
+            el.requestFullscreen();
+        },
+        title: "fullscreen / \u5168\u5C4F",
+        style: mediaBtnStyle
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: "maximize", size: 16, stroke: 2, color: "#fff" })
+    ))), rtcFile.media === "audio" && /* @__PURE__ */ React.createElement("audio", { src: rtcFile.url, controls: true, style: { width: "100%" } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: "0 2px" } }, /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, rtcFile.name), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)", flexShrink: 0 } }, dkFileSize(rtcFile.size)), /* @__PURE__ */ React.createElement("a", { href: rtcFile.url, download: rtcFile.name, title: "download", style: { display: "inline-flex", flexShrink: 0 } }, /* @__PURE__ */ React.createElement(Icon, { name: "download", size: 15, stroke: 2, color: "var(--accent)" })))) : m.file ? /* @__PURE__ */ React.createElement(
+      React.Fragment,
+      null,
+      fileSender && /* @__PURE__ */ React.createElement(DkGroupSender, { grp: fileSender, T }),
+      // Inline preview/player. Received media: as soon as it's saved.
+      // Sent media: once it's fully delivered ('sent') — the daemon keeps a
+      // local copy so it plays on the sender's side too.
+      (m.file.media === "image" || m.file.media === "video" || m.file.media === "audio") && (mine ? m.file.status === "sent" : m.file.status !== "sending" && m.file.status !== "failed" && m.file.status !== "queued" && m.file.status !== "cancelled") ? (
+        // Received media → inline preview / player, with name, size, download.
+        /* @__PURE__ */ React.createElement("div", { style: {
+          display: "flex",
+          flexDirection: "column",
+          gap: 6,
+          maxWidth: m.file.media === "image" || m.file.media === "video" ? "100%" : 300,
+          width: m.file.media === "image" || m.file.media === "video" ? "100%" : void 0,
+          background: "var(--bub-them)",
+          border: "1px solid var(--line)",
+          borderRadius: 12,
+          padding: 6
+        } }, (m.file.media === "image" || m.file.media === "video") && /* @__PURE__ */ React.createElement("div", { "data-media": true, style: { position: "relative", lineHeight: 0 } }, m.file.media === "image" ? /* @__PURE__ */ React.createElement(
+          "img",
+          {
+            src: dkFileUrl(m.file.name),
+            alt: m.file.name,
+            loading: "lazy",
+            decoding: "async",
+            onError: (e) => {
+              const w = e.currentTarget.closest("[data-media]");
+              if (w)
+                w.style.display = "none";
+            },
+            style: { display: "block", width: "100%", maxHeight: "72vh", borderRadius: 8, objectFit: "contain" }
+          }
+        ) : /* @__PURE__ */ React.createElement(
+          "video",
+          {
+            src: dkFileUrl(m.file.name),
+            controls: true,
+            preload: "metadata",
+            onError: (e) => {
+              const w = e.currentTarget.closest("[data-media]");
+              if (w)
+                w.style.display = "none";
+            },
+            style: { display: "block", width: "100%", maxHeight: "72vh", borderRadius: 8, objectFit: "contain", background: "#000" }
+          }
+        ), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", top: 8, right: 8, display: "flex", gap: 6 } }, /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            onClick: () => onTheater({ kind: m.file.media, url: dkFileUrl(m.file.name), name: m.file.name }),
+            title: "theater / \u7F51\u9875\u5168\u5C4F",
+            style: mediaBtnStyle
+          },
+          /* @__PURE__ */ React.createElement(Icon, { name: "theater", size: 16, stroke: 2, color: "#fff" })
+        ), /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            onClick: (e) => {
+              const w = e.currentTarget.closest("[data-media]");
+              const el = w && w.querySelector("video,img");
+              if (el && el.requestFullscreen)
+                el.requestFullscreen();
+            },
+            title: "fullscreen / \u5168\u5C4F",
+            style: mediaBtnStyle
+          },
+          /* @__PURE__ */ React.createElement(Icon, { name: "maximize", size: 16, stroke: 2, color: "#fff" })
+        ))), m.file.media === "audio" && m.file.voice && /* @__PURE__ */ React.createElement("span", { style: { display: "inline-flex", alignItems: "center", gap: 6, padding: "0 2px", fontFamily: "var(--ui)", fontSize: 12, color: "var(--dim)" } }, /* @__PURE__ */ React.createElement(Icon, { name: "mic", size: 14, stroke: 2, color: "var(--accent)" }), T && T.voiceMessage || "Voice message", m.file.durationMs ? " \xB7 " + formatDuration(m.file.durationMs) : ""), m.file.media === "audio" && /* @__PURE__ */ React.createElement("audio", { src: dkFileUrl(m.file.name), controls: true, style: { width: "100%" } }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: "0 2px" } }, /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, m.file.name), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)", flexShrink: 0 } }, m.file.size), onReveal && /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            title: T.revealInFinder || "\u5728\u6587\u4EF6\u7BA1\u7406\u5668\u4E2D\u663E\u793A / Show in file manager",
+            onClick: (e) => {
+              e.stopPropagation();
+              onReveal(m.file.name);
+            },
+            style: { background: "none", border: "none", cursor: "pointer", padding: 0, display: "inline-flex", flexShrink: 0 }
+          },
+          /* @__PURE__ */ React.createElement(Icon, { name: "folderOpen", size: 15, stroke: 2, color: "var(--accent)" })
+        ), /* @__PURE__ */ React.createElement("a", { href: dkFileDownloadUrl(m.file.name), download: m.file.name, title: "download", style: { display: "inline-flex", flexShrink: 0 } }, /* @__PURE__ */ React.createElement(Icon, { name: "download", size: 15, stroke: 2, color: "var(--accent)" }))))
+      ) : (() => {
+        const cardStyle = {
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "10px 12px",
+          borderRadius: 10,
+          background: mine ? "var(--bub-me)" : "var(--bub-them)",
+          border: "1px solid " + (mine ? "transparent" : "var(--line)"),
+          minWidth: 200,
+          maxWidth: "100%",
+          boxSizing: "border-box",
+          textDecoration: "none",
+          cursor: mine ? "default" : "pointer"
+        };
+        const icon = /* @__PURE__ */ React.createElement("div", { style: { width: 34, height: 34, borderRadius: 7, flexShrink: 0, background: mine ? "rgba(255,255,255,0.16)" : "var(--chip)", display: "flex", alignItems: "center", justifyContent: "center", color: mine ? "#fff" : "var(--accent)" } }, /* @__PURE__ */ React.createElement(Icon, { name: m.file.media === "image" ? "image" : m.file.media === "video" ? "video" : m.file.media === "audio" ? "play" : "file", size: 18, stroke: 1.9 }));
+        const meta = /* @__PURE__ */ React.createElement("div", { style: { minWidth: 0, flex: 1 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 12.5, fontWeight: 600, color: mine ? "#fff" : "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, m.file.name), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11, color: mine ? "rgba(255,255,255,0.7)" : "var(--faint)", marginTop: 1 } }, busy === "cancel" ? `${m.file.size} \xB7 ${T.cancelling || "Cancelling\u2026"}` : busy === "retry" ? `${m.file.size} \xB7 ${T.retrying || "Retrying\u2026"}` : m.file.status === "queued" ? `${m.file.size} \xB7 ${mine ? T.fileWaitsHere || "waits on this computer until they are online" : T.queued || "queued"}` : m.file.status === "sending" ? `${m.file.size} \xB7 ${dkPct(m.file.pct)}${m.file.kbps ? " \xB7 " + dkSpeed(m.file.kbps) : ""}` : m.file.status === "failed" ? `${m.file.size} \xB7 failed` : m.file.status === "cancelled" ? `${m.file.size} \xB7 ${T.cancelled || "cancelled"}` : mine && m.via === "offline" ? `${m.file.size} \xB7 ${T.fileOnExpress || "offline \xB7 stored on Express"}` : mine ? `${m.file.size} \xB7 sent` : `${m.file.size} \xB7 ${T.open || "open"}`));
+        if (mine) {
+          const btnBusy = !!busy;
+          return /* @__PURE__ */ React.createElement(
+            "div",
+            {
+              style: { ...cardStyle, cursor: "pointer", opacity: btnBusy ? 0.85 : 1 },
+              title: T.open || "open",
+              onClick: () => onOpenFile ? onOpenFile(m.file.name) : window.open(dkFileUrl(m.file.name), "_blank", "noopener")
+            },
+            icon,
+            meta,
+            onReveal && /* @__PURE__ */ React.createElement(
+              "button",
+              {
+                title: T.revealInFinder || "\u5728\u6587\u4EF6\u7BA1\u7406\u5668\u4E2D\u663E\u793A / Show in file manager",
+                onClick: (e) => {
+                  e.stopPropagation();
+                  onReveal(m.file.name);
+                },
+                style: { background: "none", border: "none", cursor: "pointer", padding: 0, display: "inline-flex", flexShrink: 0 }
+              },
+              /* @__PURE__ */ React.createElement(Icon, { name: "folderOpen", size: 15, stroke: 2, color: "rgba(255,255,255,0.85)" })
+            ),
+            /* @__PURE__ */ React.createElement(
+              "a",
+              {
+                href: dkFileDownloadUrl(m.file.name),
+                download: m.file.name,
+                title: "download",
+                onClick: (e) => e.stopPropagation(),
+                style: { display: "inline-flex", flexShrink: 0 }
+              },
+              /* @__PURE__ */ React.createElement(Icon, { name: "download", size: 15, stroke: 2, color: "rgba(255,255,255,0.85)" })
+            ),
+            busy === "cancel" || busy === "retry" ? /* @__PURE__ */ React.createElement(Icon, { name: "clock", size: 16, stroke: 2, color: "rgba(255,255,255,0.85)" }) : m.file.status === "queued" ? /* @__PURE__ */ React.createElement(Icon, { name: "clock", size: 16, stroke: 2, color: "rgba(255,255,255,0.85)" }) : m.file.status === "sending" ? /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.9)", whiteSpace: "nowrap" } }, dkPct(m.file.pct), m.file.kbps ? " \xB7 " + dkSpeed(m.file.kbps) : "") : m.file.status === "failed" || m.file.status === "cancelled" ? /* @__PURE__ */ React.createElement(Icon, { name: "x", size: 16, stroke: 2.4, color: "rgba(255,200,190,0.95)" }) : m.via === "offline" ? /* @__PURE__ */ React.createElement(Icon, { name: "check", size: 16, stroke: 2, color: "rgba(255,255,255,0.85)" }) : /* @__PURE__ */ React.createElement(Icon, { name: "checkCheck", size: 16, stroke: 2, color: "rgba(255,255,255,0.85)" }),
+            (m.file.status === "sending" || m.file.status === "queued" || busy === "cancel") && m.id && /* @__PURE__ */ React.createElement(
+              "button",
+              {
+                title: T.cancel || "cancel",
+                disabled: btnBusy,
+                onClick: (e) => {
+                  e.stopPropagation();
+                  if (!btnBusy)
+                    onCancel(m.id);
+                },
+                style: { background: "rgba(255,255,255,0.16)", border: "none", borderRadius: 6, cursor: btnBusy ? "wait" : "pointer", padding: 3, marginLeft: 2, display: "inline-flex", flexShrink: 0, opacity: btnBusy ? 0.5 : 1 }
+              },
+              /* @__PURE__ */ React.createElement(Icon, { name: "x", size: 13, stroke: 2.4, color: "#fff" })
+            ),
+            m.file.status !== "sent" && m.id && /* @__PURE__ */ React.createElement(
+              "button",
+              {
+                title: T.retry || "retry",
+                disabled: btnBusy,
+                onClick: (e) => {
+                  e.stopPropagation();
+                  if (!btnBusy)
+                    onRetry(m.id);
+                },
+                style: { background: "rgba(255,255,255,0.16)", border: "none", borderRadius: 6, cursor: btnBusy ? "wait" : "pointer", padding: 3, marginLeft: 2, display: "inline-flex", flexShrink: 0, opacity: btnBusy ? 0.5 : 1 }
+              },
+              /* @__PURE__ */ React.createElement(Icon, { name: "refresh", size: 13, stroke: 2.2, color: "#fff" })
+            )
+          );
+        }
+        return /* @__PURE__ */ React.createElement(
+          "div",
+          {
+            style: cardStyle,
+            title: "open",
+            onClick: () => onOpenFile ? onOpenFile(m.file.name) : window.open(dkFileUrl(m.file.name), "_blank", "noopener")
+          },
+          icon,
+          meta,
+          onReveal && /* @__PURE__ */ React.createElement(
+            "button",
+            {
+              title: T.revealInFinder || "\u5728\u6587\u4EF6\u7BA1\u7406\u5668\u4E2D\u663E\u793A / Show in file manager",
+              onClick: (e) => {
+                e.stopPropagation();
+                onReveal(m.file.name);
+              },
+              style: { background: "none", border: "none", cursor: "pointer", padding: 0, display: "inline-flex", flexShrink: 0 }
+            },
+            /* @__PURE__ */ React.createElement(Icon, { name: "folderOpen", size: 16, stroke: 2, color: "var(--accent)" })
+          ),
+          /* @__PURE__ */ React.createElement(
+            "a",
+            {
+              href: dkFileDownloadUrl(m.file.name),
+              download: m.file.name,
+              title: "download",
+              onClick: (e) => e.stopPropagation(),
+              style: { display: "inline-flex", flexShrink: 0 }
+            },
+            /* @__PURE__ */ React.createElement(Icon, { name: "download", size: 16, stroke: 2, color: "var(--accent)" })
+          )
+        );
+      })()
+    ) : nativeMedia ? /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 4, maxWidth: "min(420px, 88%)" } }, nativeMedia.sender && /* @__PURE__ */ React.createElement(DkGroupSender, { grp: { sender: nativeMedia.sender, senderId: nativeMedia.senderId || null }, T }), nativeMedia.broken ? (
+      // Cut short or malformed: say what it was, never show the base64.
+      /* @__PURE__ */ React.createElement("span", { style: {
+        padding: "9px 12px",
+        borderRadius: 12,
+        background: "var(--bub-them)",
+        border: "1px solid var(--line)",
+        fontFamily: "var(--ui)",
+        fontSize: 12.5,
+        color: "var(--faint)"
+      } }, "[" + (T && T["mediaKind_" + nativeMedia.kind] || nativeMedia.kind) + ", " + (T && T.mediaNotShown || "could not be shown") + "] " + nativeMedia.name)
+    ) : nativeMedia.kind === "image" ? /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: nativeMedia.url,
+        alt: nativeMedia.name,
+        style: { maxWidth: "100%", borderRadius: 12, border: "1px solid var(--line)", cursor: "pointer" },
+        onClick: () => {
+          try {
+            const w = window.open();
+            if (w)
+              w.document.write('<img src="' + nativeMedia.url + '" style="max-width:100%">');
+          } catch (e) {
+          }
+        }
+      }
+    ) : nativeMedia.kind === "audio" ? /* @__PURE__ */ React.createElement("audio", { controls: true, src: nativeMedia.url, style: { maxWidth: "100%" } }) : nativeMedia.kind === "video" ? /* @__PURE__ */ React.createElement("video", { controls: true, src: nativeMedia.url, style: { maxWidth: "100%", borderRadius: 12, border: "1px solid var(--line)" } }) : /* @__PURE__ */ React.createElement(
+      "a",
+      {
+        href: nativeMedia.url,
+        download: nativeMedia.name,
+        style: {
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "9px 12px",
+          borderRadius: 12,
+          background: "var(--bub-them)",
+          border: "1px solid var(--line)",
+          color: "var(--text)",
+          fontFamily: "var(--mono)",
+          fontSize: 12.5,
+          textDecoration: "none"
+        }
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: "download", size: 16, stroke: 2, color: "var(--accent)" }),
+      nativeMedia.name
+    )) : grp && grp.file ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(DkGroupSender, { grp, T }), /* @__PURE__ */ React.createElement(DkGroupFileCard, { file: grp.file, T, offline: m.via === "offline" })) : (() => {
+      const contact = !read.form ? dkParseBeagleContact(read.text) : null;
+      return /* @__PURE__ */ React.createElement(React.Fragment, null, grp && /* @__PURE__ */ React.createElement(DkGroupSender, { grp, T }), contact && (contact.address || contact.userid) ? /* @__PURE__ */ React.createElement(DkContactCardMsg, { card: contact, mine, T, onNameCard }) : /* @__PURE__ */ React.createElement("div", { style: {
+        padding: "8px 12px",
+        borderRadius: 12,
+        borderBottomRightRadius: mine ? 4 : 12,
+        borderBottomLeftRadius: mine ? 12 : 4,
+        // Incoming messages are tinted by delivery path so the split is
+        // visible: amber = arrived via the express relay (offline), plain =
+        // live online session. Outgoing keep the accent bubble.
+        background: mine ? "var(--bub-me)" : m.via === "offline" ? "rgba(245,158,11,0.16)" : "var(--bub-them)",
+        color: mine ? "#fff" : "var(--text)",
+        border: "1px solid " + (mine ? "transparent" : m.via === "offline" ? "rgba(245,158,11,0.55)" : "var(--line)"),
+        fontFamily: "var(--ui)",
+        fontSize: 13.5,
+        lineHeight: 1.4,
+        letterSpacing: -0.1,
+        wordBreak: "break-word"
+      } }, /* @__PURE__ */ React.createElement(MarkdownText, { text: read.text, onNameCard })));
+    })(), read.form && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 6 } }, /* @__PURE__ */ React.createElement(DkChatForm, { form: read.form, submitted, peer, onSubmit: onFormSubmit })), m.assistant && onAssistantRemove && /* @__PURE__ */ React.createElement(AssistantPanel, { m, T, lang, onRemove: onAssistantRemove, onAdopt: onAssistantAdopt }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 4, margin: "3px 3px 0" } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 10, color: "var(--faint)" } }, m.time), (() => {
+      const st = m.file ? m.file.status : m.status;
+      const sentDone = mine && st && st !== "queued" && st !== "sending" && st !== "failed" && st !== "cancelled";
+      const via = !mine ? m.via : sentDone ? m.via === "offline" ? "offline" : "online" : null;
+      if (!via)
+        return null;
+      const title = mine ? via === "offline" ? T.viaOutOffline || "posted to the offline relay \u2014 they get it when they come online" : T.viaOutOnline || "sent over a live session (online)" : via === "offline" ? "delivered via express relay (offline)" : "delivered over a live session (online)";
+      return /* @__PURE__ */ React.createElement("span", { title, style: { fontFamily: "var(--mono)", fontSize: 9, color: via === "offline" ? "#f59e0b" : "var(--faint)" } }, via === "offline" ? "\u79BB\u7EBF" : "\u5728\u7EBF");
+    })(), !selMode && m.id && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        title: T.delete || "delete",
+        onClick: (e) => {
+          e.stopPropagation();
+          onDelete(m.id);
+        },
+        style: { background: "none", border: "none", cursor: "pointer", padding: 0, marginLeft: 2, display: "inline-flex", opacity: 0.55 }
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: "trash", size: 11, stroke: 2, color: "var(--faint)" })
+    ), mine && m.file && ["queued", "sending", "failed", "cancelled"].includes(m.file.status) ? null : mine && m.status === "failed" ? (
+      /* Not delivered. Says so, and one tap tries again — silently
+         rendering this as a sent message is how a chat loses mail. */
+      /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          title: m.error || (T.msgFailedHint || "not delivered \u2014 tap to try again"),
+          onClick: (e) => {
+            e.stopPropagation();
+            onRetryMsg && onRetryMsg(m);
+          },
+          style: { display: "inline-flex", alignItems: "center", gap: 3, background: "none", border: "none", cursor: "pointer", padding: 0 }
+        },
+        /* @__PURE__ */ React.createElement(Icon, { name: "alert", size: 11, stroke: 2.2, color: "var(--danger)" }),
+        /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 10, color: "var(--danger)" } }, T.msgFailed || "not sent \xB7 retry")
+      )
+    ) : mine && (m.status === "queued" || m.status === "sending") ? /* @__PURE__ */ React.createElement(
+      "span",
+      {
+        style: { display: "inline-flex", alignItems: "center", gap: 2 },
+        title: m.status === "sending" ? "delivering\u2026" : "waiting for peer \u2014 will send when they're online"
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: "clock", size: 11, stroke: 2.2, color: "var(--faint)" }),
+      /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 10, color: "var(--faint)" } }, m.status === "sending" ? T.sendingMsg || "sending" : T.queued || "queued")
+    ) : mine && m.via === "offline" && m.status !== "queued" && m.status !== "sending" ? /* @__PURE__ */ React.createElement(Icon, { name: "check", size: 12, stroke: 2.2, color: "#f59e0b", title: T.viaOutOffline || "posted to the offline relay \u2014 they get it when they come online" }) : mine && m.status === "sent" && m.confirmed === false ? /* @__PURE__ */ React.createElement(Icon, { name: "check", size: 12, stroke: 2.2, color: "var(--faint)", title: T.sentUnconfirmed || "sent \u2014 not confirmed by the peer" }) : mine && m.status && /* @__PURE__ */ React.createElement(Icon, { name: "checkCheck", size: 12, stroke: 2.2, color: m.status === "read" ? "var(--accent)" : "var(--faint)" })))
+  );
+}
+function Conversation({ T, peer, lang, peers, onOpenChat, thread: threadProp, onSend, onSendFile, onSendRtcFile, onAlias, onRemove, onOpenNet, onCall, onReloadThread, hasEarlier, onLoadEarlier, onAssistantRemove, onAssistantAdopt, isProtocol, muted, onToggleMute, phone, onBack }) {
+  const scrollRef = React.useRef(null);
+  const prependRef = React.useRef(null);
+  const [earlierBusy, setEarlierBusy] = React.useState(false);
+  const isGroup = React.useMemo(() => dkThreadIsGroup(threadProp), [threadProp]);
+  const followScrollRef = React.useRef(true);
+  const fileRef = React.useRef(null);
+  const rtcFileRef = React.useRef(null);
+  const [menu, setMenu] = React.useState(false);
+  const [pubProfile, setPubProfile] = React.useState(false);
+  const [nameCardProf, setNameCardProf] = React.useState(null);
+  const [selMode, setSelMode] = React.useState(false);
+  const [sel, setSel] = React.useState(() => /* @__PURE__ */ new Set());
+  const [hidden, setHidden] = React.useState(() => /* @__PURE__ */ new Set());
+  const [fileBusy, setFileBusy] = React.useState(() => ({}));
+  const [filePatch, setFilePatch] = React.useState(() => ({}));
+  const [flash, setFlash] = React.useState(null);
+  const flashTimer = React.useRef(null);
+  const showFlash = (kind, msg) => {
+    if (flashTimer.current)
+      clearTimeout(flashTimer.current);
+    setFlash({ kind, msg });
+    flashTimer.current = setTimeout(() => setFlash(null), 2500);
+  };
+  React.useEffect(() => () => {
+    if (flashTimer.current)
+      clearTimeout(flashTimer.current);
+  }, []);
+  React.useEffect(() => {
+    setSelMode(false);
+    setSel(/* @__PURE__ */ new Set());
+    setHidden(/* @__PURE__ */ new Set());
+    setFileBusy({});
+    setFilePatch({});
+    setFlash(null);
+    followScrollRef.current = true;
+  }, [peer.id]);
+  React.useEffect(() => {
+    setFilePatch((p) => {
+      let changed = false;
+      const next = { ...p };
+      for (const m of threadProp || []) {
+        if (!m || !m.id || !next[m.id] || !m.file)
+          continue;
+        if (m.file.status === next[m.id].status) {
+          delete next[m.id];
+          changed = true;
+        }
+      }
+      return changed ? next : p;
+    });
+  }, [threadProp]);
+  const baseThread = threadProp && threadProp.length ? threadProp : [{ day: "Today" }, { from: "them", time: "\u2014", text: lang === "zh" ? "\u6682\u65E0\u6D88\u606F\u8BB0\u5F55\uFF0C\u53D1\u4E2A\u6D88\u606F\u6253\u4E2A\u62DB\u547C\u5427\u3002" : "No messages yet. Say hi." }];
+  const thread = React.useMemo(() => {
+    if (!Object.keys(filePatch).length)
+      return baseThread;
+    return baseThread.map((m) => {
+      if (!m || !m.id || !m.file || !filePatch[m.id])
+        return m;
+      return { ...m, file: { ...m.file, ...filePatch[m.id] } };
+    });
+  }, [baseThread, filePatch]);
+  const answered = React.useMemo(() => {
+    if (!window.ChatComponents)
+      return /* @__PURE__ */ new Map();
+    return window.ChatComponents.answers(
+      thread.filter((m) => m.from === "me").map((m) => m.text || "")
+    );
+  }, [thread]);
+  const scrollToBottom = () => {
+    const el = scrollRef.current;
+    if (el)
+      el.scrollTop = el.scrollHeight;
+  };
+  const updateFollowScroll = () => {
+    const el = scrollRef.current;
+    if (!el)
+      return;
+    followScrollRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+  };
+  React.useLayoutEffect(() => {
+    const el = scrollRef.current;
+    const pre = prependRef.current;
+    if (pre && el && el.scrollHeight !== pre.h) {
+      el.scrollTop = pre.top + (el.scrollHeight - pre.h);
+      prependRef.current = null;
+      return;
+    }
+    if (followScrollRef.current)
+      scrollToBottom();
+  }, [peer.id, thread]);
+  React.useEffect(() => {
+    prependRef.current = null;
+    setEarlierBusy(false);
+  }, [peer.id]);
+  const loadEarlier = () => {
+    const el = scrollRef.current;
+    if (!onLoadEarlier || earlierBusy)
+      return;
+    if (el)
+      prependRef.current = { h: el.scrollHeight, top: el.scrollTop };
+    followScrollRef.current = false;
+    setEarlierBusy(true);
+    Promise.resolve(onLoadEarlier()).finally(() => setEarlierBusy(false));
+  };
+  const toggleSel = (id) => setSel((s) => {
+    const n = new Set(s);
+    n.has(id) ? n.delete(id) : n.add(id);
+    return n;
+  });
+  const clearBusy = (id) => setFileBusy((b) => {
+    const n = { ...b };
+    delete n[id];
+    return n;
+  });
+  const doReveal = (name) => {
+    if (!name)
+      return;
+    dkApi.revealFile(name).then((r) => {
+      if (!r || r.ok === false) {
+        const missing = /not found/i.test(r && r.error || "");
+        showFlash("err", missing ? lang === "zh" ? "\u672C\u5730\u6CA1\u6709\u8FD9\u4E2A\u6587\u4EF6\u7684\u526F\u672C(\u5B83\u662F\u65E7\u7248\u672C\u53D1\u9001\u7684,\u5F53\u65F6\u53D1\u5B8C\u5373\u5220;\u65B0\u53D1\u9001\u7684\u6587\u4EF6\u90FD\u4F1A\u4FDD\u7559)" : "No local copy of this file \u2014 it was sent by an older version that did not keep sent copies. Files sent from now on are kept." : (lang === "zh" ? "\u65E0\u6CD5\u5728\u6587\u4EF6\u7BA1\u7406\u5668\u4E2D\u663E\u793A: " : "Could not reveal file: ") + (r && r.error || ""));
+      }
+    });
+  };
+  const doOpenFile = (name) => {
+    if (!name)
+      return;
+    fetch(dkFileDownloadUrl(name), { method: "GET", headers: { range: "bytes=0-0" } }).then((r) => {
+      if (r.ok || r.status === 206)
+        window.open(dkFileUrl(name), "_blank", "noopener");
+      else
+        showFlash("err", lang === "zh" ? "\u672C\u5730\u6CA1\u6709\u8FD9\u4E2A\u6587\u4EF6\u7684\u526F\u672C(\u65E7\u7248\u672C\u53D1\u9001\u7684\u6587\u4EF6\u672A\u4FDD\u7559;\u65B0\u53D1\u9001\u7684\u90FD\u4F1A\u4FDD\u7559)" : "No local copy \u2014 sent before local copies were kept.");
+    }).catch(() => showFlash("err", lang === "zh" ? "\u6253\u5F00\u5931\u8D25" : "Could not open the file"));
+  };
+  const doCancel = (id) => {
+    if (!id || fileBusy[id])
+      return;
+    setFileBusy((b) => ({ ...b, [id]: "cancel" }));
+    showFlash("ok", T.cancelling || "Cancelling\u2026");
+    dkApi.cancelSend(peer.userId, [id]).then((r) => {
+      if (!r || r.ok === false) {
+        const msg = (T.cancelFailed || "Cancel failed") + ": " + (r && r.error || "daemon unavailable");
+        showFlash("err", msg);
+        window.alert(msg);
+      } else if (!r.cancelled) {
+        const msg = T.cancelMissing || "No active transfer was found. Refresh and try again.";
+        showFlash("err", msg);
+        window.alert(msg);
+      } else {
+        setFilePatch((p) => ({ ...p, [id]: { status: "cancelled", pct: void 0, kbps: void 0 } }));
+        showFlash("ok", T.cancelled || "Transfer cancelled");
+        if (onReloadThread)
+          onReloadThread();
+      }
+    }).catch((e) => {
+      const msg = (T.cancelFailed || "Cancel failed") + ": " + String(e);
+      showFlash("err", msg);
+      window.alert(msg);
+    }).finally(() => clearBusy(id));
+  };
+  const doRetryMsg = (m) => {
+    if (!m || m.id == null)
+      return;
+    dkApi.retry(m.id, peer.userId, m.text || "").then(() => onReloadThread && onReloadThread());
+  };
+  const doRetry = (id) => {
+    if (!id || fileBusy[id])
+      return;
+    setFileBusy((b) => ({ ...b, [id]: "retry" }));
+    setFilePatch((p) => ({ ...p, [id]: { status: "sending", pct: 0, kbps: void 0 } }));
+    showFlash("ok", T.retrying || "Retrying\u2026");
+    dkApi.retrySend(peer.userId, [id]).then((r) => {
+      if (r && r.ok === false) {
+        setFilePatch((p) => {
+          const n = { ...p };
+          delete n[id];
+          return n;
+        });
+        const msg = (T.retryFailed || "Retry failed") + ": " + (r.error || "");
+        showFlash("err", msg);
+        window.alert(msg);
+      } else if (!r || !r.retried) {
+        setFilePatch((p) => {
+          const n = { ...p };
+          delete n[id];
+          return n;
+        });
+        const msg = T.retryMissing || "No retryable transfer or original file is unavailable.";
+        showFlash("err", msg);
+        window.alert(msg);
+      } else {
+        showFlash("ok", T.retried || "Transfer restarted");
+        if (onReloadThread)
+          onReloadThread();
+      }
+    }).catch((e) => {
+      setFilePatch((p) => {
+        const n = { ...p };
+        delete n[id];
+        return n;
+      });
+      const msg = (T.retryFailed || "Retry failed") + ": " + String(e);
+      showFlash("err", msg);
+      window.alert(msg);
+    }).finally(() => clearBusy(id));
+  };
+  const doDelete = (ids) => {
+    ids = ids.filter(Boolean);
+    if (!ids.length)
+      return;
+    if (!window.confirm(ids.length === 1 ? T.delete1 || "Delete this message and its file?" : (T.deleteN || "Delete {n} selected?").replace("{n}", ids.length)))
+      return;
+    setHidden((h) => {
+      const n = new Set(h);
+      ids.forEach((i) => n.add(i));
+      return n;
+    });
+    dkApi.delFiles(peer.userId, ids).catch(() => {
+    });
+    setSel(/* @__PURE__ */ new Set());
+    setSelMode(false);
+  };
+  const [draft, setDraft] = React.useState("");
+  const [hist, setHist] = React.useState([]);
+  const histIdx = React.useRef(null);
+  const histStash = React.useRef("");
+  React.useEffect(() => {
+    histIdx.current = null;
+    histStash.current = "";
+    if (!peer.app) {
+      setHist([]);
+      return;
+    }
+    try {
+      setHist(JSON.parse(localStorage.getItem(DK_CMD_HIST_KEY) || "[]"));
+    } catch (e) {
+      setHist([]);
+    }
+  }, [peer.id, peer.app]);
+  const rememberCommand = (text) => {
+    setHist((h) => {
+      const next = (h[h.length - 1] === text ? h : h.concat(text)).slice(-DK_CMD_HIST_MAX);
+      if (peer.app) {
+        try {
+          localStorage.setItem(DK_CMD_HIST_KEY, JSON.stringify(next));
+        } catch (e) {
+        }
+      }
+      return next;
+    });
+    histIdx.current = null;
+    histStash.current = "";
+  };
+  const walkHistory = (dir) => {
+    if (!hist.length)
+      return false;
+    let i = histIdx.current;
+    if (i === null) {
+      if (dir > 0)
+        return false;
+      histStash.current = draft;
+      i = hist.length - 1;
+    } else {
+      i += dir;
+      if (i >= hist.length) {
+        histIdx.current = null;
+        setDraft(histStash.current);
+        return true;
+      }
+      if (i < 0)
+        i = 0;
+    }
+    histIdx.current = i;
+    setDraft(hist[i]);
+    return true;
+  };
+  const [dragOver, setDragOver] = React.useState(false);
+  const [sending, setSending] = React.useState(null);
+  const [theater, setTheater] = React.useState(null);
+  React.useEffect(() => {
+    setDraft("");
+  }, [peer.id]);
+  React.useEffect(() => {
+    setTheater(null);
+  }, [peer.id]);
+  React.useEffect(() => {
+    if (!theater)
+      return;
+    const onKey = (e) => {
+      if (e.key === "Escape")
+        setTheater(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [theater]);
+  const sendDraft = () => {
+    if (draft.trim()) {
+      followScrollRef.current = true;
+      rememberCommand(draft.trim());
+      onSend(draft);
+      setDraft("");
+      requestAnimationFrame(scrollToBottom);
+    }
+  };
+  const finishRef = React.useRef(null);
+  finishRef.current = (done) => {
+    const report = failureReport(done, lang);
+    if (report)
+      window.alert(report);
+    else
+      showFlash("ok", successFlash(done, lang));
+    requestAnimationFrame(scrollToBottom);
+  };
+  const queueRef = React.useRef(null);
+  if (!queueRef.current) {
+    queueRef.current = createFileSendQueue({
+      onChange: (items) => setSending(items.length ? items : null),
+      onFinish: (done) => finishRef.current && finishRef.current(done)
+    });
+  }
+  const sendFiles = (files, mode) => {
+    const sender = mode === "webrtc" ? onSendRtcFile : onSendFile;
+    if (!files || !files.length || !sender)
+      return;
+    followScrollRef.current = true;
+    queueRef.current.add(files, sender, { via: mode, peerId: peer.id });
+  };
+  const mySending = sending ? sending.filter((s) => s.peerId === peer.id) : [];
+  const onDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    sendFiles(e.dataTransfer.files);
+  };
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: { flex: 1, minWidth: 0, minHeight: 0, display: "flex", flexDirection: "column", background: "var(--bg)", position: "relative" },
+      onDragOver: (e) => {
+        e.preventDefault();
+        if (!dragOver)
+          setDragOver(true);
+      },
+      onDragLeave: (e) => {
+        if (e.currentTarget === e.target)
+          setDragOver(false);
+      },
+      onDrop
+    },
+    dragOver && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", inset: 0, zIndex: 30, background: "rgba(91,140,255,0.10)", border: "2px dashed var(--accent)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none", fontFamily: "var(--mono)", fontSize: 14, color: "var(--accent)" } }, lang === "zh" ? "\u677E\u5F00\u53D1\u9001\u6587\u4EF6" : "Drop to send files"),
+    /* @__PURE__ */ React.createElement("div", { style: { height: phone ? 56 : 60, boxSizing: "content-box", paddingTop: phone ? "env(safe-area-inset-top, 0px)" : 0, flexShrink: 0, borderBottom: "1px solid var(--line)", display: "flex", alignItems: "center", gap: phone ? 8 : 12, paddingLeft: phone ? 4 : 16, paddingRight: phone ? 8 : 16, background: "var(--panel)" } }, phone && onBack && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: onBack,
+        title: T && T.back || "Back",
+        "aria-label": T && T.back || "Back",
+        style: { width: 40, height: 44, flexShrink: 0, border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: "chevronLeft", size: 26, stroke: 2.2, color: "var(--accent)" })
+    ), /* @__PURE__ */ React.createElement("div", { onClick: () => setPubProfile(true), title: T && T.pubOpen || "View public profile", style: { cursor: "pointer", flexShrink: 0 } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer, size: 34, radius: 8 })), /* @__PURE__ */ React.createElement("div", { style: { minWidth: 0, flex: phone ? 1 : void 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, minWidth: 0 } }, /* @__PURE__ */ React.createElement("span", { onClick: () => setPubProfile(true), style: { display: "inline-flex", alignItems: "center", gap: 5, minWidth: 0, cursor: "pointer" } }, /* @__PURE__ */ React.createElement(
+      DkVerifiedName,
+      {
+        userid: peer.app ? null : peer.userId,
+        name: peer.alias,
+        fallback: shortKey(peer.userId, phone ? 6 : 10, phone ? 4 : 6),
+        T,
+        markSize: 14,
+        style: { fontFamily: peer.alias ? "var(--ui)" : "var(--mono)", fontSize: 15, fontWeight: 700, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 }
+      }
+    )), peer.app && !phone && /* @__PURE__ */ React.createElement(Tag, { tone: "accent" }, "APP"), peer.agent && !phone && /* @__PURE__ */ React.createElement(Tag, { tone: "accent" }, "agent"), isGroup && !phone && /* @__PURE__ */ React.createElement(Tag, null, T && T.groupTag || "group"), !phone && !peer.app && /* @__PURE__ */ React.createElement(RouteTag, { peer })), peer.app ? (
+      // The internal id is not an address anyone can use and not a name
+      // anyone chose; saying what this row IS is more use than showing it.
+      /* @__PURE__ */ React.createElement("div", { style: { marginTop: 2, fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, T && T.assistantSub || "Local \xB7 APP")
+    ) : phone ? /* @__PURE__ */ React.createElement("div", { style: { marginTop: 2, display: "flex" } }, /* @__PURE__ */ React.createElement(RouteTag, { peer })) : /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginTop: 2 } }, /* @__PURE__ */ React.createElement(Mono, { size: 11.5, dim: true, copy: peer.userId, title: peer.userId }, shortKey(peer.userId, 10, 6)), onOpenNet && /* @__PURE__ */ React.createElement("span", { style: { color: "var(--line)" } }, "\xB7"), onOpenNet && /* @__PURE__ */ React.createElement("button", { onClick: () => onOpenNet(peer), title: T && T.openNet || "Network view", style: { background: "none", border: "none", cursor: "pointer", padding: 0, color: "var(--accent)", display: "inline-flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement(Icon, { name: "network", size: 12, stroke: 2 })), /* @__PURE__ */ React.createElement(Mono, { size: 11.5, dim: true, copy: peer.ip, title: peer.ip }, peer.ip), peer.address && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { color: "var(--line)" } }, "\xB7"), /* @__PURE__ */ React.createElement(
+      Mono,
+      {
+        size: 11.5,
+        dim: true,
+        icon: "share",
+        copy: peer.address,
+        title: `${T && T.copyAddr || "Copy address \u2014 share it so someone else can add this friend"}
+${peer.address}`
+      },
+      shortKey(peer.address, 8, 6)
+    )))), !phone && /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), onToggleMute && !phone && /* @__PURE__ */ React.createElement(
+      Btn,
+      {
+        icon: muted ? "bellOff" : "bell",
+        title: muted ? T && T.unmuteSound || "Turn sound back on for this chat" : T && T.muteSound || "Mute sound for this chat",
+        onClick: () => onToggleMute(peer.id)
+      }
+    ), onCall && !peer.app && /* @__PURE__ */ React.createElement(Btn, { icon: "phone", title: T && T.audioCall || "Audio call", onClick: () => onCall(peer.userId, false) }), onCall && !peer.app && /* @__PURE__ */ React.createElement(Btn, { icon: "video", title: T && T.videoCall || "Video call", onClick: () => onCall(peer.userId, true) }), onSendRtcFile && !peer.app && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        ref: rtcFileRef,
+        type: "file",
+        multiple: true,
+        style: { display: "none" },
+        onChange: (e) => {
+          sendFiles(e.target.files, "webrtc");
+          e.target.value = "";
+        }
+      }
+    ), !phone && /* @__PURE__ */ React.createElement(Btn, { icon: "file", title: T && T.sendWebrtcFile || "Send file via WebRTC", onClick: () => rtcFileRef.current && rtcFileRef.current.click() })), /* @__PURE__ */ React.createElement("div", { style: { position: "relative" } }, /* @__PURE__ */ React.createElement(Btn, { icon: "more", onClick: () => setMenu((v) => !v) }), menu && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { onClick: () => setMenu(false), style: { position: "fixed", inset: 0, zIndex: 40 } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", right: 0, top: 36, zIndex: 50, width: 180, background: "var(--panel-2)", border: "1px solid var(--line)", borderRadius: 9, padding: 6, boxShadow: "0 14px 40px rgba(0,0,0,0.4)" } }, phone && onToggleMute && /* @__PURE__ */ React.createElement(MenuItem, { icon: muted ? "bell" : "bellOff", label: muted ? T && T.unmuteSound || "Turn sound back on" : T && T.muteSound || "Mute sound", onClick: () => {
+      setMenu(false);
+      onToggleMute(peer.id);
+    } }), phone && onSendRtcFile && !peer.app && /* @__PURE__ */ React.createElement(MenuItem, { icon: "file", label: T && T.sendWebrtcFile || "Send file via WebRTC", onClick: () => {
+      setMenu(false);
+      rtcFileRef.current && rtcFileRef.current.click();
+    } }), phone && !peer.app && onOpenNet && /* @__PURE__ */ React.createElement(MenuItem, { icon: "network", label: T && T.openNet || "Network view", onClick: () => {
+      setMenu(false);
+      onOpenNet(peer);
+    } }), !peer.app && /* @__PURE__ */ React.createElement(MenuItem, { icon: "hash", label: T.alias, onClick: () => {
+      setMenu(false);
+      onAlias(peer);
+    } }), /* @__PURE__ */ React.createElement(MenuItem, { icon: "check", label: T.selectDelete || "Select & delete", onClick: () => {
+      setMenu(false);
+      setSelMode(true);
+    } }), !peer.app && /* @__PURE__ */ React.createElement("div", { style: { height: 1, background: "var(--line)", margin: "5px 4px" } }), !peer.app && /* @__PURE__ */ React.createElement(MenuItem, { icon: "trash", label: T.remove, danger: true, onClick: () => {
+      setMenu(false);
+      onRemove(peer);
+    } }))))),
+    peer.pending && /* @__PURE__ */ React.createElement("div", { style: {
+      flexShrink: 0,
+      padding: "7px 16px",
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      background: "color-mix(in srgb, #d29922 12%, var(--panel))",
+      borderBottom: "1px solid var(--line)",
+      fontSize: 12.5,
+      color: "var(--text)"
+    } }, /* @__PURE__ */ React.createElement(Icon, { name: "clock", size: 13, stroke: 2.2, color: "#d29922" }), /* @__PURE__ */ React.createElement("span", null, T.pendingFriend || "Waiting for them to accept your friend request \u2014 messages will queue and deliver once they do.")),
+    /* @__PURE__ */ React.createElement("div", { ref: scrollRef, onScroll: updateFollowScroll, style: { flex: 1, overflow: "auto", padding: phone ? "12px 10px" : "18px 22px", WebkitOverflowScrolling: "touch" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 1200, margin: "0 auto" } }, hasEarlier && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", margin: "4px 0 10px" } }, /* @__PURE__ */ React.createElement(Btn, { size: "sm", onClick: loadEarlier, disabled: earlierBusy }, earlierBusy ? T.loadingEarlier || "Loading\u2026" : T.loadEarlier || "Load earlier messages")), collapseProtocol(thread, isProtocol || (() => false), lang).filter((m) => m.day || m.protocol || !hidden.has(m.id)).map((m, i) => m.day ? /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", justifyContent: "center", margin: "14px 0" } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 10.5, fontWeight: 600, color: "var(--faint)", background: "var(--chip)", padding: "3px 10px", borderRadius: 999 } }, m.day)) : m.protocol ? /* @__PURE__ */ React.createElement("div", { key: m.id || i, style: { display: "flex", justifyContent: "center", margin: "4px 0" } }, /* @__PURE__ */ React.createElement("span", { title: m.text, style: {
+      fontFamily: "var(--mono)",
+      fontSize: 10.5,
+      color: "var(--faint)",
+      maxWidth: "86%",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis"
+    } }, m.line)) : /* @__PURE__ */ React.createElement(
+      Msg,
+      {
+        key: m.id || i,
+        m,
+        peer,
+        T,
+        lang,
+        isGroup,
+        onTheater: setTheater,
+        onAssistantRemove,
+        onAssistantAdopt,
+        onDelete: (id) => doDelete([id]),
+        onCancel: doCancel,
+        onRetry: doRetry,
+        onRetryMsg: doRetryMsg,
+        onReveal: doReveal,
+        onOpenFile: doOpenFile,
+        onCall,
+        onFormSubmit: () => onReloadThread && onReloadThread(),
+        onNameCard: (card) => setNameCardProf(card),
+        answered,
+        busy: m.id ? fileBusy[m.id] : void 0,
+        selMode,
+        selected: sel.has(m.id),
+        onToggleSel: toggleSel
+      }
+    )))),
+    selMode && /* @__PURE__ */ React.createElement("div", { style: { flexShrink: 0, borderTop: "1px solid var(--line)", padding: "10px 16px", background: "var(--panel)", display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--faint)" } }, sel.size, " ", T.selected || "selected"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), /* @__PURE__ */ React.createElement(Btn, { size: "sm", onClick: () => {
+      setSelMode(false);
+      setSel(/* @__PURE__ */ new Set());
+    } }, T.cancel || "Cancel"), /* @__PURE__ */ React.createElement(Btn, { size: "sm", tone: "danger", icon: "trash", onClick: () => doDelete([...sel]) }, T.delete || "Delete")),
+    /* @__PURE__ */ React.createElement("div", { style: { flexShrink: 0, borderTop: "1px solid var(--line)", padding: phone ? "8px 8px calc(8px + env(safe-area-inset-bottom, 0px))" : "12px 16px", background: "var(--panel)" } }, flash && /* @__PURE__ */ React.createElement("div", { style: {
+      maxWidth: 1200,
+      margin: "0 auto 8px",
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      fontFamily: "var(--mono)",
+      fontSize: 11.5,
+      color: flash.kind === "err" ? "var(--danger)" : "var(--accent)"
+    } }, /* @__PURE__ */ React.createElement(
+      Icon,
+      {
+        name: flash.kind === "err" ? "x" : "check",
+        size: 13,
+        stroke: 2.2,
+        color: flash.kind === "err" ? "var(--danger)" : "var(--accent)"
+      }
+    ), flash.msg), mySending.length > 0 && /* @__PURE__ */ React.createElement("div", { "data-testid": "file-send-queue", style: { maxWidth: 1200, margin: "0 auto 8px", display: "flex", flexDirection: "column", gap: 3, fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)", maxHeight: 132, overflowY: "auto" } }, mySending.length > 1 && /* @__PURE__ */ React.createElement("div", { style: { color: "var(--dim)" } }, (lang === "zh" ? "\u53D1\u9001 " : "Sending ") + mySending.filter((s) => s.status === "sent" || s.status === "failed").length + " / " + mySending.length + (lang === "zh" ? " \u4E2A\u6587\u4EF6" : " files")), mySending.map((s) => /* @__PURE__ */ React.createElement("div", { key: s.id, "data-status": s.status, style: { display: "flex", alignItems: "center", gap: 8, minWidth: 0, color: s.status === "failed" ? "var(--danger)" : void 0 } }, /* @__PURE__ */ React.createElement(
+      Icon,
+      {
+        name: s.status === "sent" ? "check" : s.status === "failed" ? "x" : "paperclip",
+        size: 13,
+        stroke: 2,
+        color: s.status === "failed" ? "var(--danger)" : s.status === "waiting" ? "var(--faint)" : "var(--accent)"
+      }
+    ), /* @__PURE__ */ React.createElement("span", { style: { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 } }, (s.status === "sending" ? lang === "zh" ? "\u53D1\u9001\u4E2D: " : "Sending: " : "") + (s.via === "webrtc" ? "WebRTC \xB7 " : "") + s.name + (s.status === "sending" ? (s.size ? " \xB7 " + dkFileSize(s.sent || 0) + " / " + dkFileSize(s.size) : "") + (s.pct != null ? " \xB7 " + Math.min(100, Math.max(0, s.pct)).toFixed(1) + "%" : "") + (s.kbps != null ? " \xB7 " + dkSpeed(s.kbps) : "") : s.status === "waiting" ? " \xB7 " + (s.size ? dkFileSize(s.size) + " \xB7 " : "") + (lang === "zh" ? "\u7B49\u5F85\u4E2D" : "waiting") : s.status === "failed" ? " \xB7 " + (s.error || "") : " \xB7 " + (lang === "zh" ? "\u5DF2\u63D0\u4EA4" : "done")))))), /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", gap: phone ? 6 : 10 } }, /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        ref: fileRef,
+        type: "file",
+        multiple: true,
+        style: { display: "none" },
+        onChange: (e) => {
+          sendFiles(e.target.files);
+          e.target.value = "";
+        }
+      }
+    ), !peer.app && /* @__PURE__ */ React.createElement(Btn, { icon: "paperclip", title: T.sendFile, onClick: () => fileRef.current && fileRef.current.click() }), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        value: draft,
+        onChange: (e) => {
+          histIdx.current = null;
+          setDraft(e.target.value);
+        },
+        onKeyDown: (e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendDraft();
+            return;
+          }
+          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            if (walkHistory(e.key === "ArrowUp" ? -1 : 1))
+              e.preventDefault();
+          }
+        },
+        placeholder: phone ? `${T.message}\u2026` : `${T.message} ${verifiedLabel(peer.app ? null : peer.userId, peer.alias) || shortKey(peer.userId, 6, 4)}\u2026`,
+        style: { flex: 1, height: 38, borderRadius: 9, border: "1px solid var(--line)", background: "var(--panel-2)", color: "var(--text)", fontFamily: "var(--ui)", fontSize: 13.5, padding: "0 14px", outline: "none", minWidth: 0 }
+      }
+    ), /* @__PURE__ */ React.createElement(Btn, { tone: "solid", icon: "arrowUp", title: T.send, onClick: sendDraft }))),
+    theater && /* @__PURE__ */ React.createElement("div", { onClick: () => setTheater(null), style: {
+      position: "absolute",
+      inset: 0,
+      zIndex: 60,
+      background: "rgba(0,0,0,0.86)",
+      display: "flex",
+      flexDirection: "column"
+    } }, /* @__PURE__ */ React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { flexShrink: 0, height: 46, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "0 14px" } }, /* @__PURE__ */ React.createElement("span", { style: { minWidth: 0, fontFamily: "var(--mono)", fontSize: 12, color: "rgba(255,255,255,0.72)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, theater.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, flexShrink: 0 } }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        title: lang === "zh" ? "\u5168\u5C4F" : "fullscreen",
+        onClick: () => {
+          const el = document.getElementById("dk-theater-media");
+          if (el && el.requestFullscreen)
+            el.requestFullscreen();
+        },
+        style: { width: 34, height: 34, borderRadius: 8, border: "none", background: "rgba(255,255,255,0.14)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: "maximize", size: 18, stroke: 2, color: "#fff" })
+    ), /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        title: (lang === "zh" ? "\u5173\u95ED" : "close") + " \xB7 Esc",
+        onClick: () => setTheater(null),
+        style: { width: 34, height: 34, borderRadius: 8, border: "none", background: "rgba(255,255,255,0.14)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }
+      },
+      /* @__PURE__ */ React.createElement(Icon, { name: "x", size: 20, stroke: 2.2, color: "#fff" })
+    ))), /* @__PURE__ */ React.createElement("div", { onClick: () => setTheater(null), style: { flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 16px 16px" } }, theater.kind === "video" ? /* @__PURE__ */ React.createElement(
+      "video",
+      {
+        id: "dk-theater-media",
+        src: theater.url,
+        controls: true,
+        autoPlay: true,
+        onClick: (e) => e.stopPropagation(),
+        style: { maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: 6, background: "#000" }
+      }
+    ) : /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        id: "dk-theater-media",
+        src: theater.url,
+        alt: theater.name,
+        onClick: (e) => e.stopPropagation(),
+        style: { maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: 6 }
+      }
+    ))),
+    pubProfile && /* @__PURE__ */ React.createElement(DkPublicProfile, { T, userid: peer.userId, fallbackName: verifiedLabel(peer.userId, peer.alias), isFriend: true, onClose: () => setPubProfile(false) }),
+    nameCardProf && (() => {
+      const cardFriend2 = cardFriend(nameCardProf, peers);
+      return /* @__PURE__ */ React.createElement(
+        DkPublicProfile,
+        {
+          T,
+          userid: cardFriend2 && cardFriend2.userId || nameCardProf.userid || nameCardProf.address,
+          fallbackName: cardFriend2 && cardFriend2.alias || nameCardProf.name || nameCardProf.ens,
+          card: nameCardProf,
+          friend: cardFriend2,
+          isFriend: !!cardFriend2,
+          onMessage: cardFriend2 && onOpenChat ? () => {
+            onOpenChat(cardFriend2.id);
+            setNameCardProf(null);
+          } : void 0,
+          onClose: () => setNameCardProf(null)
+        }
+      );
+    })()
+  );
+}
+function MenuItem({ icon, label, onClick, danger }) {
+  return /* @__PURE__ */ React.createElement("button", { onClick, style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    width: "100%",
+    textAlign: "left",
+    padding: "8px 9px",
+    borderRadius: 6,
+    border: "none",
+    cursor: "pointer",
+    background: "transparent",
+    fontFamily: "var(--mono)",
+    fontSize: 12.5,
+    fontWeight: 600,
+    color: danger ? "var(--danger)" : "var(--text)"
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: icon, size: 15, stroke: 2, color: danger ? "var(--danger)" : "var(--dim)" }), " ", label);
+}
+function ChatEmpty({ T }) {
+  return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, color: "var(--faint)", background: "var(--bg)" } }, /* @__PURE__ */ React.createElement(Icon, { name: "message", size: 40, stroke: 1.4, color: "var(--line)" }), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 13 } }, T.pickPeer));
+}
+function ChatTab({ T, lang, peers, requests, activeId, thread, isProtocol, protocolFix, onSelect, onAct, onAdd, onSend, onSendFile, onSendRtcFile, onAlias, onRemove, onOpenNet, onCall, onReloadThread, hasEarlier, onLoadEarlier, onAssistantRemove, onAssistantAdopt, prefillAddr, onPrefillConsumed, deepLinkPending, muted, onToggleMute, phone, onBack }) {
+  const peer = peers.find((p) => p.id === activeId);
+  if (phone) {
+    if (!peer && deepLinkPending) {
+      return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: "var(--panel)", color: "var(--faint)", fontFamily: "var(--mono)", fontSize: 12.5 } }, lang === "zh" ? "\u6B63\u5728\u6253\u5F00\u5BF9\u8BDD\u2026" : "Opening chat\u2026");
+    }
+    return peer ? /* @__PURE__ */ React.createElement(Conversation, { T, peer, lang, peers, onOpenChat: onSelect, thread, isProtocol, onSend, onSendFile, onSendRtcFile, onAlias, onRemove, onOpenNet, onCall, onReloadThread, hasEarlier, onLoadEarlier, onAssistantRemove, onAssistantAdopt, muted: !!muted && muted.includes(peer.id), onToggleMute, phone: true, onBack }) : /* @__PURE__ */ React.createElement(PeerSidebar, { T, peers, requests, activeId, onSelect, onAct, onAdd, prefillAddr, onPrefillConsumed, muted, isProtocol, protocolFix, wide: true });
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, display: "flex", minWidth: 0, minHeight: 0 } }, /* @__PURE__ */ React.createElement(PeerSidebar, { T, peers, requests, activeId, onSelect, onAct, onAdd, prefillAddr, onPrefillConsumed, muted, isProtocol, protocolFix }), peer ? /* @__PURE__ */ React.createElement(Conversation, { T, peer, lang, peers, onOpenChat: onSelect, thread, isProtocol, onSend, onSendFile, onSendRtcFile, onAlias, onRemove, onOpenNet, onCall, onReloadThread, hasEarlier, onLoadEarlier, onAssistantRemove, onAssistantAdopt, muted: !!muted && muted.includes(peer.id), onToggleMute }) : /* @__PURE__ */ React.createElement(ChatEmpty, { T }));
+}
+Object.assign(window, { ChatTab });
+
+// src/profile.jsx
+function CopyBtn({ value, copiedText = "Copied", copyFailedText = "Copy failed", copyTitle = "Copy" }) {
+  const [status, setStatus] = React.useState(null);
+  const timer = React.useRef(null);
+  React.useEffect(() => () => {
+    if (timer.current)
+      clearTimeout(timer.current);
+  }, []);
+  const onCopy = async () => {
+    if (timer.current)
+      clearTimeout(timer.current);
+    setStatus("copied");
+    timer.current = setTimeout(() => setStatus(null), 1400);
+    const ok = await dkCopy(value);
+    if (!ok) {
+      setStatus("failed");
+      if (timer.current)
+        clearTimeout(timer.current);
+      timer.current = setTimeout(() => setStatus(null), 1400);
+    }
+  };
+  const message = status === "copied" ? copiedText : copyFailedText;
+  return /* @__PURE__ */ React.createElement("span", { "aria-live": "polite", style: { display: "inline-flex", flexShrink: 0 } }, /* @__PURE__ */ React.createElement(
+    Btn,
+    {
+      icon: status === "copied" ? "check" : status === "failed" ? "x" : "copy",
+      tone: status === "copied" ? "ok" : status === "failed" ? "danger" : "ghost",
+      size: "sm",
+      title: status ? message : copyTitle,
+      onClick: onCopy
+    }
+  ));
+}
+function FieldRow({ T, label, value, mono = true, copy, qr, onQr, last }) {
+  return /* @__PURE__ */ React.createElement("div", { className: "dk-row", style: { display: "flex", alignItems: "center", gap: 14, padding: "13px 16px", borderBottom: last ? "none" : "1px solid var(--line)" } }, /* @__PURE__ */ React.createElement("span", { className: "dk-lbl", style: { width: 130, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 } }, label), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, fontFamily: mono ? "var(--mono)" : "var(--ui)", fontSize: 13.5, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, value), copy && /* @__PURE__ */ React.createElement(CopyBtn, { value, copiedText: T.copied, copyFailedText: T.copyFailed, copyTitle: T.copy }), qr && /* @__PURE__ */ React.createElement(Btn, { icon: "qr", size: "sm", onClick: () => onQr && onQr(value, label) }));
+}
+function DkVersionRow({ T, me }) {
+  const unsure = me.verFromBackend === false;
+  const pill = (name, ver, mark) => /* @__PURE__ */ React.createElement("span", { key: name, style: { display: "inline-flex", alignItems: "baseline", gap: 5 } }, /* @__PURE__ */ React.createElement("span", { style: { color: "var(--faint)" } }, name), /* @__PURE__ */ React.createElement("span", { title: mark && unsure ? T.verInstalledHint : void 0 }, ver || "\u2014", mark && unsure && ver ? /* @__PURE__ */ React.createElement("span", { style: { color: "var(--faint)" } }, " ?") : null));
+  const line = (label, items) => /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("span", { style: { width: 52, flexShrink: 0, fontSize: 11, color: "var(--faint)" } }, label), /* @__PURE__ */ React.createElement("span", { style: { display: "flex", gap: 12, flexWrap: "wrap" } }, items));
+  const embedded = me.backend === "embedded";
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: 14, padding: "13px 16px", borderBottom: "1px solid var(--line)" } }, /* @__PURE__ */ React.createElement("span", { className: "dk-lbl", style: { width: 130, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 } }, T.version), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 6, fontFamily: "var(--mono)", fontSize: 13, color: "var(--text)" } }, line(T.verApp || "app", [
+    pill("beagle", me.beagleVer),
+    pill("peer-webrtc", me.webrtcVer),
+    ...embedded ? [pill("peer", me.peerVer)] : []
+  ]), !embedded && line(T.verDaemon || "daemon", [
+    pill("lan", me.lanVer, true),
+    pill("peer", me.peerVer, true)
+  ]), !embedded && unsure && /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: "var(--faint)", fontFamily: "var(--ui)" } }, T.verInstalledHint), line(T.verChannel || "channel", [/* @__PURE__ */ React.createElement("span", { key: "ch" }, me.channel)])));
+}
+function DkQr({ value, px = 248 }) {
+  const qr = React.useMemo(() => {
+    if (typeof qrcode === "undefined" || !value)
+      return null;
+    try {
+      const q = qrcode(0, "M");
+      q.addData(value);
+      q.make();
+      return q;
+    } catch (e) {
+      return null;
+    }
+  }, [value]);
+  if (!qr)
+    return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--faint)", padding: 48 } }, "QR unavailable");
+  const count = qr.getModuleCount();
+  const quiet = 4;
+  const total = count + quiet * 2;
+  return /* @__PURE__ */ React.createElement("svg", { width: px, height: px, viewBox: `0 0 ${total} ${total}`, shapeRendering: "crispEdges", style: { display: "block", borderRadius: 10, background: "#fff", maxWidth: "100%", height: "auto" } }, /* @__PURE__ */ React.createElement("rect", { width: total, height: total, fill: "#fff" }), Array.from({ length: count }).map(
+    (_, r) => Array.from({ length: count }).map(
+      (__, c) => qr.isDark(r, c) ? /* @__PURE__ */ React.createElement("rect", { key: `${r}-${c}`, x: c + quiet, y: r + quiet, width: 1.04, height: 1.04, fill: "#000" }) : null
+    )
+  ));
+}
+function DkQrModal({ T, value, label, onClose }) {
+  return /* @__PURE__ */ React.createElement("div", { onClick: onClose, style: { position: "fixed", inset: 0, zIndex: 90, background: "color-mix(in oklab, #000, transparent 38%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 } }, /* @__PURE__ */ React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 16, padding: 22, display: "flex", flexDirection: "column", alignItems: "center", gap: 16, maxWidth: 340 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, alignSelf: "stretch" } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 700, letterSpacing: 0.5, textTransform: "uppercase", color: "var(--faint)" } }, label), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), /* @__PURE__ */ React.createElement(Btn, { icon: "x", size: "sm", onClick: onClose })), /* @__PURE__ */ React.createElement(DkQr, { value }), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--dim)", wordBreak: "break-all", textAlign: "center", maxWidth: 280, lineHeight: 1.5 } }, value), /* @__PURE__ */ React.createElement(CopyBtn, { value, copiedText: T.copied, copyFailedText: T.copyFailed, copyTitle: T.copy })));
+}
+function dkShareLink(me) {
+  const ens = String(me && me.ens || "").trim();
+  const slug = ens ? ens.replace(/\.beagles\.eth$/i, "") : String(me && me.carrier || "");
+  return slug ? "https://app.beagle.chat/" + encodeURIComponent(slug) : "";
+}
+function DkShareSheet({ T, me, zh, onClose }) {
+  const link = dkShareLink(me);
+  const [copied, setCopied] = React.useState(false);
+  const copy = () => dkCopy(link).then(() => {
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  });
+  const canShare = typeof navigator !== "undefined" && !!navigator.share;
+  const share = () => navigator.share({ title: (me.name || "Beagle") + " \xB7 Beagle", text: zh ? "\u5728 Beagle \u4E0A\u52A0\u6211\u4E3A\u597D\u53CB" : "Add me on Beagle", url: link }).catch(() => {
+  });
+  return /* @__PURE__ */ React.createElement("div", { onClick: onClose, style: { position: "fixed", inset: 0, zIndex: 90, background: "color-mix(in oklab, #000, transparent 38%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 } }, /* @__PURE__ */ React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { width: 360, maxWidth: "100%", background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 16, padding: 18, display: "flex", flexDirection: "column", alignItems: "center", gap: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, alignSelf: "stretch" } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer: { ...me, id: me.userId, agent: false }, size: 34, radius: 9, dot: false }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 13.5, fontWeight: 700, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, zh ? "\u5206\u4EAB\u6211\u7684\u94FE\u63A5" : "Share my link"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--faint)" } }, zh ? "\u5BF9\u65B9\u6253\u5F00\u5373\u53EF\u52A0\u4F60\u4E3A\u597D\u53CB" : "Anyone who opens it can add you")), /* @__PURE__ */ React.createElement(Btn, { icon: "x", size: "sm", onClick: onClose })), link ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(DkQr, { value: link, px: 220 }), /* @__PURE__ */ React.createElement("div", { style: { alignSelf: "stretch", fontFamily: "var(--mono)", fontSize: 12, color: "var(--text)", wordBreak: "break-all", textAlign: "center", lineHeight: 1.5, padding: "8px 10px", borderRadius: 8, background: "var(--panel-2)", border: "1px solid var(--line)" } }, link), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 8, alignSelf: "stretch" } }, /* @__PURE__ */ React.createElement(Btn, { tone: "solid", icon: copied ? "check" : "copy", size: "lg", onClick: copy, style: { flex: 1 } }, copied ? zh ? "\u5DF2\u590D\u5236" : "Copied" : zh ? "\u590D\u5236\u94FE\u63A5" : "Copy link"), canShare && /* @__PURE__ */ React.createElement(Btn, { icon: "share", size: "lg", onClick: share, style: { flex: 1 } }, zh ? "\u5206\u4EAB" : "Share"))) : /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)", padding: 24 } }, zh ? "\u8EAB\u4EFD\u8FD8\u6CA1\u51C6\u5907\u597D" : "Your identity is not ready yet.")));
+}
+function Card({ label, children, trailing }) {
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10 } }, /* @__PURE__ */ React.createElement(Section, { label, trailing }), /* @__PURE__ */ React.createElement("div", { style: { borderRadius: 11, border: "1px solid var(--line)", overflow: "hidden", background: "var(--panel)" } }, children));
+}
+function DkEditModal({ T, me, onClose, onSave }) {
+  const [name, setName] = React.useState(me.name || "");
+  const [desc, setDesc] = React.useState(me.description || "");
+  const save = () => {
+    const n = name.trim();
+    if (n)
+      onSave(n, desc);
+  };
+  const field = { height: 38, borderRadius: 9, border: "1px solid var(--line)", background: "var(--panel-2)", color: "var(--text)", fontFamily: "var(--ui)", fontSize: 13.5, padding: "0 12px", outline: "none" };
+  const lbl = { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 };
+  const onKey = (e) => {
+    if (e.key === "Enter")
+      save();
+    if (e.key === "Escape")
+      onClose();
+  };
+  return /* @__PURE__ */ React.createElement("div", { onClick: onClose, style: { position: "fixed", inset: 0, zIndex: 90, background: "color-mix(in oklab, #000, transparent 38%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 } }, /* @__PURE__ */ React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { width: 440, maxWidth: "92vw", background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 16, padding: 22, display: "flex", flexDirection: "column", gap: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center" } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 13, fontWeight: 700, color: "var(--text)" } }, T.editProfile), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), /* @__PURE__ */ React.createElement(Btn, { icon: "x", size: "sm", onClick: onClose })), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 6 } }, /* @__PURE__ */ React.createElement("span", { style: lbl }, "display name"), /* @__PURE__ */ React.createElement("input", { value: name, onChange: (e) => setName(e.target.value), onKeyDown: onKey, autoFocus: true, maxLength: 48, style: field })), /* @__PURE__ */ React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 6 } }, /* @__PURE__ */ React.createElement("span", { style: lbl }, "status message"), /* @__PURE__ */ React.createElement("input", { value: desc, onChange: (e) => setDesc(e.target.value), onKeyDown: onKey, maxLength: 120, placeholder: "optional \u2014 a short bio friends will see", style: field })), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--faint)" } }, "Your userid (the unique identity) can't change \u2014 only the display name + status."), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 2 } }, /* @__PURE__ */ React.createElement(Btn, { size: "sm", onClick: onClose }, T.cancel || "cancel"), /* @__PURE__ */ React.createElement(Btn, { tone: "accent", size: "sm", onClick: save }, T.save || "save"))));
+}
+var dkPunkCache = /* @__PURE__ */ new Map();
+var dkPunkInflight = /* @__PURE__ */ new Map();
+function dkPunkLookup(id) {
+  if (dkPunkCache.has(id))
+    return Promise.resolve(dkPunkCache.get(id));
+  let pending = dkPunkInflight.get(id);
+  if (!pending) {
+    pending = fetch(`/api/punk/${id}`).then((r) => r.json()).then((d) => d && d.ok && d.punk && d.punk.image ? d.punk : null).catch(() => null).then((punk) => {
+      dkPunkCache.set(id, punk);
+      dkPunkInflight.delete(id);
+      return punk;
+    });
+    dkPunkInflight.set(id, pending);
+  }
+  return pending;
+}
+function DkPunkAvatar({ id, size, radius, fallbackSeed }) {
+  const [img, setImg] = React.useState(() => (dkPunkCache.get(id) || {}).image || null);
+  React.useEffect(() => {
+    let dead = false;
+    if (dkPunkCache.has(id)) {
+      setImg((dkPunkCache.get(id) || {}).image || null);
+      return void 0;
+    }
+    setImg(null);
+    dkPunkLookup(id).then((punk) => {
+      if (!dead && punk)
+        setImg(punk.image);
+    });
+    return () => {
+      dead = true;
+    };
+  }, [id]);
+  if (!img)
+    return /* @__PURE__ */ React.createElement(DkIdenticon, { seed: fallbackSeed || String(id), size, radius });
+  return /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      src: img,
+      alt: "",
+      width: size,
+      height: size,
+      style: { width: size, height: size, borderRadius: radius, background: "#638596", imageRendering: "pixelated", flexShrink: 0 }
+    }
+  );
+}
+var dkEnsAvCache = /* @__PURE__ */ new Map();
+var dkEnsAvInflight = /* @__PURE__ */ new Map();
+function dkEnsAvLookup(key, query) {
+  if (dkEnsAvCache.has(key))
+    return Promise.resolve(dkEnsAvCache.get(key));
+  let pending = dkEnsAvInflight.get(key);
+  if (!pending) {
+    pending = fetch(`/api/ens-profile?${query}`).then((r) => r.json()).then((d) => {
+      var _a;
+      return d.ok && d.profile ? { avatarUrl: d.profile.avatarUrl || null, punkId: (_a = d.profile.punkId) != null ? _a : null } : null;
+    }).catch(() => null).then((v) => {
+      dkEnsAvCache.set(key, v);
+      dkEnsAvInflight.delete(key);
+      return v;
+    });
+    dkEnsAvInflight.set(key, pending);
+  }
+  return pending;
+}
+function DkEnsAvatar({ userid, name, fallbackSeed, size, radius }) {
+  const key = userid || (name ? `name:${name}` : null);
+  const query = userid ? `userid=${encodeURIComponent(userid)}` : name ? `name=${encodeURIComponent(name)}` : null;
+  const [pub, setPub] = React.useState(() => key && dkEnsAvCache.has(key) ? dkEnsAvCache.get(key) : void 0);
+  React.useEffect(() => {
+    let dead = false;
+    if (!query) {
+      setPub(null);
+      return void 0;
+    }
+    if (dkEnsAvCache.has(key)) {
+      setPub(dkEnsAvCache.get(key));
+      return void 0;
+    }
+    dkEnsAvLookup(key, query).then((v) => {
+      if (!dead)
+        setPub(v);
+    });
+    return () => {
+      dead = true;
+    };
+  }, [key]);
+  if (pub && pub.avatarUrl)
+    return /* @__PURE__ */ React.createElement(DkImgAvatar, { url: pub.avatarUrl, seed: fallbackSeed || userid, size, radius });
+  if (pub && pub.punkId != null)
+    return /* @__PURE__ */ React.createElement(DkPunkAvatar, { id: pub.punkId, size, radius, fallbackSeed: fallbackSeed || userid });
+  return /* @__PURE__ */ React.createElement(DkIdenticon, { seed: fallbackSeed || userid || "x", size, radius });
+}
+function DkPunkPicker({ T, onPick, onClose }) {
+  const TYPES = ["any", "female", "male", "zombie", "ape", "alien"];
+  const tLabel = (t) => T && T["pt_" + t] || t;
+  const [type, setType] = React.useState("any");
+  const [batch, setBatch] = React.useState(null);
+  const [err, setErr] = React.useState(null);
+  const [gen, setGen] = React.useState(0);
+  React.useEffect(() => {
+    let dead = false;
+    setBatch(null);
+    setErr(null);
+    fetch(`/api/punk-list?type=${type}&limit=24`).then((r) => r.json()).then((d) => {
+      if (dead)
+        return;
+      if (d.ok)
+        setBatch(d.list || []);
+      else
+        setErr(d.error || "load failed");
+    }).catch((e) => {
+      if (!dead)
+        setErr(String(e && e.message || e));
+    });
+    return () => {
+      dead = true;
+    };
+  }, [type, gen]);
+  return /* @__PURE__ */ React.createElement("div", { onClick: onClose, style: { position: "fixed", inset: 0, zIndex: 90, background: "color-mix(in oklab, #000, transparent 38%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 } }, /* @__PURE__ */ React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { width: 480, maxWidth: "94vw", background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 16, padding: 20, display: "flex", flexDirection: "column", gap: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 13, fontWeight: 700, color: "var(--text)" } }, T.ensPickPunk || "choose a punk"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), /* @__PURE__ */ React.createElement(Btn, { size: "sm", onClick: () => setGen(gen + 1) }, T.ensShuffle || "shuffle"), /* @__PURE__ */ React.createElement(Btn, { icon: "x", size: "sm", onClick: onClose })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap" } }, TYPES.map((t) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: t,
+      onClick: () => setType(t),
+      style: {
+        padding: "4px 10px",
+        borderRadius: 999,
+        border: "1px solid var(--line)",
+        cursor: "pointer",
+        background: type === t ? "var(--accent)" : "transparent",
+        color: type === t ? "#fff" : "var(--dim)",
+        fontFamily: "var(--ui)",
+        fontSize: 12
+      }
+    },
+    tLabel(t)
+  ))), /* @__PURE__ */ React.createElement("div", { style: { minHeight: 232 } }, err ? /* @__PURE__ */ React.createElement("div", { style: { padding: 16, fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, err) : !batch ? /* @__PURE__ */ React.createElement("div", { style: { padding: 16, fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, T.dirLoading || "loading\u2026") : /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8 } }, batch.map((p) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: p.id,
+      title: `#${p.id} \xB7 ${p.type}`,
+      onClick: () => onPick(Number(p.id)),
+      style: { padding: 0, border: "1px solid var(--line)", borderRadius: 10, cursor: "pointer", background: "#638596", overflow: "hidden", aspectRatio: "1" }
+    },
+    /* @__PURE__ */ React.createElement("img", { src: p.image, alt: `punk #${p.id}`, style: { width: "100%", height: "100%", imageRendering: "pixelated", display: "block" } })
+  ))))));
+}
+function DkNameCardNoProfile({ T, view, card, onMessage, isMe }) {
+  const [addState, setAddState] = React.useState(null);
+  const lbl = { width: 110, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 };
+  const rowS = { display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderTop: "1px solid var(--line)" };
+  const cta = { padding: "7px 16px", borderRadius: 9, cursor: "pointer", fontFamily: "var(--ui)", fontSize: 12.5, border: "none", background: "var(--accent)", color: "#fff" };
+  const kvRow = (label, value, head = 8) => /* @__PURE__ */ React.createElement("div", { style: rowS, key: label }, /* @__PURE__ */ React.createElement("span", { style: lbl }, label), /* @__PURE__ */ React.createElement("span", { title: value, style: { flex: 1, minWidth: 0, fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--dim)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, shortKey(value, head, 6)), /* @__PURE__ */ React.createElement(CopyBtn, { value, copiedText: T.copied, copyFailedText: T.copyFailed, copyTitle: T.copy }));
+  const add = () => {
+    setAddState("busy");
+    fetch("/api/add", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ address: view.address }) }).then((r) => r.json()).then((r) => setAddState(r.ok !== false ? "sent" : r.error || T.addFailed || "failed")).catch((e) => setAddState(String(e && e.message || e)));
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column" } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)", paddingBottom: 10, lineHeight: 1.5 } }, view.friend ? T.cardIsFriend || "Already in your chats." : T.cardNoEns || "No beagles.eth name registered."), card && card.description && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--dim)", paddingBottom: 10, lineHeight: 1.5 } }, card.description), view.userid && kvRow(T.userId || "user id", view.userid, 10), view.address && kvRow(T.addr || "address", view.address), !isMe && view.action && /* @__PURE__ */ React.createElement("div", { style: { ...rowS, justifyContent: "flex-end", gap: 8 } }, view.action === "chat" ? onMessage && /* @__PURE__ */ React.createElement("button", { onClick: onMessage, style: cta }, T.openChat || "Open chat") : addState === "sent" ? /* @__PURE__ */ React.createElement(Tag, { tone: "accent" }, T.dirSent || "requested") : addState && addState !== "busy" ? /* @__PURE__ */ React.createElement("span", { title: addState, style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--warn, #f59e0b)" } }, T.addFailed || "failed") : /* @__PURE__ */ React.createElement("button", { onClick: add, disabled: addState === "busy", style: { ...cta, opacity: addState === "busy" ? 0.6 : 1 } }, addState === "busy" ? "\u2026" : view.action === "join" ? T.joinGroup || "Join group" : T.dirAdd || "Add")));
+}
+function DkPublicProfile({ T, userid, fallbackName, onClose, isFriend, isMe, onMessage, card, friend }) {
+  const view = card ? nameCardView(card, friend ? [friend] : []) : null;
+  const [st, setSt] = React.useState({ loading: true });
+  const ensV = useEnsVerdict(userid, st.prof && st.prof.ens);
+  const [addState, setAddState] = React.useState(null);
+  const [recOpen, setRecOpen] = React.useState(false);
+  const [recPeers, setRecPeers] = React.useState(null);
+  const [recState, setRecState] = React.useState({});
+  const openRecommend = () => {
+    setRecOpen(true);
+    if (recPeers)
+      return;
+    fetch("/api/desktop").then((r) => r.json()).then((d) => {
+      const list = (d && d.peers || []).filter((p) => p.userId && p.userId !== userid && !p.pending);
+      setRecPeers(list);
+    }).catch(() => setRecPeers([]));
+  };
+  const recommendTo = (p) => {
+    const prof2 = st.prof || {};
+    const text = dkEncodeBeagleContact({
+      name: prof2.displayName || fallbackName || "",
+      ens: prof2.ens || "",
+      userid,
+      address: prof2.address || "",
+      avatar: prof2.avatarUrl || "",
+      description: prof2.description || ""
+    });
+    setRecState((s) => ({ ...s, [p.id]: "busy" }));
+    fetch("/api/chat-send", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ userid: p.userId, text }) }).then((r) => r.json()).then((r) => setRecState((s) => ({ ...s, [p.id]: r.ok !== false ? "sent" : r.error || "failed" }))).catch((e) => setRecState((s) => ({ ...s, [p.id]: String(e && e.message || e) })));
+  };
+  const addFriend = (address) => {
+    setAddState("busy");
+    fetch("/api/add", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ address }) }).then((r) => r.json()).then((r) => setAddState(r.ok !== false ? "sent" : r.error || T.addFailed || "failed")).catch((e) => setAddState(String(e && e.message || e)));
+  };
+  React.useEffect(() => {
+    let dead = false;
+    setSt({ loading: true });
+    fetch(`/api/ens-profile?userid=${encodeURIComponent(userid)}`).then((r) => r.json()).then((d) => {
+      if (!dead)
+        setSt({ loading: false, prof: d.ok && d.profile || null });
+    }).catch(() => {
+      if (!dead)
+        setSt({ loading: false, prof: null });
+    });
+    return () => {
+      dead = true;
+    };
+  }, [userid]);
+  const prof = st.prof;
+  const LINK_BASE = { twitter: "https://x.com/", linkedin: "https://www.linkedin.com/in/", github: "https://github.com/" };
+  const links = prof ? Object.entries(prof.links || {}) : [];
+  const lbl = { width: 110, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 };
+  const rowS = { display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderTop: "1px solid var(--line)" };
+  return /* @__PURE__ */ React.createElement("div", { onClick: onClose, style: { position: "fixed", inset: 0, zIndex: 90, background: "color-mix(in oklab, #000, transparent 38%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 } }, /* @__PURE__ */ React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { width: 420, maxWidth: "94vw", background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 16, padding: "20px 22px", display: "flex", flexDirection: "column", gap: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 14 } }, prof && prof.avatarUrl ? /* @__PURE__ */ React.createElement(DkImgAvatar, { url: prof.avatarUrl, seed: userid, size: 56, radius: 14 }) : prof && prof.punkId != null ? /* @__PURE__ */ React.createElement(DkPunkAvatar, { id: prof.punkId, size: 56, radius: 14, fallbackSeed: userid }) : friend ? /* @__PURE__ */ React.createElement(DkAvatar, { peer: friend, size: 56, radius: 14, dot: false }) : card && card.avatar ? /* @__PURE__ */ React.createElement(DkImgAvatar, { url: card.avatar, seed: userid, size: 56, radius: 14 }) : /* @__PURE__ */ React.createElement(DkIdenticon, { seed: userid, size: 56, radius: 14 }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 17, fontWeight: 700, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, prof && prof.displayName || fallbackName || shortKey(userid, 10, 6)), prof && prof.ens && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 5, fontFamily: "var(--mono)", fontSize: 12, color: "var(--accent)", marginTop: 2 } }, prof.ens, /* @__PURE__ */ React.createElement(DkEnsMark, { verdict: ensV, T }))), /* @__PURE__ */ React.createElement(Btn, { icon: "x", size: "sm", onClick: onClose })), st.loading ? /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, T.dirLoading || "loading\u2026") : !prof && view ? /* @__PURE__ */ React.createElement(DkNameCardNoProfile, { T, view, card, onMessage, isMe }) : !prof ? /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, T.pubNone || "No public profile \u2014 this user has not registered a beagles.eth name.") : /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column" } }, prof.description && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--dim)", paddingBottom: 12, lineHeight: 1.5 } }, prof.description), links.length > 0 && // Label keeps its column; pills wrap inside their OWN container so
+  // an overflowing pill lands under the first pill, never under the label.
+  /* @__PURE__ */ React.createElement("div", { style: { ...rowS, alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("span", { style: { ...lbl, paddingTop: 5 } }, T.linksCard || "links"), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0, display: "flex", gap: 8, flexWrap: "wrap" } }, links.map(([k, h]) => /* @__PURE__ */ React.createElement(
+    "a",
+    {
+      key: k,
+      href: (LINK_BASE[k] || "") + h,
+      target: "_blank",
+      rel: "noreferrer",
+      style: { display: "inline-flex", alignItems: "center", gap: 5, padding: "4px 10px", borderRadius: 999, border: "1px solid var(--line)", textDecoration: "none", fontFamily: "var(--ui)", fontSize: 12, color: "var(--accent)" }
+    },
+    k,
+    " \u2197"
+  )))), (() => {
+    const kvRow = (label, value, head = 8) => /* @__PURE__ */ React.createElement("div", { style: rowS, key: label }, /* @__PURE__ */ React.createElement("span", { style: lbl }, label), /* @__PURE__ */ React.createElement("span", { title: value, style: { flex: 1, minWidth: 0, fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--dim)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, shortKey(value, head, 6)), /* @__PURE__ */ React.createElement(CopyBtn, { value, copiedText: T.copied, copyFailedText: T.copyFailed, copyTitle: T.copy }));
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, prof.eth && kvRow("ethereum", prof.eth), prof.sol && kvRow("solana", prof.sol), kvRow(T.userId || "user id", userid, 10), prof.address && kvRow(T.addr || "address", prof.address));
+  })(), (() => {
+    const cta = { padding: "7px 16px", borderRadius: 9, cursor: "pointer", fontFamily: "var(--ui)", fontSize: 12.5 };
+    return /* @__PURE__ */ React.createElement("div", { style: { ...rowS, justifyContent: "flex-end", gap: 8 } }, !isMe && prof.address && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: openRecommend,
+        style: { ...cta, border: "1px solid var(--line)", background: "transparent", color: "var(--text)" }
+      },
+      T.pubRecommend || "Recommend"
+    ), isFriend && onMessage && /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: onMessage,
+        style: { ...cta, border: "none", background: "var(--accent)", color: "#fff" }
+      },
+      T.pubMessage || "Message"
+    ), !isMe && !isFriend && prof.address && (addState === "sent" ? /* @__PURE__ */ React.createElement(Tag, { tone: "accent" }, T.dirSent || "requested") : addState && addState !== "busy" ? /* @__PURE__ */ React.createElement("span", { title: addState, style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--warn, #f59e0b)" } }, T.addFailed || "failed") : /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => addFriend(prof.address),
+        disabled: addState === "busy",
+        style: { ...cta, border: "none", background: "var(--accent)", color: "#fff", opacity: addState === "busy" ? 0.6 : 1 }
+      },
+      addState === "busy" ? "\u2026" : view && view.isGroup ? T.joinGroup || "Join group" : T.dirAdd || "Add"
+    )));
+  })(), recOpen && /* @__PURE__ */ React.createElement("div", { style: { borderTop: "1px solid var(--line)", paddingTop: 10, display: "flex", flexDirection: "column", gap: 4, maxHeight: 200, overflowY: "auto" } }, /* @__PURE__ */ React.createElement("span", { style: { ...lbl, width: "auto", paddingBottom: 4 } }, T.pubRecTitle || "send this card to\u2026"), !recPeers ? /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--faint)" } }, T.dirLoading || "loading\u2026") : recPeers.length === 0 ? /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--faint)" } }, T.dirEmpty || "nobody") : recPeers.map((p) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: p.id,
+      onClick: () => !recState[p.id] && recommendTo(p),
+      style: { display: "flex", alignItems: "center", gap: 9, padding: "6px 8px", borderRadius: 9, border: "none", background: "transparent", cursor: recState[p.id] ? "default" : "pointer", textAlign: "left" }
+    },
+    /* @__PURE__ */ React.createElement(DkAvatar, { peer: p, size: 26, radius: 7, dot: false }),
+    /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, /* @__PURE__ */ React.createElement(DkVerifiedName, { userid: p.userId, name: p.alias, fallback: shortKey(p.userId, 8, 6), T })),
+    recState[p.id] === "sent" ? /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--online)" } }, T.pubRecSent || "sent \u2713") : recState[p.id] === "busy" ? /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--faint)" } }, "\u2026") : recState[p.id] ? /* @__PURE__ */ React.createElement("span", { title: recState[p.id], style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--warn, #f59e0b)" } }, T.addFailed || "failed") : /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--accent)" } }, T.send || "Send")
+  ))))));
+}
+function dkAvatarDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      try {
+        const S = 256;
+        const c = document.createElement("canvas");
+        c.width = S;
+        c.height = S;
+        const ctx = c.getContext("2d");
+        const side = Math.min(img.width, img.height);
+        ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, S, S);
+        const enc = (q) => {
+          let d = c.toDataURL("image/webp", q);
+          if (!d.startsWith("data:image/webp"))
+            d = c.toDataURL("image/jpeg", q);
+          return d;
+        };
+        let dataUrl = null;
+        for (const q of [0.9, 0.75, 0.55, 0.4]) {
+          dataUrl = enc(q);
+          if (dataUrl.length < 13e4)
+            break;
+        }
+        if (!dataUrl || dataUrl.length >= 13e4)
+          reject(new Error("too-big"));
+        else
+          resolve(dataUrl);
+      } catch (err) {
+        reject(err);
+      }
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("bad-image"));
+    };
+    img.src = url;
+  });
+}
+function DkEnsCard({ T, me, onRecord }) {
+  const [st, setSt] = React.useState({ loading: true });
+  const [label, setLabel] = React.useState("");
+  const [busy, setBusy] = React.useState(false);
+  const [msg, setMsg] = React.useState(null);
+  const reload = () => {
+    fetch("/api/ens-name").then((r) => r.json()).then((d) => {
+      setSt({ loading: false, registered: !!d.registered, record: d.record || null, mineOwned: !!d.mineOwned, writeBlocked: d.writeBlocked || "" });
+      if (d.registered && d.record && d.record.name)
+        setLabel(d.record.name.replace(/\.beagles\.eth$/i, ""));
+      if (onRecord)
+        onRecord(d.record || null);
+    }).catch((e) => setSt({ loading: false, error: String(e && e.message || e) }));
+  };
+  React.useEffect(() => {
+    reload();
+  }, []);
+  const post = (url, body) => {
+    setBusy(true);
+    setMsg(null);
+    return fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }).then((r) => r.json()).then((d) => {
+      setMsg(d.ok ? { tone: "ok", text: T.ensDone || "saved" } : { tone: "err", text: d.error || "failed" });
+      if (d.ok)
+        reload();
+      return d;
+    }).catch((e) => {
+      setMsg({ tone: "err", text: String(e && e.message || e) });
+    }).finally(() => setBusy(false));
+  };
+  const register = () => {
+    const l = label.trim();
+    if (l)
+      post("/api/ens-register", { name: l, displayName: me.name, description: me.description || "" });
+  };
+  const bind = (chain, address, proof) => post("/api/ens-bind-wallet", proof ? { chain, address, proof } : { chain, address });
+  const signing = () => {
+    setBusy(true);
+    setMsg({ tone: "ok", text: T.ensSigning || "approve the signature in your wallet\u2026" });
+  };
+  const walletErr = (e) => {
+    setBusy(false);
+    setMsg({ tone: "err", text: String(e && e.message || e) });
+  };
+  const bindEth = async () => {
+    const eth = window.ethereum;
+    if (!eth) {
+      setMsg({ tone: "err", text: T.ensNoEthWallet || "no Ethereum wallet extension found (MetaMask\u2026)" });
+      return;
+    }
+    try {
+      const a = await eth.request({ method: "eth_requestAccounts" });
+      if (!a || !a[0])
+        return;
+      signing();
+      const proof = await signEthProof(eth, { userid: me.userId, address: a[0] });
+      bind("eth", a[0], proof);
+    } catch (e) {
+      walletErr(e);
+    }
+  };
+  const bindSol = async () => {
+    const sol = window.phantom && window.phantom.solana || window.solana;
+    if (!sol) {
+      setMsg({ tone: "err", text: T.ensNoSolWallet || "no Solana wallet extension found (Phantom\u2026)" });
+      return;
+    }
+    try {
+      const r = await sol.connect();
+      const a = r && r.publicKey && r.publicKey.toString();
+      if (!a)
+        return;
+      signing();
+      const proof = await signSolProof(sol, { userid: me.userId, address: a });
+      bind("sol", a, proof);
+    } catch (e) {
+      walletErr(e);
+    }
+  };
+  const field = { flex: 1, minWidth: 0, height: 34, borderRadius: 8, border: "1px solid var(--line)", background: "var(--panel-2)", color: "var(--text)", fontFamily: "var(--mono)", fontSize: 13, padding: "0 10px", outline: "none" };
+  const row = { display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: "1px solid var(--line)" };
+  const rowLbl = { width: 130, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 };
+  const SOCIALS = [
+    { k: "twitter", base: "https://x.com/" },
+    { k: "linkedin", base: "https://www.linkedin.com/in/" },
+    { k: "github", base: "https://github.com/" }
+  ];
+  const [draft, setDraft] = React.useState({});
+  React.useEffect(() => {
+    const t = st.record && st.record.texts || {};
+    setDraft({ twitter: t["com.twitter"] || "", linkedin: t["com.linkedin"] || "", github: t["com.github"] || "" });
+  }, [st.record]);
+  const saveSocial = (k) => post("/api/ens-social", { key: k, value: (draft[k] || "").trim() });
+  const socialRow = ({ k, base }, last) => {
+    var _a;
+    const saved = (st.record && st.record.texts || {})["com." + k] || "";
+    const cur = (_a = draft[k]) != null ? _a : "";
+    return /* @__PURE__ */ React.createElement("div", { key: k, className: "dk-row", style: { ...row, borderBottom: last ? "none" : row.borderBottom } }, /* @__PURE__ */ React.createElement("span", { className: "dk-lbl", style: rowLbl }, k), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        value: cur,
+        onChange: (e) => setDraft({ ...draft, [k]: e.target.value }),
+        disabled: busy || !canWrite,
+        placeholder: T.linkPlaceholder || "username or profile URL",
+        onKeyDown: (e) => {
+          if (e.key === "Enter")
+            saveSocial(k);
+        },
+        style: field
+      }
+    ), saved && /* @__PURE__ */ React.createElement(
+      "a",
+      {
+        href: base + saved,
+        target: "_blank",
+        rel: "noreferrer",
+        title: base + saved,
+        style: { flexShrink: 0, fontFamily: "var(--mono)", fontSize: 13, color: "var(--accent)", textDecoration: "none" }
+      },
+      "\u2197"
+    ), /* @__PURE__ */ React.createElement(Btn, { tone: "accent", size: "sm", disabled: busy || !st.mineOwned || cur.trim() === saved, onClick: () => saveSocial(k) }, saved && !cur.trim() ? T.ensUnbind || "unbind" : T.save || "save"));
+  };
+  const [picking, setPicking] = React.useState(false);
+  const fileRef = React.useRef(null);
+  const canWrite = hostEnsWrite && !!st.mineOwned;
+  const canBind = hostWalletBind && !!st.mineOwned && !st.writeBlocked;
+  const rec = st.record;
+  const boundEth = rec && rec.addresses && rec.addresses["60"];
+  const boundSol = rec && rec.addresses && rec.addresses["501"];
+  const punkId = rec && rec.nft === "CryptoPunks" && rec.nftid > 0 ? rec.nftid : null;
+  const upAvatar = rec && rec.texts && rec.texts.avatar || null;
+  const pickPunk = (id) => {
+    setPicking(false);
+    post("/api/ens-avatar", { nftid: id });
+  };
+  const onUploadFile = (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!f)
+      return;
+    setBusy(true);
+    setMsg(null);
+    dkAvatarDataUrl(f).then((dataUrl) => post("/api/ens-avatar-upload", { dataUrl })).catch((err) => {
+      setBusy(false);
+      const m = err && err.message;
+      setMsg({ tone: "err", text: m === "too-big" ? T.ensTooBig || "image too large even after scaling" : m === "bad-image" ? T.ensBadImage || "cannot read that image" : String(m || err) });
+    });
+  };
+  const proven = (chain, bound) => {
+    if (rec && rec.owner && String(rec.owner).toLowerCase() === String(bound).toLowerCase())
+      return true;
+    try {
+      return JSON.parse((rec && rec.texts || {})[PROOF_KEY[chain]]).msg.indexOf("address: " + bound + "\n") >= 0;
+    } catch {
+      return false;
+    }
+  };
+  const walletRow = (lbl, chain, bound, onBind, last) => /* @__PURE__ */ React.createElement("div", { className: "dk-row", style: { ...row, borderBottom: last ? "none" : row.borderBottom } }, /* @__PURE__ */ React.createElement("span", { className: "dk-lbl", style: { width: 130, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 } }, lbl), bound ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12.5, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, bound), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 11, color: proven(chain, bound) ? "var(--online)" : "var(--faint)" } }, proven(chain, bound) ? T.ensProven || "signed by this wallet" : T.ensUnproven || "no wallet signature yet")), /* @__PURE__ */ React.createElement(CopyBtn, { value: bound, copiedText: T.copied, copyFailedText: T.copyFailed, copyTitle: T.copy }), !proven(chain, bound) && /* @__PURE__ */ React.createElement(Btn, { size: "sm", disabled: busy || !canBind, onClick: onBind }, T.ensProve || "sign"), /* @__PURE__ */ React.createElement(Btn, { size: "sm", tone: "danger", disabled: busy || !canBind, onClick: () => bind(chain, "") }, T.ensUnbind || "unbind")) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { flex: 1, fontFamily: "var(--ui)", fontSize: 12, color: "var(--faint)" } }, T.ensNotBound || "not bound"), /* @__PURE__ */ React.createElement(Btn, { size: "sm", disabled: busy || !canBind, onClick: onBind }, T.ensBind || "bind")));
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Card, { label: T.ensCard || "Name \xB7 beagles.eth" }, st.loading ? /* @__PURE__ */ React.createElement("div", { style: { padding: "14px 16px", fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, T.dirLoading || "loading\u2026") : /* @__PURE__ */ React.createElement(React.Fragment, null, !hostEnsWrite ? /* @__PURE__ */ React.createElement("div", { className: "dk-row dk-wrap", style: row }, /* @__PURE__ */ React.createElement("span", { className: "dk-lbl", style: { width: 130, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 } }, T.ensName || "name"), st.registered && rec && rec.name ? /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, fontFamily: "var(--mono)", fontSize: 13, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, rec.name) : /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, fontFamily: "var(--ui)", fontSize: 12, lineHeight: 1.5, color: "var(--faint)" } }, T.ensWebOnly || "Registering a beagles.eth name needs the Beagle phone or desktop app. Your avatar can be set above without one.")) : /* @__PURE__ */ React.createElement("div", { className: "dk-row dk-wrap", style: row }, /* @__PURE__ */ React.createElement("span", { className: "dk-lbl", style: { width: 130, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 } }, T.ensName || "name"), /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      value: label,
+      onChange: (e) => setLabel(e.target.value),
+      placeholder: T.ensPlaceholder || "yourname",
+      disabled: busy,
+      onKeyDown: (e) => {
+        if (e.key === "Enter")
+          register();
+      },
+      style: { ...field, minWidth: 110 }
+    }
+  ), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12.5, color: "var(--dim)", flexShrink: 0 } }, ".beagles.eth"), /* @__PURE__ */ React.createElement(Btn, { tone: "accent", size: "sm", disabled: busy || !label.trim(), onClick: register }, busy ? "\u2026" : st.registered && st.mineOwned ? T.ensUpdate || "update" : T.ensRegister || "register")), st.registered && !st.mineOwned && /* @__PURE__ */ React.createElement("div", { style: { padding: "10px 16px", borderBottom: "1px solid var(--line)", fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--faint)" } }, (T.ensWalletOwned || "registered via your mobile wallet as") + " ", /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)" } }, rec && rec.name)), st.registered && /* @__PURE__ */ React.createElement("div", { className: "dk-row dk-wrap", style: row }, /* @__PURE__ */ React.createElement("span", { className: "dk-lbl", style: { width: 130, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 } }, T.ensAvatar || "avatar"), upAvatar ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("img", { src: upAvatar, alt: "", width: 34, height: 34, style: { width: 34, height: 34, borderRadius: 9, objectFit: "cover", flexShrink: 0, background: "var(--panel-2)" } }), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--text)" } }, T.ensCustom || "custom image"), /* @__PURE__ */ React.createElement(Btn, { size: "sm", tone: "danger", disabled: busy || !canWrite, onClick: () => post("/api/ens-avatar", { nftid: null }) }, T.ensClear || "clear")) : punkId != null ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(DkPunkAvatar, { id: punkId, size: 34, radius: 9, fallbackSeed: me.userId }), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, minWidth: 0, fontFamily: "var(--mono)", fontSize: 12.5, color: "var(--text)" } }, `CryptoPunk #${punkId}`), /* @__PURE__ */ React.createElement(Btn, { size: "sm", tone: "danger", disabled: busy || !canWrite, onClick: () => post("/api/ens-avatar", { nftid: null }) }, T.ensClear || "clear")) : /* @__PURE__ */ React.createElement("span", { style: { flex: 1, fontFamily: "var(--ui)", fontSize: 12, color: "var(--faint)" } }, T.ensNotSet || "not set"), /* @__PURE__ */ React.createElement(Btn, { size: "sm", disabled: busy || !canWrite, onClick: () => fileRef.current && fileRef.current.click() }, T.ensUpload || "upload"), /* @__PURE__ */ React.createElement(Btn, { size: "sm", disabled: busy || !canWrite, onClick: () => setPicking(true) }, T.ensChoose || "choose"), /* @__PURE__ */ React.createElement("input", { ref: fileRef, type: "file", accept: "image/*", onChange: onUploadFile, style: { display: "none" } })), walletRow(T.ensEth || "ethereum", "eth", boundEth, bindEth, false), walletRow(T.ensSol || "solana", "sol", boundSol, bindSol, !msg && !st.writeBlocked), st.writeBlocked && hostWalletBind && /* @__PURE__ */ React.createElement("div", { style: { padding: "10px 16px", borderBottom: msg ? "1px solid var(--line)" : "none", fontFamily: "var(--ui)", fontSize: 12, lineHeight: 1.5, color: "var(--faint)" } }, st.writeBlocked), msg && /* @__PURE__ */ React.createElement("div", { style: { padding: "10px 16px", fontFamily: "var(--ui)", fontSize: 12, color: msg.tone === "ok" ? "var(--online)" : "var(--danger)" } }, msg.text)), picking && /* @__PURE__ */ React.createElement(DkPunkPicker, { T, onPick: pickPunk, onClose: () => setPicking(false) })), !st.loading && st.registered && /* @__PURE__ */ React.createElement(Card, { label: T.linksCard || "Links" }, SOCIALS.map((s, i) => socialRow(s, i === SOCIALS.length - 1))));
+}
+function DkUpdateCheck({ T }) {
+  const [st, setSt] = React.useState("idle");
+  const [info, setInfo] = React.useState(null);
+  const check = () => {
+    setSt("busy");
+    fetch("/api/update-check?force=1").then((r) => r.json()).then((d) => {
+      const behind = (d && d.updates || []).filter((u) => u.behind);
+      if (d && d.ok && behind.length) {
+        setInfo(d);
+        setSt("idle");
+      } else
+        setSt("latest");
+    }).catch(() => setSt("idle"));
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 14, padding: "13px 16px" } }, /* @__PURE__ */ React.createElement("span", { className: "dk-lbl", style: { width: 130, flexShrink: 0, fontFamily: "var(--mono)", fontSize: 11.5, fontWeight: 600, color: "var(--faint)", textTransform: "uppercase", letterSpacing: 0.5 } }, T.updCheckLabel || "updates"), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, fontFamily: "var(--ui)", fontSize: 12, color: st === "latest" ? "var(--online)" : "var(--faint)" } }, st === "latest" ? T.updLatest || "up to date \u2713" : ""), /* @__PURE__ */ React.createElement(Btn, { size: "sm", disabled: st === "busy", onClick: check }, st === "busy" ? "\u2026" : T.updCheck || "check for updates"), info && /* @__PURE__ */ React.createElement(DkUpdateModal, { T, info, onClose: () => setInfo(null) }));
+}
+function DkKeyBackup({ t }) {
+  const zh = t && t.lang === "zh";
+  const [busy, setBusy] = React.useState(false);
+  const [msg, setMsg] = React.useState(null);
+  const fileRef = React.useRef(null);
+  const save = async () => {
+    setBusy(true);
+    setMsg(null);
+    try {
+      const r = await fetch("/api/identity-export").then((x) => x.json());
+      if (!r.ok)
+        throw new Error(r.error || "export failed");
+      const body = JSON.stringify(r.data, null, 2);
+      const url = URL.createObjectURL(new Blob([body], { type: "application/json" }));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `beagle-key-${(r.data.publicKey || "").slice(0, 8)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4e3);
+      setMsg({ kind: "ok", text: zh ? "\u5DF2\u4FDD\u5B58\u3002\u4EFB\u4F55\u62FF\u5230\u8FD9\u4E2A\u6587\u4EF6\u7684\u4EBA\u5C31\u662F\u4F60\u3002" : "Saved. Anyone holding this file IS you." });
+    } catch (e) {
+      setMsg({ kind: "err", text: String(e && e.message || e) });
+    }
+    setBusy(false);
+  };
+  const load = async (file) => {
+    if (!file)
+      return;
+    if (!confirm(zh ? "\u5BFC\u5165\u4F1A\u66FF\u6362\u8FD9\u4E2A\u6D4F\u89C8\u5668\u4E0A\u7684\u8EAB\u4EFD\uFF0C\u5F53\u524D\u7684 userid\u3001\u597D\u53CB\u548C\u6D88\u606F\u90FD\u5C06\u65E0\u6CD5\u518D\u8BBF\u95EE\u3002\n\n\u5982\u679C\u8FD8\u6CA1\u5907\u4EFD\u5F53\u524D\u8EAB\u4EFD\uFF0C\u5148\u53D6\u6D88\u3002" : "Importing REPLACES this browser\u2019s identity. The current userid, friends and messages become unreachable.\n\nCancel first if you have not backed the current one up."))
+      return;
+    setBusy(true);
+    setMsg(null);
+    try {
+      const parsed = JSON.parse(await file.text());
+      const r = await fetch("/api/identity-import", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ keyfile: parsed })
+      }).then((x) => x.json());
+      if (!r.ok)
+        throw new Error(r.error || "import failed");
+      setMsg({ kind: "ok", text: zh ? "\u5DF2\u5BFC\u5165\uFF0C\u6B63\u5728\u91CD\u65B0\u52A0\u8F7D\u2026" : "Imported \u2014 reloading\u2026" });
+      setTimeout(() => location.reload(), 700);
+    } catch (e) {
+      setMsg({ kind: "err", text: String(e && e.message || e) });
+      setBusy(false);
+    }
+  };
+  const btn = (label, onClick, primary) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick,
+      disabled: busy,
+      style: {
+        padding: "8px 14px",
+        borderRadius: 9,
+        border: "1px solid var(--line)",
+        background: primary ? "var(--accent)" : "transparent",
+        color: primary ? "#fff" : "var(--text)",
+        fontFamily: "var(--ui)",
+        fontSize: 12.5,
+        cursor: busy ? "default" : "pointer",
+        opacity: busy ? 0.6 : 1
+      }
+    },
+    label
+  );
+  return /* @__PURE__ */ React.createElement(Card, { label: zh ? "\u5BC6\u94A5\u5907\u4EFD" : "Key backup" }, /* @__PURE__ */ React.createElement("div", { style: { padding: "13px 16px", display: "flex", flexDirection: "column", gap: 11 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)", lineHeight: 1.6 } }, zh ? "\u4F60\u7684\u5BC6\u94A5\u53EA\u5B58\u5728\u8FD9\u4E00\u4E2A\u6D4F\u89C8\u5668\u91CC\uFF0C\u6CA1\u6709\u670D\u52A1\u5668\u80FD\u8865\u53D1\u3002\u6E05\u9664\u7F51\u7AD9\u6570\u636E\u5C31\u6C38\u4E45\u6CA1\u4E86 \u2014\u2014 \u73B0\u5728\u5B58\u4E00\u4EFD\u3002" : "Your key exists only in this browser. No server can reissue it, and clearing site data destroys it for good. Save a copy now."), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 9, flexWrap: "wrap" } }, btn(zh ? "\u4E0B\u8F7D\u5BC6\u94A5\u6587\u4EF6" : "Download key file", save, true), btn(zh ? "\u4ECE\u6587\u4EF6\u6062\u590D" : "Restore from file", () => fileRef.current && fileRef.current.click()), /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      ref: fileRef,
+      type: "file",
+      accept: "application/json,.json",
+      style: { display: "none" },
+      onChange: (e) => {
+        const f = e.target.files && e.target.files[0];
+        e.target.value = "";
+        load(f);
+      }
+    }
+  )), msg && /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "var(--mono)",
+    fontSize: 11.5,
+    lineHeight: 1.5,
+    color: msg.kind === "ok" ? "var(--text)" : "#f85149"
+  } }, msg.text)));
+}
+function DkDisplaySettings({ t, setTweak }) {
+  const zh = t.lang === "zh";
+  const row = { display: "flex", alignItems: "center", gap: 13, padding: "13px 16px" };
+  const name = { flex: 1, fontFamily: "var(--mono)", fontSize: 13.5, fontWeight: 600, color: "var(--text)" };
+  const seg = (value, current, onPick, options) => /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6 } }, options.map(([v, label]) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: v,
+      onClick: () => onPick(v),
+      style: {
+        padding: "5px 12px",
+        borderRadius: 999,
+        cursor: "pointer",
+        fontFamily: "var(--ui)",
+        fontSize: 12.5,
+        border: "1px solid var(--line)",
+        background: current === v ? "var(--accent)" : "transparent",
+        color: current === v ? "#fff" : "var(--dim)"
+      }
+    },
+    label
+  )));
+  return /* @__PURE__ */ React.createElement(Card, { label: zh ? "\u663E\u793A" : "Display" }, /* @__PURE__ */ React.createElement("div", { style: { ...row, borderBottom: "1px solid var(--line)" } }, /* @__PURE__ */ React.createElement("span", { style: name }, zh ? "\u8BED\u8A00" : "Language"), seg("lang", t.lang, (v) => setTweak("lang", v), [["en", "EN"], ["zh", "\u4E2D\u6587"]])), /* @__PURE__ */ React.createElement("div", { className: "dk-row dk-wrap", style: row }, /* @__PURE__ */ React.createElement("span", { style: name }, zh ? "\u4E3B\u9898" : "Theme"), seg("theme", t.theme, (v) => setTweak("theme", v), [["dark", zh ? "\u6DF1\u8272" : "Dark"], ["light", zh ? "\u6D45\u8272" : "Light"]])));
+}
+function DkAlertSettings({ t, setTweak }) {
+  const zh = t.lang === "zh";
+  const toggle = (key, label, sub, last) => /* @__PURE__ */ React.createElement("label", { style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 13,
+    padding: "13px 16px",
+    cursor: "pointer",
+    borderBottom: last ? "none" : "1px solid var(--line)"
+  } }, /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "checkbox",
+      checked: t[key] !== false,
+      onChange: (e) => setTweak(key, e.target.checked),
+      style: { width: 16, height: 16, accentColor: "var(--accent)" }
+    }
+  ), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 13.5, fontWeight: 600, color: "var(--text)" } }, label), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--dim)", marginTop: 2 } }, sub)));
+  return /* @__PURE__ */ React.createElement(Card, { label: zh ? "\u63D0\u9192" : "Alerts" }, toggle(
+    "alertSound",
+    zh ? "\u65B0\u6D88\u606F\u63D0\u793A\u97F3" : "Sound for new messages",
+    zh ? "\u6536\u5230\u65B0\u6D88\u606F\u6216\u597D\u53CB\u8BF7\u6C42\u65F6\u64AD\u653E\u77ED\u4FC3\u63D0\u793A\u97F3\u3002\u6B63\u5728\u770B\u7684\u5F53\u524D\u4F1A\u8BDD\u4E0D\u4F1A\u54CD\u3002" : "A short chime when a message or friend request arrives. Silent for the conversation you are reading."
+  ), toggle(
+    "alertFlash",
+    zh ? "\u6807\u7B7E\u9875\u95EA\u70C1" : "Flash the tab",
+    zh ? "\u7A97\u53E3\u4E0D\u5728\u524D\u53F0\u65F6\uFF0C\u6807\u7B7E\u6807\u9898\u548C\u56FE\u6807\u95EA\u70C1\u63D0\u793A\uFF0C\u56DE\u5230\u7A97\u53E3\u5373\u505C\u6B62\u3002" : "While this window is in the background, the tab title and icon blink until you come back.",
+    true
+  ));
+}
+function DkAvatarSheet({ T, me, zh, onSet, onClose }) {
+  const [picking, setPicking] = React.useState(false);
+  const [busy, setBusy] = React.useState(false);
+  const [err, setErr] = React.useState(null);
+  const fileRef = React.useRef(null);
+  const canUpload = Object.prototype.hasOwnProperty.call(me, "avatarDataUrl");
+  const save = (p) => {
+    setBusy(true);
+    setErr(null);
+    return Promise.resolve(onSet(p)).then((r) => {
+      setBusy(false);
+      if (r && r.ok === false)
+        setErr(r.error || "failed");
+      else
+        onClose();
+    }).catch((e) => {
+      setBusy(false);
+      setErr(String(e && e.message || e));
+    });
+  };
+  const pickPunk = (id) => {
+    setPicking(false);
+    save(canUpload ? { punkId: id, avatarDataUrl: null } : { punkId: id });
+  };
+  const onFile = (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!f)
+      return;
+    setBusy(true);
+    setErr(null);
+    dkAvatarDataUrl(f).then((dataUrl) => save({ avatarDataUrl: dataUrl })).catch((x) => {
+      setBusy(false);
+      const m = x && x.message;
+      setErr(m === "too-big" ? T.ensTooBig || "image too large even after scaling" : m === "bad-image" ? T.ensBadImage || "cannot read that image" : String(m || x));
+    });
+  };
+  const has = me.punkId != null || !!(canUpload && me.avatarDataUrl);
+  const item = (icon, label, onClick, danger) => /* @__PURE__ */ React.createElement("button", { onClick, disabled: busy, style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    width: "100%",
+    padding: "13px 14px",
+    border: "none",
+    borderRadius: 10,
+    background: "var(--panel-2)",
+    cursor: busy ? "default" : "pointer",
+    opacity: busy ? 0.6 : 1,
+    fontFamily: "var(--ui)",
+    fontSize: 14,
+    color: danger ? "var(--danger)" : "var(--text)",
+    textAlign: "left"
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: icon, size: 18, stroke: 2, color: danger ? "var(--danger)" : "var(--accent)" }), label);
+  if (picking)
+    return /* @__PURE__ */ React.createElement(DkPunkPicker, { T, onPick: pickPunk, onClose: () => setPicking(false) });
+  return /* @__PURE__ */ React.createElement("div", { onClick: onClose, style: { position: "fixed", inset: 0, zIndex: 90, background: "color-mix(in oklab, #000, transparent 38%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 } }, /* @__PURE__ */ React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { width: 360, maxWidth: "100%", background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 16, padding: 16, display: "flex", flexDirection: "column", gap: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 4 } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer: { ...me, id: me.userId, agent: false }, size: 40, radius: 10, dot: false }), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, fontFamily: "var(--mono)", fontSize: 13.5, fontWeight: 700, color: "var(--text)" } }, zh ? "\u66F4\u6362\u5934\u50CF" : "Change avatar"), /* @__PURE__ */ React.createElement(Btn, { icon: "x", size: "sm", onClick: onClose })), item("sparkles", zh ? "\u9009\u4E00\u4E2A CryptoPunk" : "Choose a CryptoPunk", () => setPicking(true)), canUpload && item("image", zh ? "\u4E0A\u4F20\u7167\u7247" : "Upload a photo", () => fileRef.current && fileRef.current.click()), has && item("trash", zh ? "\u79FB\u9664\u5934\u50CF" : "Remove avatar", () => save(canUpload ? { punkId: null, avatarDataUrl: null } : { punkId: null }), true), /* @__PURE__ */ React.createElement("input", { ref: fileRef, type: "file", accept: "image/*", onChange: onFile, style: { display: "none" } }), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--faint)", lineHeight: 1.5, marginTop: 2 } }, zh ? "\u4E0D\u9700\u8981\u6CE8\u518C beagles.eth \u540D\u5B57\u3002\u597D\u53CB\u4F1A\u5728\u4E0B\u6B21\u6536\u5230\u4F60\u7684\u8D44\u6599\u65F6\u770B\u5230\u65B0\u5934\u50CF\u3002" : "No beagles.eth name needed. Friends see it the next time your profile reaches them."), err && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--danger)" } }, err)));
+}
+function ProfileTab({ T, me, onEdit, t, setTweak, onSetAvatar, sections, sectionProps }) {
+  var _a;
+  const [avatarSheet, setAvatarSheet] = React.useState(false);
+  const [qr, setQr] = React.useState(null);
+  const [editing, setEditing] = React.useState(false);
+  const [ensRec, setEnsRec] = React.useState(null);
+  const pubPunk = ensRec && ensRec.nft === "CryptoPunks" && ensRec.nftid > 0 ? ensRec.nftid : null;
+  const pubAvatar = ensRec && ensRec.texts && ensRec.texts.avatar || null;
+  const punkId = (_a = me.punkId) != null ? _a : pubPunk;
+  const upAvatar = me.avatarUrl || pubAvatar;
+  const canSetAvatar = !!onSetAvatar && !ensRec;
+  return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, overflow: "auto", background: "var(--bg)" } }, /* @__PURE__ */ React.createElement("div", { className: "dk-page", style: { maxWidth: 760, margin: "0 auto", padding: "24px 28px 60px", display: "flex", flexDirection: "column", gap: 24 } }, /* @__PURE__ */ React.createElement("div", { className: "dk-wrap", style: { display: "flex", alignItems: "center", gap: 18, rowGap: 12, padding: "20px 22px", borderRadius: 14, background: "var(--panel)", border: "1px solid var(--line)" } }, /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      style: { position: "relative", cursor: canSetAvatar ? "pointer" : "default" },
+      onClick: canSetAvatar ? () => setAvatarSheet(true) : void 0,
+      title: canSetAvatar ? t && t.lang === "zh" ? "\u66F4\u6362\u5934\u50CF" : "Change avatar" : void 0
+    },
+    upAvatar ? /* @__PURE__ */ React.createElement("img", { src: upAvatar, alt: "", width: 68, height: 68, style: { width: 68, height: 68, borderRadius: 16, objectFit: "cover", background: "var(--panel-2)" } }) : punkId != null ? /* @__PURE__ */ React.createElement(DkPunkAvatar, { id: punkId, size: 68, radius: 16, fallbackSeed: me.userId }) : /* @__PURE__ */ React.createElement(DkIdenticon, { seed: me.userId, size: 68, radius: 16 }),
+    canSetAvatar ? /* @__PURE__ */ React.createElement("span", { style: { position: "absolute", right: -5, bottom: -5, width: 24, height: 24, borderRadius: 999, background: "var(--accent)", border: "3px solid var(--panel)", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" } }, /* @__PURE__ */ React.createElement(Icon, { name: "camera", size: 12, stroke: 2.2, color: "#fff" })) : /* @__PURE__ */ React.createElement("span", { style: { position: "absolute", right: -3, bottom: -3, width: 18, height: 18, borderRadius: 999, background: "var(--online)", border: "3px solid var(--panel)" } })
+  ), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { className: "dk-wrap", style: { display: "flex", alignItems: "center", gap: 10, rowGap: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 22, fontWeight: 700, letterSpacing: -0.5, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0, maxWidth: "100%" } }, me.name), /* @__PURE__ */ React.createElement(Tag, { tone: "ok" }, "online"), me.isExit && /* @__PURE__ */ React.createElement(Tag, { tone: "warn" }, "exit", me.exitRegion ? ` \xB7 ${me.exitRegion.toUpperCase()}` : "")), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 13, color: "var(--dim)", marginTop: 4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, me.handle), me.description ? /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)", marginTop: 3 } }, me.description) : null), /* @__PURE__ */ React.createElement(Btn, { icon: "edit", onClick: () => setEditing(true) }, T.editProfile)), /* @__PURE__ */ React.createElement(Card, { label: T.identity }, /* @__PURE__ */ React.createElement(FieldRow, { T, label: T.userId, value: me.userId, copy: true, qr: true, onQr: (v, l) => setQr({ value: v, label: l }) }), /* @__PURE__ */ React.createElement(FieldRow, { T, label: T.carrierAddr, value: me.carrier, copy: true, qr: true, onQr: (v, l) => setQr({ value: v, label: l }) }), /* @__PURE__ */ React.createElement(FieldRow, { T, label: T.netKey, value: me.netKey, copy: true, last: true })), /* @__PURE__ */ React.createElement(DkEnsCard, { T, me, onRecord: setEnsRec }), typeof me.autoAccept === "boolean" && /* @__PURE__ */ React.createElement(Card, { label: T && T.friendsSettings || "Friends" }, /* @__PURE__ */ React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 13, padding: "14px 16px", cursor: "pointer" } }, /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "checkbox",
+      checked: me.autoAccept,
+      onChange: (e) => {
+        const enabled = e.target.checked;
+        fetch("/api/autoaccept", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ enabled }) }).catch(() => {
+        });
+      },
+      style: { width: 16, height: 16, accentColor: "var(--accent)" }
+    }
+  ), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 13.5, fontWeight: 600, color: "var(--text)" } }, T && T.autoAcceptLabel || "Auto-accept friend requests"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--dim)", marginTop: 2 } }, T && T.autoAcceptSub || "Off: requests wait in the sidebar for your approval.")))), hostHasKeyBackup && /* @__PURE__ */ React.createElement(DkKeyBackup, { t: t || {} }), t && setTweak && /* @__PURE__ */ React.createElement(DkAlertSettings, { t, setTweak }), t && setTweak && /* @__PURE__ */ React.createElement(DkDisplaySettings, { t, setTweak }), /* @__PURE__ */ React.createElement(Card, { label: T.network }, /* @__PURE__ */ React.createElement(FieldRow, { T, label: T.virtualIp, value: me.ip, copy: true }), /* @__PURE__ */ React.createElement(FieldRow, { T, label: T.wireLabel, value: `${me.wire} \xB7 lossless`, mono: false }), /* @__PURE__ */ React.createElement(DkVersionRow, { T, me }), /* @__PURE__ */ React.createElement(DkUpdateCheck, { T })), /* @__PURE__ */ React.createElement(Card, { label: T.dangerZone }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 13, padding: "14px 16px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 34, height: 34, borderRadius: 8, flexShrink: 0, background: "color-mix(in oklab, var(--danger), transparent 86%)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--danger)" } }, /* @__PURE__ */ React.createElement(Icon, { name: "trash", size: 17, stroke: 2 })), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 13.5, fontWeight: 600, color: "var(--danger)" } }, T.deleteNode), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--faint)", marginTop: 1 } }, T.deleteSub)), /* @__PURE__ */ React.createElement(Btn, { tone: "danger", size: "sm" }, T.delete)))), Array.isArray(sections) && sections.length > 0 && /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 760, margin: "0 auto", padding: "0 20px 40px", display: "flex", flexDirection: "column", gap: 16 } }, sections.map((sec) => sec && typeof sec.render === "function" ? /* @__PURE__ */ React.createElement(DkHostSection, { key: sec.id, sec, props: sectionProps, lang: t && t.lang }) : null)), qr && /* @__PURE__ */ React.createElement(DkQrModal, { T, value: qr.value, label: qr.label, onClose: () => setQr(null) }), avatarSheet && /* @__PURE__ */ React.createElement(DkAvatarSheet, { T, me, zh: t && t.lang === "zh", onSet: onSetAvatar, onClose: () => setAvatarSheet(false) }), editing && /* @__PURE__ */ React.createElement(DkEditModal, { T, me, onClose: () => setEditing(false), onSave: (name, description) => {
+    if (onEdit)
+      onEdit(name, description);
+    setEditing(false);
+  } }));
+}
+var DkHostSection = class extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { err: null };
+  }
+  static getDerivedStateFromError(err) {
+    return { err };
+  }
+  render() {
+    var _a;
+    const { sec, props, lang } = this.props;
+    if (this.state.err) {
+      return /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--faint)" } }, lang === "zh" ? "\u8FD9\u4E2A\u9644\u52A0\u677F\u5757\u51FA\u9519\u4E86\u3002" : "This host section failed to render.");
+    }
+    try {
+      return (_a = sec.render(props)) != null ? _a : null;
+    } catch (e) {
+      return null;
+    }
+  }
+};
+Object.assign(window, { DkShareSheet, ProfileTab, DkPunkAvatar, DkEnsAvatar, DkPublicProfile });
+
+// src/ui.jsx
+var DK_PHONE_MQ = "(max-width: 700px)";
+function useIsPhone() {
+  const mq = React.useMemo(() => typeof window !== "undefined" && window.matchMedia ? window.matchMedia(DK_PHONE_MQ) : null, []);
+  const [phone, setPhone] = React.useState(() => !!(mq && mq.matches));
+  React.useEffect(() => {
+    if (!mq)
+      return void 0;
+    const on = () => setPhone(mq.matches);
+    on();
+    if (mq.addEventListener)
+      mq.addEventListener("change", on);
+    else
+      mq.addListener(on);
+    return () => {
+      if (mq.removeEventListener)
+        mq.removeEventListener("change", on);
+      else
+        mq.removeListener(on);
+    };
+  }, [mq]);
+  return phone;
+}
+var DK_PHONE_CSS = `
+@media ${DK_PHONE_MQ} {
+  .dk-page { padding: 14px 12px 40px !important; gap: 18px !important; }
+  .dk-lbl { width: 78px !important; font-size: 10px !important; letter-spacing: 0.3px !important; }
+  .dk-row { padding: 11px 12px !important; gap: 9px !important; }
+  .dk-wrap { flex-wrap: wrap !important; }
+  .dk-grid2 { grid-template-columns: 1fr 1fr !important; }
+  .dk-grid1 { grid-template-columns: 1fr !important; }
+  .dk-no-phone { display: none !important; }
+  /* iOS zooms the page into any focused field under 16px and never zooms back. */
+  input:not([type=checkbox]):not([type=radio]), textarea, select { font-size: 16px !important; }
+}`;
+function DkPhoneStyles() {
+  return /* @__PURE__ */ React.createElement("style", null, DK_PHONE_CSS);
+}
+function DkIdenticon({ seed, size = 30, radius = 7 }) {
+  const { cells, hue } = dkIdenticon(seed);
+  const cell = size / 5;
+  const fg = `oklch(0.62 0.15 ${hue})`;
+  const bg = `oklch(var(--ident-l) 0.05 ${hue})`;
+  return /* @__PURE__ */ React.createElement("svg", { width: size, height: size, viewBox: `0 0 ${size} ${size}`, style: { display: "block", borderRadius: radius } }, /* @__PURE__ */ React.createElement("rect", { width: size, height: size, fill: bg }), cells.map((row, y) => row.map((on, x) => on ? /* @__PURE__ */ React.createElement("rect", { key: `${x}-${y}`, x: x * cell, y: y * cell, width: cell + 0.4, height: cell + 0.4, fill: fg }) : null)));
+}
+function DkBot({ seed, size = 30, radius = 7 }) {
+  const hue = dkIdenticon(seed).hue;
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    width: size,
+    height: size,
+    borderRadius: radius,
+    flexShrink: 0,
+    background: `linear-gradient(150deg, oklch(0.6 0.17 ${hue}), oklch(0.5 0.18 ${(hue + 30) % 360}))`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: "bot", size: size * 0.56, color: "#fff", stroke: 1.9 }));
+}
+function DkImgAvatar({ url, seed, size, radius }) {
+  const [broken, setBroken] = React.useState(false);
+  if (broken)
+    return /* @__PURE__ */ React.createElement(DkIdenticon, { seed, size, radius });
+  return /* @__PURE__ */ React.createElement(
+    "img",
+    {
+      src: url,
+      alt: "",
+      width: size,
+      height: size,
+      onError: () => setBroken(true),
+      style: { width: size, height: size, borderRadius: radius, objectFit: "cover", flexShrink: 0, background: "var(--panel-2)" }
+    }
+  );
+}
+function DkAvatar({ peer, size = 30, radius = 7, dot = true }) {
+  const d = Math.max(8, size * 0.3);
+  if (peer && peer.app)
+    dot = false;
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "relative", width: size, height: size, flexShrink: 0 } }, peer.agent ? /* @__PURE__ */ React.createElement(DkBot, { seed: peer.id, size, radius }) : peer.avatarUrl ? /* @__PURE__ */ React.createElement(DkImgAvatar, { url: peer.avatarUrl, seed: peer.userId || peer.id, size, radius }) : peer.punkId != null ? /* @__PURE__ */ React.createElement(DkPunkAvatar, { id: peer.punkId, size, radius, fallbackSeed: peer.userId || peer.id }) : /* @__PURE__ */ React.createElement(DkIdenticon, { seed: peer.userId || peer.id, size, radius }), dot && /* @__PURE__ */ React.createElement("span", { style: {
+    position: "absolute",
+    right: -2,
+    bottom: -2,
+    width: d,
+    height: d,
+    borderRadius: 999,
+    background: peer.online ? "var(--online)" : "var(--off)",
+    border: "2px solid var(--panel)",
+    boxSizing: "border-box"
+  } }));
+}
+function StatusDot({ online, size = 8 }) {
+  return /* @__PURE__ */ React.createElement("span", { style: {
+    width: size,
+    height: size,
+    borderRadius: 999,
+    flexShrink: 0,
+    background: online ? "var(--online)" : "var(--off)",
+    boxShadow: online ? "0 0 0 3px color-mix(in oklab, var(--online), transparent 80%)" : "none"
+  } });
+}
+function Mono({ children, dim, size = 12.5, copy, title, icon = "copy" }) {
+  const [hit, setHit] = React.useState(false);
+  const onCopy = (e) => {
+    e.stopPropagation();
+    dkCopy(copy === true ? String(children) : copy);
+    setHit(true);
+    setTimeout(() => setHit(false), 900);
+  };
+  return /* @__PURE__ */ React.createElement("span", { title, onClick: copy ? onCopy : void 0, style: {
+    fontFamily: "var(--mono)",
+    fontSize: size,
+    letterSpacing: -0.2,
+    color: dim ? "var(--dim)" : "var(--text)",
+    cursor: copy ? "pointer" : "default",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 5,
+    whiteSpace: "nowrap"
+  } }, children, copy && /* @__PURE__ */ React.createElement(Icon, { name: hit ? "check" : icon, size: 12, stroke: 2, color: hit ? "var(--online)" : "var(--faint)" }));
+}
+function shortKey(s, head = 6, tail = 5) {
+  if (!s || s.length <= head + tail + 1)
+    return s;
+  return s.slice(0, head) + "\u2026" + s.slice(-tail);
+}
+function RouteTag({ peer }) {
+  if (!peer.online)
+    return /* @__PURE__ */ React.createElement(Tag, { tone: "off" }, "offline");
+  const relay = peer.via === "relay";
+  const via = peer.via || "online";
+  return /* @__PURE__ */ React.createElement(Tag, { tone: relay ? "warn" : "ok" }, peer.ping != null ? `${via} \xB7 ${peer.ping}ms` : via);
+}
+function Tag({ children, tone = "neutral", style, title }) {
+  const tones = {
+    neutral: { bg: "var(--chip)", fg: "var(--dim)", bd: "transparent" },
+    ok: { bg: "color-mix(in oklab, var(--online), transparent 86%)", fg: "var(--online)", bd: "transparent" },
+    warn: { bg: "color-mix(in oklab, var(--warn), transparent 86%)", fg: "var(--warn)", bd: "transparent" },
+    off: { bg: "var(--chip)", fg: "var(--faint)", bd: "transparent" },
+    accent: { bg: "color-mix(in oklab, var(--accent), transparent 86%)", fg: "var(--accent)", bd: "transparent" },
+    danger: { bg: "color-mix(in oklab, var(--danger), transparent 88%)", fg: "var(--danger)", bd: "transparent" }
+  };
+  const t = tones[tone] || tones.neutral;
+  return /* @__PURE__ */ React.createElement("span", { title, style: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    height: 18,
+    padding: "0 6px",
+    borderRadius: 4,
+    background: t.bg,
+    color: t.fg,
+    border: `1px solid ${t.bd}`,
+    fontFamily: "var(--mono)",
+    fontSize: 11,
+    fontWeight: 600,
+    letterSpacing: -0.1,
+    lineHeight: 1,
+    whiteSpace: "nowrap",
+    ...style
+  } }, children);
+}
+function Unread({ n }) {
+  if (!n)
+    return null;
+  return /* @__PURE__ */ React.createElement("span", { style: {
+    minWidth: 18,
+    height: 18,
+    padding: "0 5px",
+    borderRadius: 999,
+    flexShrink: 0,
+    background: "var(--accent)",
+    color: "#fff",
+    fontFamily: "var(--mono)",
+    fontSize: 11,
+    fontWeight: 700,
+    lineHeight: "18px",
+    textAlign: "center"
+  } }, n);
+}
+function Btn({ children, icon, tone = "ghost", onClick, size = "md", title, style, disabled }) {
+  const tones = {
+    ghost: { bg: "transparent", fg: "var(--text)", bd: "var(--line)" },
+    solid: { bg: "var(--accent)", fg: "#fff", bd: "transparent" },
+    soft: { bg: "var(--chip)", fg: "var(--text)", bd: "transparent" },
+    ok: { bg: "color-mix(in oklab, var(--online), transparent 84%)", fg: "var(--online)", bd: "transparent" },
+    danger: { bg: "transparent", fg: "var(--danger)", bd: "color-mix(in oklab, var(--danger), transparent 70%)" }
+  };
+  const t = tones[tone] || tones.ghost;
+  const h = size === "sm" ? 26 : size === "lg" ? 36 : 30;
+  return /* @__PURE__ */ React.createElement("button", { onClick, title, disabled, style: {
+    opacity: disabled ? 0.45 : 1,
+    height: h,
+    padding: icon && !children ? 0 : "0 11px",
+    minWidth: icon && !children ? h : "auto",
+    borderRadius: 6,
+    cursor: disabled ? "default" : "pointer",
+    fontFamily: "var(--mono)",
+    fontWeight: 600,
+    fontSize: size === "sm" ? 12 : 12.5,
+    letterSpacing: -0.1,
+    background: t.bg,
+    color: t.fg,
+    border: `1px solid ${t.bd}`,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    whiteSpace: "nowrap",
+    ...style
+  } }, icon && /* @__PURE__ */ React.createElement(Icon, { name: icon, size: 15, stroke: 2 }), children);
+}
+function Section({ label, count, trailing, style }) {
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: "0 2px", ...style } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "var(--faint)" } }, label), count != null && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, fontWeight: 700, color: "var(--faint)" } }, count), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, height: 1, background: "var(--line)" } }), trailing);
+}
+Object.assign(window, { useIsPhone, DkPhoneStyles, DkIdenticon, DkBot, DkAvatar, DkImgAvatar, StatusDot, Mono, shortKey, RouteTag, Tag, Unread, Btn, Section });
+
+// src/host-tabs.js
+var BUILTIN_TABS = ["chat", "people", "network", "apps", "profile"];
+var warned = /* @__PURE__ */ new Set();
+function warnOnce(what) {
+  if (warned.has(what))
+    return;
+  warned.add(what);
+  try {
+    console.warn(`[beagle-ui] ignoring unknown host tab or app: ${what}`);
+  } catch (e) {
+  }
+}
+function pickText(value, lang, fallback = "") {
+  if (typeof value === "string")
+    return value;
+  if (value && typeof value === "object")
+    return value[lang] || value.en || value.zh || fallback;
+  return fallback;
+}
+function resolveTabs(hostTabs2) {
+  if (!Array.isArray(hostTabs2) || !hostTabs2.length) {
+    return BUILTIN_TABS.map((id) => ({ id, kind: "builtin" }));
+  }
+  const out = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const entry of hostTabs2) {
+    if (typeof entry === "string") {
+      if (!BUILTIN_TABS.includes(entry)) {
+        warnOnce(entry);
+        continue;
+      }
+      if (seen.has(entry))
+        continue;
+      seen.add(entry);
+      out.push({ id: entry, kind: "builtin" });
+      continue;
+    }
+    if (entry && typeof entry === "object" && typeof entry.id === "string" && entry.id) {
+      if (typeof entry.render !== "function") {
+        warnOnce(`${entry.id} (no render function)`);
+        continue;
+      }
+      if (BUILTIN_TABS.includes(entry.id)) {
+        warnOnce(`${entry.id} (a built-in id cannot be redefined)`);
+        continue;
+      }
+      if (seen.has(entry.id))
+        continue;
+      seen.add(entry.id);
+      out.push({
+        id: entry.id,
+        kind: "host",
+        label: entry.label,
+        icon: entry.icon,
+        render: entry.render,
+        badge: typeof entry.badge === "function" ? entry.badge : void 0
+      });
+      continue;
+    }
+    warnOnce(String(entry && entry.id ? entry.id : entry));
+  }
+  return out.length ? out : BUILTIN_TABS.map((id) => ({ id, kind: "builtin" }));
+}
+function hasTab(tabs, id) {
+  return (tabs != null ? tabs : []).some((t) => t.id === id);
+}
+function resolveApps(builtins, hideApps, hostApps2) {
+  const hidden = new Set(Array.isArray(hideApps) ? hideApps : []);
+  const host = (Array.isArray(hostApps2) ? hostApps2 : []).filter((a) => {
+    if (a && typeof a.id === "string" && a.id && typeof a.open === "function")
+      return true;
+    warnOnce(`app ${a && a.id ? a.id : String(a)}`);
+    return false;
+  }).map((a) => ({ ...a, host: true }));
+  const kept = (builtins != null ? builtins : []).filter((a) => !hidden.has(a.id));
+  return host.concat(kept);
+}
+
+// src/apps.jsx
+var APPS = [
+  {
+    id: "meet",
+    name: "Beagle Meet",
+    origin: "https://snoopy.fi.chat",
+    url: "https://snoopy.fi.chat",
+    blurb: { en: "Video calls and rooms \u2014 your Beagle identity is the login.", zh: "\u89C6\u9891\u4F1A\u8BAE\u548C\u623F\u95F4 \u2014\u2014 \u7528 Beagle \u8EAB\u4EFD\u76F4\u63A5\u767B\u5F55\u3002" },
+    icon: "video"
+  },
+  {
+    id: "interview",
+    name: "interview.network",
+    origin: "https://interview.network",
+    url: "https://interview.network",
+    blurb: { en: "Interviews, scheduled and held against a verified identity.", zh: "\u9762\u8BD5\u5B89\u6392\u4E0E\u8FDB\u884C\uFF0C\u8EAB\u4EFD\u53EF\u9A8C\u8BC1\u3002" },
+    icon: "users"
+  },
+  {
+    id: "readyplayer",
+    name: "readyplayer.network",
+    origin: "https://readyplayer.network",
+    url: "https://readyplayer.network",
+    blurb: { en: "Membership and the services that come with it.", zh: "\u4F1A\u5458\u4E0E\u914D\u5957\u670D\u52A1\u3002" },
+    icon: "starCoin"
+  },
+  {
+    id: "btc",
+    name: "btc.fi.chat",
+    origin: "https://btc.fi.chat",
+    url: "https://btc.fi.chat",
+    blurb: { en: "Trading desk and signals.", zh: "\u4EA4\u6613\u53F0\u4E0E\u4FE1\u53F7\u3002" },
+    icon: "trendingUp"
+  }
+];
+function dkB64Url(obj) {
+  const json = JSON.stringify(obj);
+  const b64 = btoa(unescape(encodeURIComponent(json)));
+  return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function AppsTab({ T, t, me, peers, phone, setTab }) {
+  const zh = t && t.lang === "zh";
+  const apps = React.useMemo(
+    () => resolveApps(APPS, hostHideApps, hostApps),
+    []
+  );
+  const [busy, setBusy] = React.useState(null);
+  const [err, setErr] = React.useState(null);
+  const open = async (app) => {
+    if (app.host) {
+      setErr(null);
+      try {
+        app.open({ T, t, me, peers, phone, setTab });
+      } catch (e) {
+        setErr(String(e && e.message || e));
+      }
+      return;
+    }
+    setBusy(app.id);
+    setErr(null);
+    const win = window.open("", "_blank");
+    try {
+      const r = await dkPost("/api/launch-token", { origin: app.origin });
+      if (!r || r.ok === false)
+        throw new Error(r && r.error || "could not sign");
+      const { ok, ...assertion } = r;
+      const url = app.url + "#beagle=" + dkB64Url(assertion);
+      if (win)
+        win.location = url;
+      else
+        window.open(url, "_blank");
+    } catch (e) {
+      if (win)
+        win.close();
+      setErr(String(e && e.message || e));
+    } finally {
+      setBusy(null);
+    }
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, overflow: "auto", background: "var(--bg)" } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 760, margin: "0 auto", padding: "24px 28px 60px", display: "flex", flexDirection: "column", gap: 16 } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11, fontWeight: 700, letterSpacing: 0.6, textTransform: "uppercase", color: "var(--faint)" } }, zh ? "\u5E94\u7528" : "Apps"), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)", marginTop: 6, lineHeight: 1.6 } }, zh ? "\u8FD9\u4E9B\u5E94\u7528\u63A5\u53D7 Beagle \u8EAB\u4EFD\u3002\u4ECE\u8FD9\u91CC\u6253\u5F00\u4E0D\u9700\u8981\u518D\u767B\u5F55\u4E00\u6B21 \u2014\u2014 \u4F1A\u5E26\u4E0A\u4E00\u4E2A\u4E24\u5206\u949F\u5185\u6709\u6548\u7684\u7B7E\u540D\u3002" : "These accept a Beagle identity. Opening one from here does not ask you to sign in again \u2014 it carries a signature that is good for two minutes.")), err && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "#f85149" } }, err), apps.map((app) => /* @__PURE__ */ React.createElement("div", { key: app.id, style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+    padding: "14px 16px",
+    borderRadius: 12,
+    background: "var(--panel)",
+    border: "1px solid var(--line)"
+  } }, /* @__PURE__ */ React.createElement("div", { style: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    flexShrink: 0,
+    background: "var(--panel-2)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: app.icon, size: 19, color: "var(--accent)", stroke: 1.8 })), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 14, fontWeight: 600, color: "var(--text)" } }, pickText(app.name, t && t.lang, app.id)), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)", marginTop: 2 } }, pickText(app.blurb, t && t.lang, "")), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--dim)", marginTop: 3 } }, app.host ? zh ? "\u672C\u673A\u5E94\u7528" : "runs in this app" : String(app.origin || "").replace(/^https?:\/\//, ""))), /* @__PURE__ */ React.createElement(Btn, { tone: "accent", size: "sm", onClick: busy ? void 0 : () => open(app) }, busy === app.id ? zh ? "\u6253\u5F00\u4E2D\u2026" : "opening\u2026" : zh ? "\u6253\u5F00" : "Open")))));
+}
+
+// src/call-claim.js
+var CLAIM_SUPPRESS_MS = 5 * 6e4;
+function newPageId() {
+  return "p" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+}
+var norm = (id) => String(id || "").trim().toLowerCase();
+function silencedFor(rec, myPage) {
+  if (!rec)
+    return false;
+  if (rec.state === "ended")
+    return true;
+  if (rec.state === "claimed")
+    return !(rec.claim && rec.claim.page === myPage);
+  return false;
+}
+function applyCallsTable(table, myPage, suppressed, now) {
+  const stop = [];
+  const ended = [];
+  for (const rec of Array.isArray(table) ? table : []) {
+    if (!rec || !rec.callId)
+      continue;
+    const id = norm(rec.callId);
+    if (rec.state === "ended")
+      ended.push(id);
+    if (!silencedFor(rec, myPage))
+      continue;
+    if (!suppressed.has(id))
+      suppressed.set(id, now);
+    stop.push(id);
+  }
+  return { stop, ended };
+}
+function isSuppressed(suppressed, callId, now) {
+  const at = suppressed.get(norm(callId));
+  return !!at && now - at < CLAIM_SUPPRESS_MS;
+}
+function sameCall(a, b) {
+  return !!a && !!b && norm(a) === norm(b);
+}
+
+// src/rtc-signaling.jsx
+var DK_FALLBACK_ICE_SERVERS = [
+  { urls: "stun:stun.l.google.com:19302" },
+  { urls: "turn:tokyo.fi.chat:3478", username: "allcom", credential: "allcompass" },
+  { urls: "turn:tokyo.fi.chat:3478?transport=tcp", username: "allcom", credential: "allcompass" }
+];
+var DK_LIVE_ICE_SERVERS = [];
+var _dkIcePromise = null;
+var _dkIceWarmPromise = null;
+function dkWarmCallIce(iceServers) {
+  if (_dkIceWarmPromise)
+    return _dkIceWarmPromise;
+  if (!window.RTCPeerConnection || !iceServers || !iceServers.length) {
+    _dkIceWarmPromise = Promise.resolve();
+    return _dkIceWarmPromise;
+  }
+  _dkIceWarmPromise = new Promise((resolve) => {
+    let pc;
+    let finished = false;
+    const done = (why) => {
+      if (finished)
+        return;
+      finished = true;
+      try {
+        if (pc)
+          pc.close();
+      } catch (e) {
+      }
+      console.log("[rtc] ICE warmup done (" + why + ")");
+      resolve();
+    };
+    try {
+      pc = new RTCPeerConnection({ iceServers, iceTransportPolicy: "all" });
+      const timer = setTimeout(() => done("timeout"), 5e3);
+      pc.onicecandidate = (ev) => {
+        const c = ev.candidate && ev.candidate.candidate;
+        if (c && /typ relay/.test(c)) {
+          clearTimeout(timer);
+          done("relay");
+        }
+      };
+      pc.onicegatheringstatechange = () => {
+        if (pc.iceGatheringState === "complete") {
+          clearTimeout(timer);
+          done("gather-complete");
+        }
+      };
+      pc.createDataChannel("ice-warm");
+      pc.createOffer().then((o) => pc.setLocalDescription(o)).catch(() => done("offer-fail"));
+    } catch (e) {
+      done("error");
+    }
+  });
+  return _dkIceWarmPromise;
+}
+function dkLoadCallIceServers() {
+  if (_dkIcePromise)
+    return _dkIcePromise;
+  _dkIcePromise = (async () => {
+    try {
+      const r = await fetch("/api/call-ice-servers", { headers: { "cache-control": "no-cache" } });
+      const d = await r.json();
+      if (d && d.ok && Array.isArray(d.iceServers) && d.iceServers.length) {
+        DK_LIVE_ICE_SERVERS.splice(0, DK_LIVE_ICE_SERVERS.length, ...d.iceServers);
+        console.log("[rtc] Carrier bootstrap ICE servers:", DK_LIVE_ICE_SERVERS.map((s) => s.urls));
+        await dkWarmCallIce(DK_LIVE_ICE_SERVERS);
+        return DK_LIVE_ICE_SERVERS;
+      }
+      console.warn("[rtc] call-ice-servers unavailable:", d && d.error);
+    } catch (e) {
+      console.warn("[rtc] call-ice-servers fetch failed", e);
+    }
+    console.warn("[rtc] falling back to tokyo TURN \u2014 web\u2194Android online ICE may fail");
+    DK_LIVE_ICE_SERVERS.splice(0, DK_LIVE_ICE_SERVERS.length, ...DK_FALLBACK_ICE_SERVERS.map((s) => ({ ...s })));
+    await dkWarmCallIce(DK_LIVE_ICE_SERVERS);
+    return DK_LIVE_ICE_SERVERS;
+  })();
+  return _dkIcePromise;
+}
+function dkAwaitCallIceServers(ms) {
+  const budget = typeof ms === "number" ? ms : 1e4;
+  return Promise.race([
+    dkLoadCallIceServers(),
+    new Promise((resolve) => setTimeout(() => {
+      if (!DK_LIVE_ICE_SERVERS.length) {
+        DK_LIVE_ICE_SERVERS.splice(0, DK_LIVE_ICE_SERVERS.length, ...DK_FALLBACK_ICE_SERVERS.map((s) => ({ ...s })));
+        console.warn("[rtc] ICE wait timed out \u2014 using fallback");
+      }
+      resolve(DK_LIVE_ICE_SERVERS);
+    }, budget))
+  ]).then(() => DK_LIVE_ICE_SERVERS);
+}
+dkLoadCallIceServers();
+function dkRtcParseEnvelope(data) {
+  const text = String(data || "").replace(/\0+$/u, "").trim();
+  if (!text)
+    return null;
+  try {
+    const obj = JSON.parse(text);
+    if (obj && obj.dkRtc === 1 && typeof obj.kind === "string")
+      return obj;
+  } catch (e) {
+  }
+  return null;
+}
+function dkRtcSignalBus() {
+  if (window.__dkRtcSignalBus)
+    return window.__dkRtcSignalBus;
+  const pageId = window.__dkPageId || (window.__dkPageId = newPageId());
+  let callsVersion = null;
+  let callsTable = [];
+  const PW = window.PeerWebRTC;
+  const handlers = /* @__PURE__ */ new Map();
+  const pendingCalls = [];
+  const PENDING_CALL_CAP = 16;
+  let started = false;
+  let stopped = false;
+  function emit(kind, userid, payload) {
+    const set = handlers.get(kind);
+    if (!set || !set.size) {
+      if (kind === "call") {
+        pendingCalls.push({ userid, payload });
+        if (pendingCalls.length > PENDING_CALL_CAP)
+          pendingCalls.shift();
+      }
+      return;
+    }
+    for (const h of Array.from(set)) {
+      try {
+        h(userid, payload);
+      } catch (e) {
+        console.warn("[rtc] signal handler failed", e);
+      }
+    }
+  }
+  const IDLE_POLL_MS = 400;
+  async function pollLoop() {
+    let cursor = null;
+    while (!stopped) {
+      let signals = [];
+      try {
+        const u = cursor == null ? "/api/call-poll" : "/api/call-poll?since=" + cursor + (callsVersion == null ? "" : "&cv=" + callsVersion);
+        const r = await fetch(u, { headers: { "cache-control": "no-cache" } });
+        const d = await r.json();
+        signals = d && d.signals || [];
+        if (d && typeof d.cursor === "number")
+          cursor = d.cursor;
+        if (d && Array.isArray(d.calls)) {
+          callsTable = d.calls;
+          if (typeof d.callsVersion === "number")
+            callsVersion = d.callsVersion;
+          emit("calls", null, callsTable);
+        }
+      } catch (e) {
+        await new Promise((res) => setTimeout(res, 1e3));
+        continue;
+      }
+      for (const s of signals) {
+        const env = dkRtcParseEnvelope(s.data);
+        if (env) {
+          emit(env.kind, s.userid, env);
+          continue;
+        }
+        if (PW) {
+          try {
+            emit("call", s.userid, PW.decodeSignal(s.data));
+          } catch (e) {
+          }
+        }
+      }
+      if (!signals.length) {
+        await new Promise((res) => setTimeout(res, IDLE_POLL_MS));
+      }
+    }
+  }
+  const bus = {
+    start() {
+      if (started)
+        return;
+      started = true;
+      stopped = false;
+      pollLoop();
+    },
+    on(kind, cb) {
+      if (!handlers.has(kind))
+        handlers.set(kind, /* @__PURE__ */ new Set());
+      handlers.get(kind).add(cb);
+      this.start();
+      if (kind === "calls" && callsTable.length) {
+        try {
+          cb(null, callsTable);
+        } catch (e) {
+        }
+      }
+      if (kind === "call" && pendingCalls.length) {
+        const queued = pendingCalls.splice(0);
+        console.log("[rtc] flushing " + queued.length + " buffered call signal(s)");
+        for (const q of queued) {
+          try {
+            cb(q.userid, q.payload);
+          } catch (e) {
+            console.warn("[rtc] buffered call handler failed", e);
+          }
+        }
+      }
+      return () => {
+        var _a;
+        return (_a = handlers.get(kind)) == null ? void 0 : _a.delete(cb);
+      };
+    },
+    pageId,
+    calls() {
+      return callsTable;
+    },
+    async send(userid, data) {
+      const body = JSON.stringify({ userid, data: typeof data === "string" ? data : JSON.stringify(data), page: pageId });
+      const r = await fetch("/api/call-signal", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body
+      });
+      const d = await r.json().catch(() => ({ ok: r.ok }));
+      if (!d.ok) {
+        const err = new Error(d.error || "call-signal send failed");
+        if (d.answeredElsewhere)
+          err.answeredElsewhere = true;
+        throw err;
+      }
+    },
+    // Claim an incoming call on the server before answering or declining it.
+    // `won: false` = another page or client already has it. A server that
+    // does not know the route (an older host) or does not answer within
+    // 1.5 s counts as won — /api/call-signal still refuses a second answer.
+    async claim(callId, peerId, action) {
+      const ctl = typeof AbortController === "function" ? new AbortController() : null;
+      const t = setTimeout(() => {
+        try {
+          if (ctl)
+            ctl.abort();
+        } catch (e) {
+        }
+      }, 1500);
+      try {
+        const r = await fetch("/api/call-claim", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ callId, peerId, action, page: pageId }),
+          signal: ctl ? ctl.signal : void 0
+        });
+        const d = await r.json().catch(() => null);
+        if (!d || d.ok !== true || typeof d.won !== "boolean")
+          return { won: true, unknown: true };
+        return { won: d.won, call: d.call };
+      } catch (e) {
+        return { won: true, unknown: true };
+      } finally {
+        clearTimeout(t);
+      }
+    },
+    stop() {
+      stopped = true;
+    }
+  };
+  window.__dkRtcSignalBus = bus;
+  return bus;
+}
+function makeDaemonSignaling() {
+  const PW = window.PeerWebRTC;
+  const bus = dkRtcSignalBus();
+  let off = null;
+  return {
+    async send(peerId, signal) {
+      await bus.send(peerId, PW.encodeSignal(signal));
+    },
+    onSignal(cb) {
+      if (off)
+        off();
+      off = bus.on("call", cb);
+    },
+    stop() {
+      if (off) {
+        off();
+        off = null;
+      }
+    }
+  };
+}
+Object.assign(window, { dkRtcSignalBus, makeDaemonSignaling });
+
+// src/call-state.js
+var CALL_END_STATES = /* @__PURE__ */ new Set(["noAnswer", "unreachable", "failed", "busy", "declined", "elsewhere"]);
+var CALL_END_LINGER_MS = 3500;
+var EN = {
+  calling: "calling\u2026",
+  remoteRinging: "ringing\u2026",
+  connecting: "connecting\u2026",
+  reconnecting: "reconnecting\u2026",
+  noAnswer: "No answer",
+  cantReach: "Can't reach {name}",
+  callFailed: "Call failed",
+  busy: "Busy",
+  declined: "Declined",
+  answeredElsewhere: "Answered elsewhere"
+};
+function str(T, key) {
+  return T && T[key] || EN[key];
+}
+function callStateLabel(state, T, name) {
+  switch (state) {
+    case "ringing":
+      return str(T, "calling");
+    case "remoteRinging":
+    case "remoteOnline":
+      return str(T, "remoteRinging");
+    case "connecting":
+      return str(T, "connecting");
+    case "disconnected":
+      return str(T, "reconnecting");
+    case "noAnswer":
+      return str(T, "noAnswer");
+    case "unreachable":
+      return str(T, "cantReach").replace("{name}", name || "");
+    case "failed":
+      return str(T, "callFailed");
+    case "busy":
+      return str(T, "busy");
+    case "declined":
+      return str(T, "declined");
+    case "elsewhere":
+      return str(T, "answeredElsewhere");
+    default:
+      return state || "";
+  }
+}
+function callStateTone(state) {
+  if (state === "connected")
+    return "ok";
+  if (CALL_END_STATES.has(state))
+    return "danger";
+  return "warn";
+}
+function endStateFor(reason, error) {
+  if (reason === "noAnswer" || reason === "unreachable" || reason === "busy" || reason === "declined")
+    return reason;
+  if (reason === "failed")
+    return "failed";
+  if (error)
+    return error.sendFailed ? "unreachable" : "failed";
+  return null;
+}
+
+// src/call.jsx
+function useCallController(selfId, onCallLog) {
+  const [incoming, setIncoming] = React.useState(null);
+  const [active, setActive] = React.useState(null);
+  const [localStream, setLocalStream] = React.useState(null);
+  const [remoteStream, setRemoteStream] = React.useState(null);
+  const [sharing, setSharing] = React.useState(false);
+  const [notice, setNotice] = React.useState(null);
+  const engineRef = React.useRef(null);
+  const lingerTimer = React.useRef(null);
+  const noticeTimer = React.useRef(null);
+  const endWithReason = React.useCallback((match, state) => {
+    setActive((a) => a && !a.ended && match(a) ? { ...a, state, ended: true } : a);
+    clearTimeout(lingerTimer.current);
+    lingerTimer.current = setTimeout(() => {
+      setActive((a) => a && a.ended ? null : a);
+    }, CALL_END_LINGER_MS);
+  }, []);
+  const flashNotice = React.useCallback((text) => {
+    setNotice(text);
+    clearTimeout(noticeTimer.current);
+    noticeTimer.current = setTimeout(() => setNotice(null), 4e3);
+  }, []);
+  React.useEffect(() => () => {
+    clearTimeout(lingerTimer.current);
+    clearTimeout(noticeTimer.current);
+  }, []);
+  const onCallLogRef = React.useRef(onCallLog);
+  React.useEffect(() => {
+    onCallLogRef.current = onCallLog;
+  }, [onCallLog]);
+  React.useEffect(() => {
+    if (!selfId || engineRef.current)
+      return;
+    if (!window.PeerWebRTC || !window.RTCPeerConnection) {
+      console.warn("[call] WebRTC or peer-webrtc unavailable \u2014 calls disabled");
+      return;
+    }
+    dkRtcSignalBus().start();
+    let cancelled = false;
+    let signaling = null;
+    (async () => {
+      await dkAwaitCallIceServers(1e4);
+      if (cancelled || engineRef.current)
+        return;
+      if (!DK_LIVE_ICE_SERVERS.length) {
+        console.warn("[call] no ICE servers after wait \u2014 calls will likely fail NAT");
+      }
+      const { CallEngine } = window.PeerWebRTC;
+      signaling = makeDaemonSignaling();
+      const engine = new CallEngine({
+        selfId,
+        signaling,
+        createPeerConnection: (c) => new RTCPeerConnection(c),
+        getLocalMedia: (k) => navigator.mediaDevices.getUserMedia({ audio: k.audio, video: k.video }),
+        getDisplayMedia: (c) => navigator.mediaDevices.getDisplayMedia(c || { video: true, audio: false }),
+        iceServers: DK_LIVE_ICE_SERVERS,
+        logger: (m) => console.log(m)
+      });
+      if (cancelled) {
+        try {
+          signaling.stop();
+          engine.dispose();
+        } catch (e) {
+        }
+        return;
+      }
+      engine.on("incomingCall", (info) => {
+        const pre = preAccepted.current.get(String(info.callId).toLowerCase());
+        if (pre) {
+          preAccepted.current.delete(String(info.callId).toLowerCase());
+          setIncoming((i) => i && sameCall(i.callId, info.callId) ? null : i);
+          engine.accept(info.callId).catch((e) => {
+            console.warn("[call] accept after ring failed:", e && e.message || e);
+            endWithReason((a) => sameCall(a.callId, info.callId), "failed");
+          });
+          return;
+        }
+        if (isSuppressed(claimedCalls.current, info.callId, Date.now())) {
+          try {
+            engine.discard && engine.discard(info.callId);
+          } catch (e) {
+          }
+          return;
+        }
+        const wasRinging = incomingRef.current && sameCall(incomingRef.current.callId, info.callId);
+        setIncoming(info);
+        if (!wasRinging && onCallLogRef.current)
+          onCallLogRef.current(info.peerId, !!info.video, "incoming");
+      });
+      engine.on("stateChanged", (info, state) => setActive((a) => a && !a.ended && a.callId === info.callId ? { ...a, state } : a));
+      engine.on("localStream", (id, s) => {
+        setLocalStream(s);
+        try {
+          setSharing(engine.isSharingScreen(id));
+        } catch (e) {
+        }
+      });
+      engine.on("remoteStream", (id, s) => setRemoteStream(s));
+      engine.on("ended", (id, reason) => {
+        const endState = endStateFor(reason);
+        const a0 = activeRef.current;
+        if (endState && a0 && a0.callId === id && a0.direction === "outgoing" && CALL_END_STATES.has(endState)) {
+          endWithReason((a) => a.callId === id, endState);
+        } else {
+          setActive((a) => a && a.callId === id ? null : a);
+        }
+        setIncoming((i) => i && i.callId === id ? null : i);
+        setLocalStream(null);
+        setRemoteStream(null);
+        setSharing(false);
+      });
+      engineRef.current = engine;
+      console.log("[call] CallEngine ready with ICE:", DK_LIVE_ICE_SERVERS.map((s) => s.urls));
+    })().catch((e) => console.warn("[call] engine init failed", e));
+    return () => {
+      cancelled = true;
+      try {
+        if (signaling)
+          signaling.stop();
+        if (engineRef.current)
+          engineRef.current.dispose();
+      } catch (e) {
+      }
+      engineRef.current = null;
+    };
+  }, [selfId]);
+  const waitEngine = React.useCallback(async () => {
+    for (let i = 0; i < 100; i++) {
+      if (engineRef.current)
+        return engineRef.current;
+      await new Promise((r) => setTimeout(r, 100));
+    }
+    return null;
+  }, []);
+  const start = React.useCallback((peerId, video) => {
+    setActive({ callId: null, peerId, video: !!video, direction: "outgoing", state: "ringing" });
+    if (onCallLogRef.current)
+      onCallLogRef.current(peerId, !!video, "outgoing");
+    let engine = null;
+    waitEngine().then((eng) => {
+      if (!eng)
+        throw new Error("Calls unavailable (engine not ready)");
+      engine = eng;
+      return eng.call(peerId, { audio: true, video: !!video });
+    }).then((callId) => {
+      const info = (engine && engine.calls || []).find((c) => c.callId === callId);
+      setActive((a) => a && a.peerId === peerId && a.callId === null && !a.ended ? { ...a, callId, state: info && info.state || a.state } : a);
+    }).catch((e) => {
+      console.warn("[call] could not start call:", e && e.message || e);
+      endWithReason((a) => a.peerId === peerId && a.callId === null, endStateFor(null, e || {}));
+    });
+  }, [waitEngine, endWithReason]);
+  const incomingRef = React.useRef(null);
+  React.useEffect(() => {
+    incomingRef.current = incoming;
+  }, [incoming]);
+  const activeRef = React.useRef(null);
+  React.useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
+  const claimTabId = React.useRef(Math.random().toString(36).slice(2));
+  const claimBus = React.useRef(null);
+  const claimedCalls = React.useRef(/* @__PURE__ */ new Map());
+  React.useEffect(() => {
+    let ch = null;
+    try {
+      ch = new BroadcastChannel("dk-call-claim");
+    } catch (e) {
+      return void 0;
+    }
+    claimBus.current = ch;
+    ch.onmessage = (ev) => {
+      const m = ev.data || {};
+      if (!m || m.tabId === claimTabId.current || m.type !== "claimed")
+        return;
+      if (m.callId)
+        claimedCalls.current.set(String(m.callId).toLowerCase(), Date.now());
+      const inc = incomingRef.current;
+      if (inc && (inc.callId === m.callId || inc.peerId === m.peerId)) {
+        setIncoming(null);
+        try {
+          engineRef.current && engineRef.current.discard && engineRef.current.discard(inc.callId);
+        } catch (e) {
+        }
+      }
+    };
+    return () => {
+      try {
+        ch.close();
+      } catch (e) {
+      }
+      claimBus.current = null;
+    };
+  }, []);
+  const preAccepted = React.useRef(/* @__PURE__ */ new Map());
+  const silence = React.useCallback((callId) => {
+    const inc = incomingRef.current;
+    if (inc && sameCall(inc.callId, callId))
+      setIncoming(null);
+    const a = activeRef.current;
+    if (a && sameCall(a.callId, callId))
+      return;
+    try {
+      engineRef.current && engineRef.current.discard && engineRef.current.discard(callId);
+    } catch (e) {
+    }
+  }, []);
+  React.useEffect(() => {
+    const bus = dkRtcSignalBus();
+    const offCalls = bus.on("calls", (_u, table) => {
+      const { stop, ended } = applyCallsTable(table, bus.pageId, claimedCalls.current, Date.now());
+      for (const id of stop)
+        silence(id);
+      for (const id of ended) {
+        if (preAccepted.current.has(id)) {
+          preAccepted.current.delete(id);
+          setActive((a) => a && sameCall(a.callId, id) && a.state === "connecting" ? null : a);
+        }
+      }
+    });
+    const offRing = bus.on("call-ring", (userid, env) => {
+      if (!env || !env.callId || !userid)
+        return;
+      if (isSuppressed(claimedCalls.current, env.callId, Date.now()))
+        return;
+      if (preAccepted.current.has(String(env.callId).toLowerCase()))
+        return;
+      const a = activeRef.current;
+      if (a && sameCall(a.callId, env.callId))
+        return;
+      const inc = incomingRef.current;
+      if (inc && sameCall(inc.callId, env.callId))
+        return;
+      setIncoming({ callId: env.callId, peerId: userid, video: !!env.video, audio: true, ringOnly: true, callName: env.callName || env.name });
+      if (onCallLogRef.current)
+        onCallLogRef.current(userid, !!env.video, "incoming");
+      try {
+        bus.send(userid, window.PeerWebRTC.encodeSignal({ type: "event", event: "ringing", callId: env.callId })).catch(() => {
+        });
+      } catch (e) {
+      }
+    });
+    const offStop = bus.on("call-ring-stop", (_u, env) => {
+      if (!env || !env.callId)
+        return;
+      const id = String(env.callId).toLowerCase();
+      if (env.reason === "answered" && preAccepted.current.has(id))
+        return;
+      if (!claimedCalls.current.has(id))
+        claimedCalls.current.set(id, Date.now());
+      silence(env.callId);
+      if (env.reason !== "answered" && preAccepted.current.has(id)) {
+        preAccepted.current.delete(id);
+        setActive((a) => a && sameCall(a.callId, id) && a.state === "connecting" ? null : a);
+      }
+    });
+    return () => {
+      offCalls();
+      offRing();
+      offStop();
+    };
+  }, [silence]);
+  const showElsewhere = React.useCallback((inc) => {
+    silence(inc.callId);
+    claimedCalls.current.set(String(inc.callId).toLowerCase(), Date.now());
+    setActive({ callId: inc.callId, peerId: inc.peerId, video: inc.video, direction: "incoming", state: "elsewhere", ended: true });
+    clearTimeout(lingerTimer.current);
+    lingerTimer.current = setTimeout(() => setActive((a) => a && a.ended ? null : a), CALL_END_LINGER_MS);
+  }, [silence]);
+  const broadcastClaim = React.useCallback((inc, action) => {
+    try {
+      if (claimBus.current)
+        claimBus.current.postMessage({ type: "claimed", tabId: claimTabId.current, callId: inc.callId, peerId: inc.peerId, action });
+    } catch (e) {
+    }
+  }, []);
+  const accept = React.useCallback(() => {
+    const pending = incomingRef.current;
+    if (!pending)
+      return;
+    broadcastClaim(pending, "accepted");
+    setIncoming(null);
+    setActive({ callId: pending.callId, peerId: pending.peerId, video: pending.video, direction: "incoming", state: "connecting" });
+    const bus = dkRtcSignalBus();
+    bus.claim(pending.callId, pending.peerId, "accepted").then((c) => {
+      if (!c.won) {
+        showElsewhere(pending);
+        return null;
+      }
+      if (pending.ringOnly) {
+        preAccepted.current.set(String(pending.callId).toLowerCase(), Date.now());
+        return bus.send(pending.peerId, window.PeerWebRTC.encodeSignal({ type: "action", action: "accept", callId: pending.callId }));
+      }
+      return waitEngine().then((eng) => {
+        if (!eng)
+          throw new Error("Calls unavailable (engine not ready)");
+        return eng.accept(pending.callId);
+      });
+    }).catch((e) => {
+      if (e && e.answeredElsewhere) {
+        showElsewhere(pending);
+        return;
+      }
+      console.warn("[call] accept failed:", e && e.message || e);
+      endWithReason((a) => a.callId === pending.callId, "failed");
+    });
+  }, [waitEngine, endWithReason, broadcastClaim, showElsewhere]);
+  const reject = React.useCallback(() => {
+    const inc = incomingRef.current;
+    setIncoming(null);
+    if (!inc)
+      return;
+    broadcastClaim(inc, "rejected");
+    const bus = dkRtcSignalBus();
+    bus.claim(inc.callId, inc.peerId, "rejected").then((c) => {
+      if (!c.won) {
+        silence(inc.callId);
+        return;
+      }
+      if (inc.ringOnly) {
+        bus.send(inc.peerId, window.PeerWebRTC.encodeSignal({ type: "action", action: "reject", callId: inc.callId })).catch(() => {
+        });
+        return;
+      }
+      const eng = engineRef.current;
+      if (eng)
+        eng.reject(inc.callId);
+    });
+  }, [broadcastClaim, silence]);
+  const hangup = React.useCallback(() => {
+    const eng = engineRef.current;
+    const a = activeRef.current;
+    clearTimeout(lingerTimer.current);
+    const preId = a && a.callId ? String(a.callId).toLowerCase() : "";
+    if (preId && preAccepted.current.has(preId) && !a.ended) {
+      preAccepted.current.delete(preId);
+      claimedCalls.current.set(preId, Date.now());
+      try {
+        dkRtcSignalBus().send(a.peerId, window.PeerWebRTC.encodeSignal({ type: "bye", reason: "normal", callId: a.callId })).catch(() => {
+        });
+      } catch (e) {
+      }
+    } else if (eng && a && a.callId && !a.ended)
+      eng.hangup(a.callId);
+    setActive(null);
+    setLocalStream(null);
+    setRemoteStream(null);
+  }, []);
+  const setMuted = React.useCallback((m) => {
+    const eng = engineRef.current, a = active;
+    if (eng && a && a.callId)
+      eng.setLocalTrackEnabled(a.callId, "audio", !m);
+  }, [active]);
+  const toggleShare = React.useCallback(async () => {
+    const eng = engineRef.current, a = active;
+    if (!eng || !a || !a.callId)
+      return;
+    try {
+      if (eng.isSharingScreen(a.callId))
+        await eng.stopScreenShare(a.callId);
+      else
+        await eng.shareScreen(a.callId);
+    } catch (e) {
+      if (e && e.name !== "NotAllowedError") {
+        console.warn("[call] screen share failed:", e && e.message || e);
+        flashNotice("shareFailed");
+      }
+    }
+  }, [active, flashNotice]);
+  const setVideoOn = React.useCallback((v) => {
+    const eng = engineRef.current, a = active;
+    if (eng && a && a.callId)
+      eng.setLocalTrackEnabled(a.callId, "video", v);
+  }, [active]);
+  return { incoming, active, localStream, remoteStream, sharing, notice, start, accept, reject, hangup, setMuted, setVideoOn, toggleShare };
+}
+function VideoSurface({ stream, muted, style }) {
+  const ref = React.useCallback((el) => {
+    if (el && el.srcObject !== (stream || null))
+      el.srcObject = stream || null;
+  }, [stream]);
+  return /* @__PURE__ */ React.createElement("video", { ref, autoPlay: true, playsInline: true, muted: !!muted, style });
+}
+function AudioSink({ stream }) {
+  const ref = React.useCallback((el) => {
+    if (el && el.srcObject !== (stream || null))
+      el.srcObject = stream || null;
+  }, [stream]);
+  return /* @__PURE__ */ React.createElement("audio", { ref, autoPlay: true });
+}
+function useRingtone(active) {
+  React.useEffect(() => {
+    if (!active)
+      return void 0;
+    let ctx;
+    try {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) {
+      return void 0;
+    }
+    if (ctx.state === "suspended") {
+      ctx.resume().catch(() => {
+      });
+    }
+    let stopped = false;
+    const timers = [];
+    const stop = () => {
+      if (stopped)
+        return;
+      stopped = true;
+      timers.forEach(clearTimeout);
+      try {
+        ctx.close();
+      } catch (e) {
+      }
+    };
+    const burst = () => {
+      if (stopped || ctx.state === "closed")
+        return;
+      [440, 480].forEach((f) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.value = f;
+        o.connect(g);
+        g.connect(ctx.destination);
+        const t = ctx.currentTime;
+        g.gain.setValueAtTime(1e-4, t);
+        g.gain.exponentialRampToValueAtTime(0.12, t + 0.05);
+        g.gain.setValueAtTime(0.12, t + 0.9);
+        g.gain.exponentialRampToValueAtTime(1e-4, t + 1);
+        o.start(t);
+        o.stop(t + 1.05);
+      });
+      timers.push(setTimeout(burst, 3e3));
+    };
+    burst();
+    window.addEventListener("pagehide", stop);
+    window.addEventListener("beforeunload", stop);
+    return () => {
+      window.removeEventListener("pagehide", stop);
+      window.removeEventListener("beforeunload", stop);
+      stop();
+    };
+  }, [active]);
+}
+function IncomingCallModal({ T, ctl, peers }) {
+  const inc = ctl.incoming;
+  useRingtone(!!inc);
+  if (!inc)
+    return null;
+  const peer = (peers || []).find((p) => p.id === inc.peerId) || { id: inc.peerId };
+  const name = verifiedLabel(inc.peerId, peer.alias) || peer.name || shortKey(inc.peerId, 10, 6);
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", inset: 0, zIndex: 80, background: "color-mix(in oklab, var(--bg), transparent 15%)", display: "flex", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 320, padding: 26, borderRadius: 18, background: "var(--panel)", border: "1px solid var(--line)", textAlign: "center", boxShadow: "0 20px 60px rgba(0,0,0,0.4)" } }, /* @__PURE__ */ React.createElement("div", { style: { position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center", marginBottom: 14 } }, /* @__PURE__ */ React.createElement("span", { style: { position: "absolute", width: 96, height: 96, borderRadius: 999, border: "2px solid var(--accent)", animation: "dkpulse 2s ease-out infinite" } }), /* @__PURE__ */ React.createElement(DkIdenticon, { seed: inc.peerId, size: 72, radius: 18 })), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 17, fontWeight: 700, color: "var(--text)" } }, name), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 12.5, color: "var(--faint)", marginTop: 4, display: "flex", gap: 6, alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(Icon, { name: inc.video ? "video" : "phone", size: 14, stroke: 2 }), T && (inc.video ? T.incomingVideo : T.incomingAudio) || "Incoming " + (inc.video ? "video" : "audio") + " call"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 14, justifyContent: "center", marginTop: 22 } }, /* @__PURE__ */ React.createElement(CallBtn, { icon: "phone", label: T && T.decline || "Decline", danger: true, onClick: ctl.reject }), /* @__PURE__ */ React.createElement(CallBtn, { icon: inc.video ? "video" : "phone", label: T && T.accept || "Accept", active: true, onClick: ctl.accept }))));
+}
+function CallBtn({ icon, label, onClick, active, danger, wide }) {
+  const bg = danger ? "var(--danger)" : active ? "var(--accent)" : "var(--chip)";
+  const fg = danger || active ? "#fff" : "var(--text)";
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("button", { onClick, style: {
+    width: wide ? 76 : 56,
+    height: 56,
+    borderRadius: wide ? 18 : 999,
+    cursor: "pointer",
+    background: bg,
+    color: fg,
+    border: "1px solid " + (active || danger ? "transparent" : "var(--line)"),
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: icon, size: 22, stroke: 2 })), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--faint)" } }, label));
+}
+function CallOverlay({ T, ctl, peers }) {
+  const call = ctl.active;
+  const [secs, setSecs] = React.useState(0);
+  const [muted, setMuted] = React.useState(false);
+  const [featured, setFeatured] = React.useState("remote");
+  const connected = call && call.state === "connected" && !call.ended;
+  React.useEffect(() => {
+    if (!connected)
+      return;
+    const id = setInterval(() => setSecs((s) => s + 1), 1e3);
+    return () => clearInterval(id);
+  }, [connected]);
+  React.useEffect(() => {
+    if (!call) {
+      setSecs(0);
+      setMuted(false);
+    }
+  }, [call]);
+  if (!call)
+    return null;
+  const peer = (peers || []).find((p) => p.id === call.peerId) || { id: call.peerId };
+  const name = verifiedLabel(call.peerId, peer.alias) || peer.name || shortKey(call.peerId, 10, 6);
+  const streamHasVideo = (s) => !!(s && s.getVideoTracks && s.getVideoTracks().length > 0);
+  const video = call.video || ctl.sharing || streamHasVideo(ctl.remoteStream) || streamHasVideo(ctl.localStream);
+  const mm = String(Math.floor(secs / 60)).padStart(2, "0");
+  const ss = String(secs % 60).padStart(2, "0");
+  const stateLabel = connected ? mm + ":" + ss : callStateLabel(call.state, T, name);
+  const noticeText = ctl.notice === "shareFailed" ? T && T.shareFailed || "Screen share failed" : null;
+  const toggleMute = () => {
+    const n = !muted;
+    setMuted(n);
+    ctl.setMuted(n);
+  };
+  const canShare = connected && typeof navigator !== "undefined" && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
+  const controls = /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 18, alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement(CallBtn, { icon: muted ? "micFill" : "mic", label: muted ? T && T.unmute || "unmute" : T && T.mute || "mute", active: muted, onClick: toggleMute }), canShare && /* @__PURE__ */ React.createElement(CallBtn, { icon: "monitor", label: ctl.sharing ? T && T.stopShare || "stop share" : T && T.share || "share", active: ctl.sharing, onClick: ctl.toggleShare }), /* @__PURE__ */ React.createElement(CallBtn, { icon: "phone", label: T && T.endCall || "end", danger: true, wide: true, onClick: ctl.hangup }));
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", inset: 0, zIndex: 70, background: "var(--bg)", display: "flex", flexDirection: "column" } }, ctl.remoteStream && /* @__PURE__ */ React.createElement(AudioSink, { stream: ctl.remoteStream }), /* @__PURE__ */ React.createElement("div", { style: { height: 52, flexShrink: 0, display: "flex", alignItems: "center", gap: 10, padding: "0 18px", borderBottom: "1px solid var(--line)" } }, /* @__PURE__ */ React.createElement(Icon, { name: video ? "video" : "phone", size: 16, color: "var(--accent)", stroke: 2 }), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 13, fontWeight: 700, color: "var(--text)" } }, name), /* @__PURE__ */ React.createElement(Tag, { tone: callStateTone(call.ended ? call.state : connected ? "connected" : call.state) }, stateLabel), noticeText && /* @__PURE__ */ React.createElement(Tag, { tone: "danger" }, noticeText), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), connected && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 14, fontWeight: 700, color: "var(--text)", letterSpacing: 1 } }, mm, ":", ss)), video ? (() => {
+    const tiles = [
+      { key: "remote", stream: ctl.remoteStream, label: name, mirror: false },
+      { key: "local", stream: ctl.localStream, label: ctl.sharing ? T && T.yourScreen || "Your screen" : T && T.you || "You", mirror: !ctl.sharing }
+    ].filter((t) => streamHasVideo(t.stream));
+    const feat = tiles.find((t) => t.key === featured) || tiles[0] || { key: "remote", stream: ctl.remoteStream, label: name };
+    const others = tiles.filter((t) => t.key !== feat.key);
+    return (
+      // The thumbnail strip and the controls FLOAT over the video instead of
+      // stacking under it. A phone camera is 9:16, so the featured tile is
+      // height-limited — `object-fit: contain` already shows the whole frame,
+      // but every pixel of chrome below the video shrinks the only dimension
+      // that matters. Stacked, those two rows ate ~210px; in a 900px-tall
+      // window that is a third of the portrait image. Overlaying them is also
+      // what every other call app does.
+      /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, position: "relative", padding: 18 } }, /* @__PURE__ */ React.createElement("div", { style: { width: "100%", height: "100%", position: "relative", borderRadius: 14, overflow: "hidden", background: "#000", border: "1px solid var(--line)" } }, feat.stream ? /* @__PURE__ */ React.createElement(VideoSurface, { stream: feat.stream, muted: true, style: { width: "100%", height: "100%", objectFit: "contain", transform: feat.mirror ? "scaleX(-1)" : "none" } }) : /* @__PURE__ */ React.createElement("div", { style: { width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement(DkIdenticon, { seed: call.peerId, size: 92, radius: 22 })), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", left: 14, top: 12, padding: "4px 10px", borderRadius: 8, background: "rgba(0,0,0,.55)", color: "#fff", fontFamily: "var(--mono)", fontSize: 12, fontWeight: 600 } }, feat.label), /* @__PURE__ */ React.createElement("div", { style: {
+        position: "absolute",
+        left: 0,
+        right: 0,
+        bottom: 0,
+        paddingTop: 60,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 12,
+        background: "linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0))",
+        pointerEvents: "none"
+      } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "center", marginBottom: 16, pointerEvents: "auto" } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "16px 26px", borderRadius: 20, background: "color-mix(in oklab, var(--panel), transparent 8%)", border: "1px solid var(--line)" } }, controls))), others.length > 0 && /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", right: 16, bottom: 16, display: "flex", flexDirection: "column", gap: 10 } }, others.map((t) => /* @__PURE__ */ React.createElement(
+        "button",
+        {
+          key: t.key,
+          onClick: () => setFeatured(t.key),
+          title: `Show ${t.label}`,
+          style: {
+            position: "relative",
+            width: 150,
+            height: 96,
+            borderRadius: 10,
+            overflow: "hidden",
+            background: "#000",
+            cursor: "pointer",
+            padding: 0,
+            border: "1px solid var(--line)",
+            boxShadow: "0 4px 18px rgba(0,0,0,.45)"
+          }
+        },
+        /* @__PURE__ */ React.createElement(VideoSurface, { stream: t.stream, muted: true, style: { width: "100%", height: "100%", objectFit: "contain", transform: t.mirror ? "scaleX(-1)" : "none" } }),
+        /* @__PURE__ */ React.createElement("span", { style: { position: "absolute", left: 6, bottom: 5, padding: "2px 6px", borderRadius: 6, background: "rgba(0,0,0,.6)", color: "#fff", fontSize: 10, fontFamily: "var(--mono)" } }, t.label)
+      )))))
+    );
+  })() : /* @__PURE__ */ React.createElement("div", { style: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 22 } }, /* @__PURE__ */ React.createElement("div", { style: { position: "relative", display: "flex", alignItems: "center", justifyContent: "center" } }, !connected && !call.ended && /* @__PURE__ */ React.createElement("span", { style: { position: "absolute", width: 150, height: 150, borderRadius: 999, border: "2px solid var(--accent)", animation: "dkpulse 2s ease-out infinite" } }), /* @__PURE__ */ React.createElement(DkIdenticon, { seed: call.peerId, size: 108, radius: 26 })), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 22, fontWeight: 700, color: "var(--text)" } }, name), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 8, fontFamily: "var(--mono)", fontSize: call.ended ? 15 : 12.5, fontWeight: call.ended ? 700 : 400, color: call.ended ? "var(--danger)" : "var(--faint)" } }, stateLabel)), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 18 } }, controls)));
+}
+Object.assign(window, { useCallController, CallOverlay, IncomingCallModal });
+
+// src/discover.jsx
+function DkDirAvatar({ p, size }) {
+  const [broken, setBroken] = React.useState(false);
+  if (p.punkId != null && !(p.avatar && !broken)) {
+    return /* @__PURE__ */ React.createElement(DkPunkAvatar, { id: p.punkId, size, radius: Math.round(size / 4), fallbackSeed: p.userid || p.name });
+  }
+  if (p.avatar && !broken) {
+    return /* @__PURE__ */ React.createElement(
+      "img",
+      {
+        src: p.avatar,
+        alt: "",
+        width: size,
+        height: size,
+        onError: () => setBroken(true),
+        style: { width: size, height: size, borderRadius: Math.round(size / 4), objectFit: "cover", flexShrink: 0, background: "var(--panel-2)" }
+      }
+    );
+  }
+  return /* @__PURE__ */ React.createElement(DkIdenticon, { seed: p.userid || p.name, size, radius: Math.round(size / 4) });
+}
+function DkDirRow({ p, T, isFriend, isMe, onAdd, onOpenChat, onOpenProfile }) {
+  const [state, setState] = React.useState(null);
+  const add = () => {
+    setState("busy");
+    Promise.resolve(onAdd(p.address, p)).then((r) => setState(r && r.ok === false ? r.error || T.addFailed || "failed" : "sent")).catch((e) => setState(String(e && e.message || e)));
+  };
+  const btn = (label, onClick, disabled) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: (e) => {
+        e.stopPropagation();
+        onClick();
+      },
+      disabled,
+      style: {
+        padding: "5px 11px",
+        borderRadius: 8,
+        border: "1px solid var(--line)",
+        flexShrink: 0,
+        background: disabled ? "transparent" : "var(--accent)",
+        color: disabled ? "var(--faint)" : "#fff",
+        fontFamily: "var(--ui)",
+        fontSize: 12,
+        cursor: disabled ? "default" : "pointer"
+      }
+    },
+    label
+  );
+  return /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      onClick: () => onOpenProfile && onOpenProfile(p),
+      title: T && T.pubOpen || "View public profile",
+      style: { display: "flex", alignItems: "center", gap: 11, padding: "var(--row-pad)", borderBottom: "1px solid var(--line)", cursor: "pointer" }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: { position: "relative", flexShrink: 0 } }, /* @__PURE__ */ React.createElement(DkDirAvatar, { p, size: 34 }), p.online != null && /* @__PURE__ */ React.createElement("span", { title: p.online ? "online" : "offline", style: {
+      position: "absolute",
+      right: -1,
+      bottom: -1,
+      width: 10,
+      height: 10,
+      borderRadius: "50%",
+      border: "2px solid var(--panel)",
+      background: p.online ? "#3fb950" : "var(--faint)"
+    } })),
+    /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 2 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: 8, minWidth: 0 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 13.5, fontWeight: 600, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, p.name), p.points != null && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--accent)", flexShrink: 0 } }, p.points.toLocaleString(), " pts"), p.ens && p.ens !== p.name && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, p.ens)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, minWidth: 0 } }, /* @__PURE__ */ React.createElement(Mono, { size: 10.5, dim: true, copy: p.userid, title: p.userid }, shortKey(p.userid, 10, 6)), p.description && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 11, color: "var(--faint)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, p.description))),
+    isMe ? /* @__PURE__ */ React.createElement(Tag, null, T.dirMe || "me") : isFriend ? btn(T.dirOpenChat || "chat", () => onOpenChat(p.userid), false) : state === "sent" ? /* @__PURE__ */ React.createElement(Tag, { tone: "accent" }, T.dirSent || "requested") : state && state !== "busy" ? /* @__PURE__ */ React.createElement("span", { title: state, style: { fontFamily: "var(--ui)", fontSize: 11, color: "var(--warn, #f59e0b)", flexShrink: 0 } }, T.addFailed || "failed") : btn(state === "busy" ? "\u2026" : T.dirAdd || "Add", add, state === "busy")
+  );
+}
+function DiscoverTab({ T, kind, peers, meId, onAdd, onOpenChat }) {
+  const [list, setList] = React.useState(null);
+  const [err, setErr] = React.useState(null);
+  const [q, setQ] = React.useState("");
+  const [prof, setProf] = React.useState(null);
+  const [meta, setMeta] = React.useState(null);
+  React.useEffect(() => {
+    let dead = false;
+    setList(null);
+    setErr(null);
+    const url = kind === "bridge" ? "/api/bridge-roster" : kind === "recommended" ? "/api/discover-recommended" : "/api/discover-registered";
+    const load = () => fetch(url).then((r) => r.json()).then((d) => {
+      if (dead)
+        return;
+      if (d.ok) {
+        setList(d.list || []);
+        setMeta(d);
+      } else
+        setErr(d.error || "load failed");
+    }).catch((e) => {
+      if (!dead)
+        setErr(String(e && e.message || e));
+    });
+    load();
+    const timer = kind === "bridge" ? setInterval(load, 15e3) : null;
+    return () => {
+      dead = true;
+      if (timer)
+        clearInterval(timer);
+    };
+  }, [kind]);
+  const friendIds = React.useMemo(() => {
+    const s = /* @__PURE__ */ new Set();
+    for (const p of peers || []) {
+      if (p.id)
+        s.add(p.id);
+      if (p.userId)
+        s.add(p.userId);
+    }
+    return s;
+  }, [peers]);
+  const shown = React.useMemo(() => {
+    if (!list)
+      return [];
+    const needle = q.trim().toLowerCase();
+    if (!needle)
+      return list;
+    return list.filter((p) => (p.name || "").toLowerCase().includes(needle) || (p.ens || "").toLowerCase().includes(needle) || (p.userid || "").toLowerCase().includes(needle));
+  }, [list, q]);
+  return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, display: "flex", flexDirection: "column", background: "var(--bg)" } }, /* @__PURE__ */ React.createElement("div", { style: { flexShrink: 0, display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderBottom: "1px solid var(--line)", background: "var(--panel)" } }, /* @__PURE__ */ React.createElement(Icon, { name: "search", size: 15, stroke: 2, color: "var(--faint)" }), /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      value: q,
+      onChange: (e) => setQ(e.target.value),
+      placeholder: T.dirSearch || "search name / userid",
+      style: { flex: 1, minWidth: 0, background: "transparent", border: "none", outline: "none", color: "var(--text)", fontFamily: "var(--ui)", fontSize: 13 }
+    }
+  ), kind === "bridge" && (meta == null ? void 0 : meta.bridge) && /* @__PURE__ */ React.createElement("span", { className: "dk-no-phone", style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)", whiteSpace: "nowrap" } }, String(meta.bridge).replace(/^https?:\/\//, ""), meta.online ? ` \xB7 ${meta.online} online` : ""), list && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)", whiteSpace: "nowrap", flexShrink: 0 } }, shown.length, "/", list.length)), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, overflowY: "auto" } }, err ? /* @__PURE__ */ React.createElement("div", { style: { padding: 22, fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, (T.dirError || "Could not load the directory:") + " " + err) : !list ? /* @__PURE__ */ React.createElement("div", { style: { padding: 22, fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, T.dirLoading || "loading\u2026") : shown.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { padding: 22, fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, kind === "bridge" && (meta == null ? void 0 : meta.pending) ? T.bridgePending || "Not verified on this bridge yet \u2014 it may still be running the older protocol." : kind === "bridge" ? T.bridgeEmpty || "Nobody else is listed on this bridge yet." : T.dirEmpty || "nobody here") : shown.map((p) => /* @__PURE__ */ React.createElement(
+    DkDirRow,
+    {
+      key: p.userid,
+      p,
+      T,
+      isMe: !!meId && p.userid === meId,
+      isFriend: friendIds.has(p.userid),
+      onAdd,
+      onOpenChat,
+      onOpenProfile: (row) => setProf({ userid: row.userid, name: row.name })
+    }
+  ))), prof && /* @__PURE__ */ React.createElement(
+    DkPublicProfile,
+    {
+      T,
+      userid: prof.userid,
+      fallbackName: prof.name,
+      onClose: () => setProf(null),
+      isFriend: friendIds.has(prof.userid),
+      isMe: !!meId && prof.userid === meId
+    }
+  ));
+}
+
+// src/file-webrtc.jsx
+var DK_FILE_RTC_KIND = "file";
+var DK_FILE_RTC_CHUNK = 16 * 1024;
+var DK_FILE_RTC_OPEN_TIMEOUT_MS = 2e4;
+var DK_FILE_RTC_SIGNAL_TTL_MS = 10 * 60 * 1e3;
+var _dkFileIcePromise = null;
+function dkFileIceServers() {
+  if (!_dkFileIcePromise)
+    _dkFileIcePromise = dkLoadCallIceServers();
+  return _dkFileIcePromise;
+}
+function dkFileRtcId() {
+  if (window.crypto && window.crypto.randomUUID)
+    return window.crypto.randomUUID();
+  return "frtc-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+}
+function dkFileRtcEnvelope(fileId, type, extra) {
+  return Object.assign({ dkRtc: 1, kind: DK_FILE_RTC_KIND, fileId, type, ts: Date.now() }, extra || {});
+}
+function dkRtcState(pc) {
+  if (!pc)
+    return "";
+  return "ice=" + pc.iceConnectionState + " conn=" + pc.connectionState + " gather=" + pc.iceGatheringState;
+}
+function dkWaitForOpen(dc, timeoutMs, describeState) {
+  if (dc.readyState === "open")
+    return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      cleanup();
+      const s = describeState ? describeState() : "";
+      reject(new Error("WebRTC data channel open timed out" + (s ? " (" + s + ")" : "")));
+    }, timeoutMs);
+    const cleanup = () => {
+      clearTimeout(timer);
+      dc.removeEventListener("open", onOpen);
+      dc.removeEventListener("error", onError);
+      dc.removeEventListener("close", onClose);
+    };
+    const onOpen = () => {
+      cleanup();
+      resolve();
+    };
+    const onError = () => {
+      cleanup();
+      const s = describeState ? describeState() : "";
+      reject(new Error("WebRTC data channel failed" + (s ? " (" + s + ")" : "")));
+    };
+    const onClose = () => {
+      cleanup();
+      const s = describeState ? describeState() : "";
+      reject(new Error("WebRTC data channel closed before open" + (s ? " (" + s + ")" : "")));
+    };
+    dc.addEventListener("open", onOpen);
+    dc.addEventListener("error", onError);
+    dc.addEventListener("close", onClose);
+  });
+}
+function dkWaitBufferedLow(dc, highWater) {
+  if (dc.bufferedAmount < highWater)
+    return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const prev = dc.bufferedAmountLowThreshold;
+    dc.bufferedAmountLowThreshold = Math.floor(highWater / 2);
+    let poll = null;
+    let timer = null;
+    const done = () => {
+      cleanup();
+      resolve();
+    };
+    const cleanup = () => {
+      if (poll)
+        clearInterval(poll);
+      if (timer)
+        clearTimeout(timer);
+      dc.removeEventListener("bufferedamountlow", done);
+      dc.removeEventListener("close", onClose);
+      dc.removeEventListener("error", onError);
+      dc.bufferedAmountLowThreshold = prev;
+    };
+    const check = () => {
+      if (dc.readyState !== "open")
+        return onClose();
+      if (dc.bufferedAmount < highWater)
+        done();
+    };
+    const onClose = () => {
+      cleanup();
+      reject(new Error("WebRTC data channel closed while draining"));
+    };
+    const onError = () => {
+      cleanup();
+      reject(new Error("WebRTC data channel failed while draining"));
+    };
+    dc.addEventListener("bufferedamountlow", done);
+    dc.addEventListener("close", onClose);
+    dc.addEventListener("error", onError);
+    poll = setInterval(check, 250);
+    timer = setTimeout(() => {
+      cleanup();
+      reject(new Error("WebRTC data channel drain timed out buffered=" + dc.bufferedAmount));
+    }, 3e4);
+  });
+}
+function dkFileDownload(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name || "agentnet-file";
+  a.textContent = name || "agentnet-file";
+  return { url, name: a.download };
+}
+function dkRememberRtcFile(peerId, fileId, name, size, url) {
+  if (!window.__dkRtcFiles)
+    window.__dkRtcFiles = /* @__PURE__ */ new Map();
+  const item = { id: fileId, peerId, name, size, url, media: dkFileMediaKind(name) };
+  window.__dkRtcFiles.set(peerId + "|" + name + "|" + size, item);
+  return item;
+}
+function useRtcFileController(selfId, onReceivedFile) {
+  const [incoming, setIncoming] = React.useState([]);
+  const peersRef = React.useRef(/* @__PURE__ */ new Map());
+  const onReceivedFileRef = React.useRef(onReceivedFile);
+  React.useEffect(() => {
+    onReceivedFileRef.current = onReceivedFile;
+  }, [onReceivedFile]);
+  React.useEffect(() => {
+    if (!selfId || !window.RTCPeerConnection || !window.dkRtcSignalBus)
+      return;
+    const bus = dkRtcSignalBus();
+    const cleanup = (fileId) => {
+      const sess = peersRef.current.get(fileId);
+      if (!sess)
+        return;
+      try {
+        sess.dc && sess.dc.close();
+      } catch (e) {
+      }
+      try {
+        sess.pc && sess.pc.close();
+      } catch (e) {
+      }
+      peersRef.current.delete(fileId);
+    };
+    const sendSignal = (peerId, fileId, type, extra) => bus.send(peerId, dkFileRtcEnvelope(fileId, type, extra));
+    const handleDataChannel = (peerId, fileId, pc, dc, initialMeta) => {
+      dc.binaryType = "arraybuffer";
+      const prev = peersRef.current.get(fileId);
+      const sess = Object.assign(prev || {}, { pc, dc, peerId, meta: initialMeta || null, chunks: [], received: 0 });
+      peersRef.current.set(fileId, sess);
+      dc.onmessage = (ev) => {
+        if (typeof ev.data === "string") {
+          let msg = null;
+          try {
+            msg = JSON.parse(ev.data);
+          } catch (e) {
+          }
+          if (!msg)
+            return;
+          if (msg.type === "meta") {
+            sess.meta = msg;
+            sess.chunks = [];
+            sess.received = 0;
+          } else if (msg.type === "done") {
+            const meta = sess.meta || {};
+            const blob = new Blob(sess.chunks, { type: meta.mime || "application/octet-stream" });
+            const dl = dkFileDownload(blob, meta.name || "agentnet-file");
+            dkRememberRtcFile(peerId, fileId, dl.name, blob.size, dl.url);
+            setIncoming((arr) => [{ id: fileId, peerId, name: dl.name, size: blob.size, url: dl.url }].concat(arr).slice(0, 8));
+            if (onReceivedFileRef.current)
+              onReceivedFileRef.current(peerId, dl.name, blob);
+            cleanup(fileId);
+          } else if (msg.type === "cancel") {
+            cleanup(fileId);
+          }
+          return;
+        }
+        sess.chunks.push(ev.data);
+        sess.received += ev.data.byteLength || ev.data.size || 0;
+      };
+      dc.onclose = () => setTimeout(() => cleanup(fileId), 1e3);
+      dc.onerror = () => cleanup(fileId);
+    };
+    const off = bus.on(DK_FILE_RTC_KIND, async (peerId, env) => {
+      if (!env || !env.fileId || !env.type)
+        return;
+      if (Date.now() - (env.ts || Date.now()) > DK_FILE_RTC_SIGNAL_TTL_MS)
+        return;
+      const fileId = env.fileId;
+      let sess = peersRef.current.get(fileId);
+      try {
+        if (env.type === "offer") {
+          if (sess && sess.pc && sess.pc.signalingState !== "closed") {
+            console.warn("[file-rtc] duplicate offer ignored for " + fileId);
+            return;
+          }
+          const pc = new RTCPeerConnection({ iceServers: await dkFileIceServers() });
+          pc.oniceconnectionstatechange = () => console.warn("[file-rtc] receiver ice=" + pc.iceConnectionState + " conn=" + pc.connectionState);
+          pc.onconnectionstatechange = () => console.warn("[file-rtc] receiver conn=" + pc.connectionState + " ice=" + pc.iceConnectionState);
+          pc.onicecandidate = (ev) => {
+            if (ev.candidate)
+              sendSignal(peerId, fileId, "candidate", { candidate: ev.candidate.toJSON() }).catch(() => {
+              });
+          };
+          pc.ondatachannel = (ev) => handleDataChannel(peerId, fileId, pc, ev.channel, env.meta || null);
+          peersRef.current.set(fileId, { pc, dc: null, peerId, chunks: [], meta: env.meta || null, pendingCandidates: [] });
+          await pc.setRemoteDescription({ type: "offer", sdp: env.sdp });
+          sess = peersRef.current.get(fileId);
+          if (sess && sess.pendingCandidates) {
+            for (const c of sess.pendingCandidates.splice(0)) {
+              try {
+                await pc.addIceCandidate(c);
+              } catch (e) {
+              }
+            }
+          }
+          const answer = await pc.createAnswer();
+          await pc.setLocalDescription(answer);
+          await sendSignal(peerId, fileId, "answer", { sdp: answer.sdp });
+        } else if (env.type === "answer" && sess) {
+          if (sess.pc.signalingState !== "have-local-offer") {
+            console.warn("[file-rtc] stale answer ignored for " + fileId + " state=" + sess.pc.signalingState);
+            return;
+          }
+          await sess.pc.setRemoteDescription({ type: "answer", sdp: env.sdp });
+          if (sess.pendingCandidates) {
+            for (const c of sess.pendingCandidates.splice(0)) {
+              try {
+                await sess.pc.addIceCandidate(c);
+              } catch (e) {
+              }
+            }
+          }
+        } else if (env.type === "candidate" && sess && env.candidate) {
+          if (sess.pc.remoteDescription) {
+            try {
+              await sess.pc.addIceCandidate(env.candidate);
+            } catch (e) {
+            }
+          } else {
+            if (!sess.pendingCandidates)
+              sess.pendingCandidates = [];
+            sess.pendingCandidates.push(env.candidate);
+          }
+        } else if (env.type === "bye") {
+          cleanup(fileId);
+        }
+      } catch (e) {
+        console.warn("[file-rtc] signal failed", e);
+        cleanup(fileId);
+      }
+    });
+    return () => {
+      off();
+      for (const id of Array.from(peersRef.current.keys()))
+        cleanup(id);
+    };
+  }, [selfId]);
+  const sendFile = React.useCallback(async (peerId, file, onProgress) => {
+    if (!peerId || !file || !window.RTCPeerConnection || !window.dkRtcSignalBus) {
+      return { ok: false, fallback: true, error: "WebRTC unavailable" };
+    }
+    const bus = dkRtcSignalBus();
+    const fileId = dkFileRtcId();
+    const pc = new RTCPeerConnection({ iceServers: await dkFileIceServers() });
+    const dc = pc.createDataChannel("agentnet-file", { ordered: true });
+    const sess = { pc, dc, peerId, chunks: [], meta: null, pendingCandidates: [] };
+    peersRef.current.set(fileId, sess);
+    const cleanup = () => {
+      try {
+        dc.close();
+      } catch (e) {
+      }
+      try {
+        pc.close();
+      } catch (e) {
+      }
+      peersRef.current.delete(fileId);
+    };
+    const sendSignal = (type, extra) => bus.send(peerId, dkFileRtcEnvelope(fileId, type, extra));
+    try {
+      pc.oniceconnectionstatechange = () => console.warn("[file-rtc] sender ice=" + pc.iceConnectionState + " conn=" + pc.connectionState);
+      pc.onconnectionstatechange = () => console.warn("[file-rtc] sender conn=" + pc.connectionState + " ice=" + pc.iceConnectionState);
+      pc.onicecandidate = (ev) => {
+        if (ev.candidate)
+          sendSignal("candidate", { candidate: ev.candidate.toJSON() }).catch(() => {
+          });
+      };
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+      await sendSignal("offer", {
+        sdp: offer.sdp,
+        meta: { name: file.name, size: file.size, mime: file.type || "application/octet-stream" }
+      });
+      await dkWaitForOpen(dc, DK_FILE_RTC_OPEN_TIMEOUT_MS, () => dkRtcState(pc));
+      dc.send(JSON.stringify({ type: "meta", name: file.name, size: file.size, mime: file.type || "application/octet-stream" }));
+      let sent = 0;
+      const startedAt = Date.now();
+      let lastProgressAt = 0;
+      const highWater = 4 * 1024 * 1024;
+      const reportProgress = (force) => {
+        if (!onProgress)
+          return;
+        const now = Date.now();
+        if (!force && now - lastProgressAt < 250 && sent < file.size)
+          return;
+        lastProgressAt = now;
+        const elapsedMs = Math.max(1, now - startedAt);
+        const kbps = sent / 1024 / (elapsedMs / 1e3);
+        onProgress({
+          sent,
+          size: file.size,
+          pct: file.size ? sent / file.size * 100 : 100,
+          kbps,
+          elapsedMs,
+          via: "webrtc"
+        });
+      };
+      reportProgress(true);
+      while (sent < file.size) {
+        if (dc.readyState !== "open")
+          throw new Error("WebRTC data channel closed");
+        const end = Math.min(file.size, sent + DK_FILE_RTC_CHUNK);
+        const buf = await file.slice(sent, end).arrayBuffer();
+        dc.send(buf);
+        sent = end;
+        reportProgress(false);
+        await dkWaitBufferedLow(dc, highWater);
+      }
+      reportProgress(true);
+      dc.send(JSON.stringify({ type: "done" }));
+      await sendSignal("bye", { reason: "done" }).catch(() => {
+      });
+      setTimeout(cleanup, 1500);
+      return { ok: true, via: "webrtc", fileId };
+    } catch (e) {
+      await sendSignal("bye", { reason: "fallback" }).catch(() => {
+      });
+      cleanup();
+      return { ok: false, fallback: true, error: e && e.message || String(e) };
+    }
+  }, []);
+  const dismissIncoming = React.useCallback((id) => {
+    setIncoming((arr) => {
+      const item = arr.find((x) => x.id === id);
+      if (item && item.url)
+        setTimeout(() => URL.revokeObjectURL(item.url), 1e3);
+      return arr.filter((x) => x.id !== id);
+    });
+  }, []);
+  return { incoming, sendFile, dismissIncoming };
+}
+function RtcFileInbox({ T, peers, ctl }) {
+  const items = ctl && ctl.incoming || [];
+  if (!items.length)
+    return null;
+  const closeLabel = T && T.receivedClose || "Close";
+  const downloadLabel = T && T.downloadFile || "Download";
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", right: 72, bottom: 18, zIndex: 90, width: 360, maxWidth: "calc(100vw - 96px)", display: "flex", flexDirection: "column", gap: 10 } }, items.map((it) => {
+    const peer = (peers || []).find((p) => p.id === it.peerId || p.userId === it.peerId) || {};
+    const who = verifiedLabel(peer.userId || it.peerId, peer.alias) || peer.name || shortKey(it.peerId, 8, 5);
+    return /* @__PURE__ */ React.createElement("div", { key: it.id, style: { border: "1px solid var(--line)", background: "var(--panel)", borderRadius: 12, padding: 12, boxShadow: "0 14px 40px rgba(0,0,0,0.35)" } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--faint)", marginBottom: 6 } }, T && T.receivedFile || "Received file", " \xB7 ", who), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 13, fontWeight: 700, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, it.name), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)", marginTop: 3 } }, dkFileSize(it.size)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 10, paddingRight: 2 } }, /* @__PURE__ */ React.createElement("button", { onClick: () => ctl.dismissIncoming(it.id), style: { height: 30, minWidth: 58, borderRadius: 8, border: "1px solid var(--line)", background: "transparent", color: "var(--dim)", cursor: "pointer" } }, closeLabel), /* @__PURE__ */ React.createElement("a", { href: it.url, download: it.name, onClick: () => setTimeout(() => ctl.dismissIncoming(it.id), 500), style: { height: 30, minWidth: 76, textAlign: "center", borderRadius: 8, padding: "6px 10px", background: "var(--accent)", color: "#fff", textDecoration: "none", fontFamily: "var(--mono)", fontSize: 12 } }, downloadLabel)));
+  }));
+}
+Object.assign(window, { useRtcFileController, RtcFileInbox });
+
+// src/network.jsx
+function StatTile({ label, value, sub, tone }) {
+  return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0, padding: "13px 15px", borderRadius: 10, background: "var(--panel)", border: "1px solid var(--line)" } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 10.5, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "var(--faint)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, label), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 21, fontWeight: 700, letterSpacing: -0.5, marginTop: 5, color: tone || "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, value), sub && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--dim)", marginTop: 2 } }, sub));
+}
+function MyNode({ T, me, activeExit, peers, reqCount = 0 }) {
+  const online = peers.filter((p) => p.online).length;
+  const direct = peers.filter((p) => p.online && p.via === "direct").length;
+  return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12 } }, /* @__PURE__ */ React.createElement("div", { className: "dk-wrap", style: { display: "flex", alignItems: "center", gap: 14, padding: "16px 18px", borderRadius: 12, background: "var(--panel)", border: "1px solid var(--line)" } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer: { ...me, id: me.userId, agent: false }, size: 46, radius: 11 }), /* @__PURE__ */ React.createElement("div", { style: { minWidth: 0, flex: 1 } }, /* @__PURE__ */ React.createElement("div", { className: "dk-wrap", style: { display: "flex", alignItems: "center", gap: 9 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 17, fontWeight: 700, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", minWidth: 0 } }, me.name), /* @__PURE__ */ React.createElement(Tag, { tone: me.online ? "ok" : "off" }, me.online ? "online" : "offline"), /* @__PURE__ */ React.createElement(Tag, { tone: "accent" }, me.channel), me.isExit && /* @__PURE__ */ React.createElement(Tag, { tone: "warn" }, "exit", me.exitRegion ? ` \xB7 ${me.exitRegion.toUpperCase()}` : "")), /* @__PURE__ */ React.createElement("div", { className: "dk-wrap", style: { display: "flex", alignItems: "center", gap: 8, marginTop: 5, rowGap: 2 } }, me.ip ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, T.myIp), /* @__PURE__ */ React.createElement(Mono, { size: 13, copy: me.ip }, me.ip), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--line)" } }, "\xB7")) : null, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, "wire ", me.wire), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--line)" } }, "\xB7"), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, "lan ", me.lanVer, " / peer ", me.peerVer))), /* @__PURE__ */ React.createElement(Btn, { icon: "copy", onClick: () => dkCopy(me.carrier) }, T.copyAddr)), /* @__PURE__ */ React.createElement("div", { className: "dk-grid2", style: { display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 12 } }, /* @__PURE__ */ React.createElement(StatTile, { label: T.peersOnline, value: `${online}/${peers.length}`, sub: `${direct} ${T.direct}`, tone: "var(--online)" }), /* @__PURE__ */ React.createElement(StatTile, { label: T.activeEgress, value: activeExit ? activeExit : T.directEgress, sub: activeExit ? T.routing : T.noProxy, tone: activeExit ? "var(--warn)" : "var(--text)" }), /* @__PURE__ */ React.createElement(StatTile, { label: T.wireLabel, value: me.wire, sub: `${me.channel} \xB7 ${T.lossless}` }), /* @__PURE__ */ React.createElement(StatTile, { label: T.reqs, value: String(reqCount), sub: T.pending, tone: reqCount ? "var(--accent)" : "var(--text)" })));
+}
+function PeerTable({ T, peers, onOpenChat }) {
+  const phone = useIsPhone();
+  if (!peers.length)
+    return null;
+  if (phone) {
+    return /* @__PURE__ */ React.createElement("div", { style: { borderRadius: 11, border: "1px solid var(--line)", overflow: "hidden", background: "var(--panel)" } }, peers.map((p, i) => /* @__PURE__ */ React.createElement("div", { key: p.id, onClick: () => onOpenChat(p.id), style: { display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", cursor: "pointer", borderBottom: i < peers.length - 1 ? "1px solid var(--line)" : "none" } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer: p, size: 30, radius: 7 }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6, minWidth: 0 } }, /* @__PURE__ */ React.createElement(DkVerifiedName, { userid: p.userId, name: p.alias, fallback: shortKey(p.userId, 8, 5), T, style: { fontFamily: p.alias ? "var(--ui)" : "var(--mono)", fontSize: 13.5, fontWeight: 600, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0 } }), p.agent && /* @__PURE__ */ React.createElement(Icon, { name: "bot", size: 12, color: "var(--faint)", stroke: 2 })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6, minWidth: 0 } }, /* @__PURE__ */ React.createElement(RouteTag, { peer: p }), p.ip ? /* @__PURE__ */ React.createElement(Mono, { size: 11.5, dim: true, copy: p.ip }, p.ip) : null)), /* @__PURE__ */ React.createElement(Icon, { name: "chevronRight", size: 16, color: "var(--faint)", stroke: 2 }))));
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: { borderRadius: 11, border: "1px solid var(--line)", overflow: "hidden", background: "var(--panel)" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 0.8fr 90px", gap: 0, padding: "9px 16px", borderBottom: "1px solid var(--line)", background: "var(--panel-2)" } }, [T.colPeer, T.colVip, T.colPath, T.colWire, ""].map((h, i) => /* @__PURE__ */ React.createElement("span", { key: i, style: { fontFamily: "var(--mono)", fontSize: 10.5, fontWeight: 700, letterSpacing: 0.8, textTransform: "uppercase", color: "var(--faint)", textAlign: i === 4 ? "right" : "left" } }, h))), peers.map((p, i) => /* @__PURE__ */ React.createElement("div", { key: p.id, style: {
+    display: "grid",
+    gridTemplateColumns: "1.4fr 1fr 1fr 0.8fr 90px",
+    gap: 0,
+    alignItems: "center",
+    padding: "11px 16px",
+    borderBottom: i < peers.length - 1 ? "1px solid var(--line)" : "none"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, minWidth: 0 } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer: p, size: 26, radius: 6 }), /* @__PURE__ */ React.createElement(DkVerifiedName, { userid: p.userId, name: p.alias, fallback: shortKey(p.userId, 8, 5), T, style: { fontFamily: p.alias ? "var(--ui)" : "var(--mono)", fontSize: 13, fontWeight: 600, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }), p.agent && /* @__PURE__ */ React.createElement(Icon, { name: "bot", size: 12, color: "var(--faint)", stroke: 2 })), /* @__PURE__ */ React.createElement(Mono, { size: 12.5, dim: true, copy: p.ip }, p.ip), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(RouteTag, { peer: p })), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: p.wire === "64" ? "var(--warn)" : "var(--dim)" } }, p.wire === "64" ? "old\xB764" : "new\xB7163"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end", gap: 6 } }, /* @__PURE__ */ React.createElement(Btn, { icon: "message", size: "sm", title: T.openChat, onClick: () => onOpenChat(p.id) }), /* @__PURE__ */ React.createElement(Btn, { icon: "signal", size: "sm", title: T.ping })))));
+}
+function ReconnectBtn({ T, ip, onReconnect, label, icon = "refresh" }) {
+  const [busy, setBusy] = React.useState(false);
+  return /* @__PURE__ */ React.createElement(
+    Btn,
+    {
+      size: "sm",
+      icon,
+      disabled: busy,
+      onClick: async () => {
+        if (busy || !onReconnect)
+          return;
+        setBusy(true);
+        try {
+          await onReconnect(ip);
+        } finally {
+          setBusy(false);
+        }
+      }
+    },
+    busy ? T.exitChecking || "checking\u2026" : label || T.exitReconnect || "Reconnect"
+  );
+}
+function ExitCard({ T, region, activeExit, onSetExit, onReconnect, featureOn }) {
+  return /* @__PURE__ */ React.createElement("div", { style: { borderRadius: 11, border: "1px solid var(--line)", overflow: "hidden", background: "var(--panel)" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", borderBottom: "1px solid var(--line)", background: "var(--panel-2)" } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, fontWeight: 700, letterSpacing: 0.5, padding: "2px 7px", borderRadius: 5, background: "var(--chip)", color: "var(--dim)" } }, region.flag), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 13.5, fontWeight: 600, color: "var(--text)" } }, region.label), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), (() => {
+    const reach = region.nodes.filter((n) => n.reachable).length;
+    const failed = region.nodes.filter((n) => n.status === "failed").length;
+    const down = region.nodes.length - reach - failed;
+    return /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: down + failed > 0 ? "var(--warn)" : "var(--faint)" } }, reach, "/", region.nodes.length, " ", T.up, failed > 0 ? ` \xB7 ${failed} ${T.exitFailed || "failed"}` : "", down > 0 ? ` \xB7 ${down} down` : "");
+  })()), /* @__PURE__ */ React.createElement("div", null, region.nodes.map((n, i) => {
+    const active = n.ip === activeExit;
+    const stuck = n.online && !n.reachable;
+    const failed = n.status === "failed";
+    const usable = n.reachable && featureOn !== false;
+    return /* @__PURE__ */ React.createElement("div", { key: n.ip, className: "dk-wrap", style: { display: "flex", alignItems: "center", gap: 12, rowGap: 6, padding: "10px 14px", borderBottom: i < region.nodes.length - 1 ? "1px solid var(--line)" : "none", background: active ? "color-mix(in oklab, var(--accent), transparent 92%)" : "transparent" } }, /* @__PURE__ */ React.createElement(StatusDot, { online: n.reachable }), /* @__PURE__ */ React.createElement(Mono, { size: 13, copy: n.ip }, n.ip), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11, color: "var(--faint)" } }, n.host), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), n.reachable ? /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: n.ping > 200 ? "var(--warn)" : "var(--dim)" } }, n.ping, "ms") : failed ? /* @__PURE__ */ React.createElement(Tag, { tone: "danger", title: "Failed 3 checks in a row \u2014 no longer checked; Reconnect to try again" }, T.exitFailed || "failed") : n.status === "unknown" ? /* @__PURE__ */ React.createElement(Tag, { tone: "off" }, T.exitNotChecked || "not checked") : stuck ? /* @__PURE__ */ React.createElement(Tag, { tone: "warn", title: "Announces online but IP won't pass \u2014 session desync or NAT-blocked" }, "online \xB7 no route") : n.status === "down" ? /* @__PURE__ */ React.createElement(Tag, { tone: "warn", title: "No answer \u2014 checked again only when you open this panel or press Refresh; 3 in a row and it is no longer checked" }, T.exitDown || "down", " \xB7 ", n.fails, "/3") : /* @__PURE__ */ React.createElement(Tag, { tone: "off" }, "offline"), failed && onReconnect ? /* @__PURE__ */ React.createElement(ReconnectBtn, { T, ip: n.ip, onReconnect }) : active ? /* @__PURE__ */ React.createElement(Btn, { tone: "ok", icon: "check", size: "sm", onClick: () => onSetExit(null) }, T.routing) : /* @__PURE__ */ React.createElement(Btn, { size: "sm", icon: "route", disabled: !usable, onClick: () => usable && onSetExit(n.ip), style: { opacity: usable ? 1 : 0.4 } }, T.routeThru));
+  })));
+}
+function LanEnableCard({ backend, onArm, onCancel }) {
+  const [busy, setBusy] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+  const releasing = backend.state === "releasing";
+  const cmd = backend.command || "sudo agentnet service install";
+  const copy = () => {
+    navigator.clipboard.writeText(cmd).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    }).catch(() => {
+    });
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 14,
+    padding: "20px 22px",
+    borderRadius: 12,
+    background: "var(--panel)",
+    border: "1px solid var(--line)"
+  } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 15, fontWeight: 700, color: "var(--text)" } }, "\u865A\u62DF\u5C40\u57DF\u7F51 / Virtual LAN"), /* @__PURE__ */ React.createElement(Tag, { tone: "warn" }, "advanced \xB7 needs admin")), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 13, lineHeight: 1.6, color: "var(--dim)" } }, "\u804A\u5929\u3001\u6587\u4EF6\u3001\u901A\u8BDD\u90FD", /* @__PURE__ */ React.createElement("b", null, "\u4E0D\u9700\u8981"), "\u5B83 \u2014\u2014 \u90A3\u4E9B\u5DF2\u7ECF\u5728\u5DE5\u4F5C\u4E86\u3002\u865A\u62DF\u5C40\u57DF\u7F51\u989D\u5916\u63D0\u4F9B", /* @__PURE__ */ React.createElement("b", null, "\u79C1\u6709 IP \u4E92\u901A"), "\u548C", /* @__PURE__ */ React.createElement("b", null, "\u51FA\u53E3\u4EE3\u7406\u8DEF\u7531"), ",\u8981\u521B\u5EFA TUN \u8BBE\u5907,\u6240\u4EE5\u9700\u8981\u7BA1\u7406\u5458\u6743\u9650\u3002", /* @__PURE__ */ React.createElement("br", null), "Beagle \u4E0D\u4F1A\u66FF\u4F60\u63D0\u6743:\u547D\u4EE4\u7531\u4F60\u81EA\u5DF1\u8FD0\u884C,\u5BC6\u7801\u7531\u7CFB\u7EDF\u5411\u4F60\u8981\u3002"), !releasing ? /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 9 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)", lineHeight: 1.5 } }, "\u7B2C 1 \u6B65 \xB7 Beagle \u5148\u4EA4\u51FA\u5F53\u524D\u8EAB\u4EFD \u2014\u2014 \u540C\u4E00\u8EAB\u4EFD\u4E0D\u80FD\u540C\u65F6\u8DD1\u4E24\u4E2A peer, \u6240\u4EE5\u8FD9\u4E00\u6B65\u4F1A\u8BA9\u6D88\u606F", /* @__PURE__ */ React.createElement("b", null, "\u77ED\u6682\u79BB\u7EBF"), "\u3002"), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: async () => {
+        setBusy(true);
+        try {
+          await onArm();
+        } finally {
+          setBusy(false);
+        }
+      },
+      disabled: busy,
+      style: {
+        alignSelf: "flex-start",
+        padding: "9px 16px",
+        borderRadius: 10,
+        border: "none",
+        cursor: busy ? "default" : "pointer",
+        background: "var(--accent)",
+        color: "#fff",
+        fontFamily: "var(--mono)",
+        fontSize: 13,
+        fontWeight: 700,
+        opacity: busy ? 0.6 : 1
+      }
+    },
+    busy ? "\u2026" : "\u542F\u7528\u865A\u62DF\u5C40\u57DF\u7F51"
+  )) : /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10 } }, /* @__PURE__ */ React.createElement("div", { style: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "9px 12px",
+    borderRadius: 9,
+    background: "rgba(245,158,11,0.14)",
+    border: "1px solid rgba(245,158,11,0.5)"
+  } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--text)", lineHeight: 1.5 } }, "\u6D88\u606F\u5DF2\u79BB\u7EBF \u2014\u2014 \u8EAB\u4EFD\u5DF2\u4EA4\u51FA,\u7B49\u5F85\u5B88\u62A4\u8FDB\u7A0B\u63A5\u7BA1", backend.releaseSecondsLeft > 0 ? `(${Math.floor(backend.releaseSecondsLeft / 60)} \u5206 ${backend.releaseSecondsLeft % 60} \u79D2\u540E\u81EA\u52A8\u6062\u590D)` : "")), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, "\u7B2C 2 \u6B65 \xB7 \u5728\u7EC8\u7AEF\u91CC\u8FD0\u884C(\u7CFB\u7EDF\u4F1A\u5411\u4F60\u8981\u5BC6\u7801):"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("code", { style: {
+    flex: 1,
+    fontFamily: "var(--mono)",
+    fontSize: 13,
+    padding: "10px 12px",
+    borderRadius: 8,
+    background: "var(--panel-2)",
+    border: "1px solid var(--line)",
+    color: "var(--text)",
+    overflowX: "auto"
+  } }, cmd), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: copy,
+      style: {
+        flexShrink: 0,
+        padding: "9px 13px",
+        borderRadius: 8,
+        border: "1px solid var(--line)",
+        cursor: "pointer",
+        background: "var(--panel-2)",
+        color: "var(--text)",
+        fontFamily: "var(--mono)",
+        fontSize: 12
+      }
+    },
+    copied ? "\u5DF2\u590D\u5236" : "\u590D\u5236"
+  )), /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--faint)" } }, "\u7B2C 3 \u6B65 \xB7 \u5B88\u62A4\u8FDB\u7A0B\u4E00\u8D77\u6765,Beagle \u81EA\u5DF1\u5207\u8FC7\u53BB\u5E76\u6062\u590D\u6D88\u606F \u2014\u2014 \u4E0D\u7528\u91CD\u542F\u3002"), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => onCancel(),
+      style: {
+        alignSelf: "flex-start",
+        padding: "7px 13px",
+        borderRadius: 8,
+        border: "1px solid var(--line)",
+        cursor: "pointer",
+        background: "transparent",
+        color: "var(--dim)",
+        fontFamily: "var(--mono)",
+        fontSize: 12
+      }
+    },
+    "\u53D6\u6D88,\u6062\u590D\u6D88\u606F"
+  )));
+}
+function NetworkTab({ T, me, peers, exits, activeExit, exitFeature, routeFallback, onReconnectExit, onRefreshExits, reqCount, onSetExit, onOpenChat, backend, onArmLan, onCancelLan }) {
+  const ctl = exitControls({ exitFeature, routeFallback, exits });
+  const featureOn = !ctl.noExitNotice;
+  const anyFailed = ctl.anyFailed;
+  if (backend && backend.switchable && !backend.hasVirtualLan) {
+    return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, overflow: "auto", background: "var(--bg)" } }, /* @__PURE__ */ React.createElement("div", { className: "dk-page", style: { maxWidth: 1040, margin: "0 auto", padding: "24px 28px 60px", display: "flex", flexDirection: "column", gap: 26 } }, /* @__PURE__ */ React.createElement(MyNode, { T, me, activeExit, peers, reqCount }), /* @__PURE__ */ React.createElement(LanEnableCard, { backend, onArm: onArmLan, onCancel: onCancelLan })));
+  }
+  const lanless = !!backend && backend.hasVirtualLan === false;
+  return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, overflow: "auto", background: "var(--bg)" } }, /* @__PURE__ */ React.createElement("div", { className: "dk-page", style: { maxWidth: 1040, margin: "0 auto", padding: "24px 28px 60px", display: "flex", flexDirection: "column", gap: 26 } }, /* @__PURE__ */ React.createElement(MyNode, { T, me, activeExit, peers, reqCount }), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12 } }, /* @__PURE__ */ React.createElement(Section, { label: T.peerRouting, count: peers.length }), /* @__PURE__ */ React.createElement(PeerTable, { T, peers, onOpenChat }), !peers.length && /* @__PURE__ */ React.createElement("div", { style: { padding: "14px 16px", borderRadius: 11, border: "1px dashed var(--line)", fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--faint)" } }, T.noPeersYet || "No friends yet \u2014 add one from Chat and it shows up here with its route.")), lanless ? null : /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 12 } }, /* @__PURE__ */ React.createElement(Section, { label: T.exitNodes, trailing: /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6 } }, ctl.refresh && onRefreshExits && /* @__PURE__ */ React.createElement(ReconnectBtn, { T, ip: null, onReconnect: () => onRefreshExits(), label: T.exitRefresh || "Refresh" }), ctl.reconnectAll && onReconnectExit && /* @__PURE__ */ React.createElement(ReconnectBtn, { T, ip: null, onReconnect: onReconnectExit, label: T.exitReconnectAll || "Reconnect all" }), /* @__PURE__ */ React.createElement(Btn, { icon: "plus", size: "sm" }, T.addExit)) }), ctl.noExitNotice && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 4, padding: "11px 14px", borderRadius: 10, background: "var(--panel-2)", border: "1px dashed var(--line)" } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12.5, fontWeight: 700, color: "var(--text)" } }, T.noExitAvailable || "No exit available \u2014 routing and proxy are off."), anyFailed && /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--dim)" } }, T.noExitHint || "Every exit failed 3 times and is no longer checked automatically. Press Reconnect to try one again.")), ctl.fallbackNotice && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", borderRadius: 10, background: "color-mix(in oklab, var(--warn), transparent 90%)", border: "1px solid color-mix(in oklab, var(--warn), transparent 70%)" } }, /* @__PURE__ */ React.createElement(Icon, { name: "route", size: 17, color: "var(--warn)", stroke: 2 }), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12.5, color: "var(--text)" } }, T.routeFellBack || "Routing fell back to direct: every exit it used failed. Reconnect one to route through it again.")), activeExit && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", borderRadius: 10, background: "color-mix(in oklab, var(--warn), transparent 90%)", border: "1px solid color-mix(in oklab, var(--warn), transparent 70%)" } }, /* @__PURE__ */ React.createElement(Icon, { name: "route", size: 17, color: "var(--warn)", stroke: 2 }), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12.5, color: "var(--text)" } }, T.egressVia), /* @__PURE__ */ React.createElement(Mono, { size: 13, copy: activeExit }, activeExit), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), /* @__PURE__ */ React.createElement(Btn, { tone: "danger", icon: "unlink", size: "sm", onClick: () => onSetExit(null) }, T.stopRouting)), /* @__PURE__ */ React.createElement("div", { className: "dk-grid1", style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } }, exits.map((r) => /* @__PURE__ */ React.createElement(ExitCard, { key: r.region, T, region: r, activeExit, onSetExit, onReconnect: ctl.reconnect ? onReconnectExit : null, featureOn }))))));
+}
+Object.assign(window, { NetworkTab });
+
+// src/notify.jsx
+var dkAudioCtx = null;
+function dkAudio() {
+  if (dkAudioCtx && dkAudioCtx.state !== "closed")
+    return dkAudioCtx;
+  try {
+    dkAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  } catch (e) {
+    dkAudioCtx = null;
+  }
+  return dkAudioCtx;
+}
+function dkUnlockAudioOnGesture() {
+  const unlock = () => {
+    const c = dkAudio();
+    if (c && c.state === "suspended")
+      c.resume().catch(() => {
+      });
+  };
+  window.addEventListener("pointerdown", unlock, { passive: true });
+  window.addEventListener("keydown", unlock, { passive: true });
+  return () => {
+    window.removeEventListener("pointerdown", unlock);
+    window.removeEventListener("keydown", unlock);
+  };
+}
+function dkChime(kind) {
+  const c = dkAudio();
+  if (!c)
+    return;
+  if (c.state === "suspended")
+    c.resume().catch(() => {
+    });
+  const notes = kind === "request" ? [[660, 0], [880, 0.14]] : [[880, 0], [1175, 0.11]];
+  const t0 = c.currentTime;
+  for (const [freq, at] of notes) {
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = "sine";
+    o.frequency.value = freq;
+    o.connect(g);
+    g.connect(c.destination);
+    const t = t0 + at;
+    g.gain.setValueAtTime(1e-4, t);
+    g.gain.exponentialRampToValueAtTime(0.18, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(1e-4, t + 0.17);
+    o.start(t);
+    o.stop(t + 0.2);
+  }
+}
+var dkFlash = { timer: null, title: "", link: null, href: null, badged: null, on: false, n: 0, label: "" };
+function dkBadgedIcon(href) {
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        if (!img.naturalWidth)
+          return rej(new Error("icon has no intrinsic size"));
+        const s = 64, cv = document.createElement("canvas");
+        cv.width = s;
+        cv.height = s;
+        const cx = cv.getContext("2d");
+        cx.drawImage(img, 0, 0, s, s);
+        cx.beginPath();
+        cx.arc(s - 14, 14, 12, 0, Math.PI * 2);
+        cx.fillStyle = "#e5484d";
+        cx.fill();
+        cx.lineWidth = 3;
+        cx.strokeStyle = "#fff";
+        cx.stroke();
+        res(cv.toDataURL("image/png"));
+      } catch (e) {
+        rej(e);
+      }
+    };
+    img.onerror = () => rej(new Error("icon failed to load"));
+    img.src = href;
+  });
+}
+function dkFlashTick() {
+  dkFlash.on = !dkFlash.on;
+  document.title = `(${dkFlash.n}) ${dkFlash.on ? dkFlash.label : dkFlash.title}`;
+}
+function dkFlashStart(label, count) {
+  dkFlash.n += count || 1;
+  dkFlash.label = label;
+  if (dkFlash.timer)
+    return;
+  dkFlash.title = document.title;
+  dkFlash.link = document.querySelector('link[rel~="icon"]');
+  dkFlash.href = dkFlash.link ? dkFlash.link.href : null;
+  dkFlash.badged = null;
+  dkFlash.on = false;
+  if (dkFlash.href) {
+    dkBadgedIcon(dkFlash.href).then((b) => {
+      dkFlash.badged = b;
+      if (dkFlash.timer && dkFlash.link)
+        dkFlash.link.href = b;
+    }).catch(() => {
+    });
+  }
+  dkFlashTick();
+  dkFlash.timer = setInterval(dkFlashTick, 1e3);
+}
+function dkFlashStop() {
+  if (!dkFlash.timer)
+    return;
+  clearInterval(dkFlash.timer);
+  dkFlash.timer = null;
+  dkFlash.n = 0;
+  document.title = dkFlash.title;
+  if (dkFlash.link && dkFlash.href)
+    dkFlash.link.href = dkFlash.href;
+}
+function dkLooking() {
+  return document.visibilityState === "visible" && document.hasFocus();
+}
+function useIncomingAlerts({ T, peers, requests, loaded, activeId, sound = true, flash = true, muted, isProtocol }) {
+  const prev = React.useRef(null);
+  const mutedRef = React.useRef(/* @__PURE__ */ new Set());
+  mutedRef.current = new Set(muted || []);
+  React.useEffect(() => dkUnlockAudioOnGesture(), []);
+  React.useEffect(() => {
+    if (!flash)
+      dkFlashStop();
+  }, [flash]);
+  React.useEffect(() => {
+    const seen = () => {
+      if (dkLooking())
+        dkFlashStop();
+    };
+    window.addEventListener("focus", seen);
+    window.addEventListener("pointerdown", seen, { passive: true });
+    document.addEventListener("visibilitychange", seen);
+    return () => {
+      window.removeEventListener("focus", seen);
+      window.removeEventListener("pointerdown", seen);
+      document.removeEventListener("visibilitychange", seen);
+      dkFlashStop();
+    };
+  }, []);
+  React.useEffect(() => {
+    if (!loaded)
+      return;
+    const byId = /* @__PURE__ */ new Map();
+    for (const p of peers || []) {
+      if (p && p.app)
+        continue;
+      const dir = p.lastDir || (String(p.lastMsg || "").startsWith("you: ") ? "out" : "in");
+      const quiet = typeof isProtocol === "function" && lastIsProtocol(p, isProtocol);
+      byId.set(p.id, { ts: p.lastTs || 0, dir, quiet });
+    }
+    const reqIds = new Set((requests || []).map((r) => r.id));
+    const was = prev.current;
+    prev.current = { byId, reqIds };
+    if (!was)
+      return;
+    let msgs = 0, elsewhere = 0, reqs = 0, loud = 0, loudElsewhere = 0;
+    for (const [id, cur] of byId) {
+      if (cur.dir !== "in" || !cur.ts)
+        continue;
+      if (cur.quiet)
+        continue;
+      const old = was.byId.get(id);
+      if (old ? cur.ts <= old.ts : Date.now() - cur.ts > 3e4)
+        continue;
+      msgs += 1;
+      if (id !== activeId)
+        elsewhere += 1;
+      if (!mutedRef.current.has(id)) {
+        loud += 1;
+        if (id !== activeId)
+          loudElsewhere += 1;
+      }
+    }
+    for (const id of reqIds)
+      if (!was.reqIds.has(id))
+        reqs += 1;
+    if (!msgs && !reqs)
+      return;
+    const looking = dkLooking();
+    if (sound && (reqs || loud) && !(looking && !reqs && !loudElsewhere))
+      dkChime(reqs && !loud ? "request" : "message");
+    if (flash && !looking) {
+      const label = msgs ? T && T.alertMsg || "New message" : T && T.alertReq || "New friend request";
+      dkFlashStart(label, msgs + reqs);
+    }
+  }, [peers, requests, loaded, activeId, T, sound, flash]);
+}
+
+// src/settings-store.jsx
+var TWEAKS_STORAGE_KEY = "decentlan.tweaks";
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(TWEAKS_STORAGE_KEY) || "{}");
+      return { ...defaults, ...saved };
+    } catch (e) {
+      return defaults;
+    }
+  });
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === "object" && keyOrEdits !== null ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => {
+      const next = { ...prev, ...edits };
+      try {
+        localStorage.setItem(TWEAKS_STORAGE_KEY, JSON.stringify(next));
+      } catch (e) {
+      }
+      return next;
+    });
+    try {
+      window.dispatchEvent(new CustomEvent("tweakchange", { detail: edits }));
+    } catch (e) {
+    }
+  }, []);
+  React.useEffect(() => {
+    const onSync = (e) => {
+      const d = e && e.detail;
+      if (d && typeof d === "object") setTweak(d);
+    };
+    window.addEventListener("rp-sync-tweaks", onSync);
+    return () => window.removeEventListener("rp-sync-tweaks", onSync);
+  }, [setTweak]);
+  React.useEffect(() => {
+    if (values && (values.theme === "light" || values.theme === "dark")) {
+      document.documentElement.setAttribute("data-theme", values.theme);
+    }
+  }, [values && values.theme]);
+  return [values, setTweak];
+}
+Object.assign(window, { useTweaks });
+
+// src/app.jsx
+function ownershipFix(info) {
+  const r = String(info && info.selfUpdateBlocked || "");
+  const at = r.indexOf("sudo npm i -g");
+  const end = at >= 0 ? r.indexOf(".", at) : -1;
+  return at >= 0 ? r.slice(at, end > at ? end : void 0) : "sudo npm i -g @decentnetwork/beagle@latest";
+}
+function dkParseDeepLinkAddress() {
+  try {
+    const h = window.location.hash || "";
+    const qi = h.indexOf("?");
+    if (qi >= 0) {
+      const a = new URLSearchParams(h.slice(qi + 1)).get("address");
+      if (a && a.trim())
+        return a.trim();
+    }
+    const a2 = new URLSearchParams(window.location.search || "").get("address");
+    if (a2 && a2.trim())
+      return a2.trim();
+  } catch (e) {
+  }
+  return "";
+}
+var DK_DEFAULTS = (
+  /*EDITMODE-BEGIN*/
+  {
+    "theme": "dark",
+    "accent": "#7B6CF6",
+    "density": "compact",
+    "lang": "en",
+    "startTab": "chat",
+    "alertSound": true,
+    "alertFlash": true
+  }
+);
+function dkDetectLang() {
+  try {
+    const tags = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""];
+    for (const tag of tags) {
+      const l = String(tag).toLowerCase();
+      if (l.startsWith("zh"))
+        return "zh";
+      if (l.startsWith("en"))
+        return "en";
+    }
+  } catch (e) {
+  }
+  return "en";
+}
+function dkTheme(theme, accent) {
+  const base = {
+    "--ui": "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace",
+    "--mono": "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace",
+    "--accent": accent
+  };
+  if (theme === "light")
+    return {
+      ...base,
+      "--ident-l": "0.92",
+      "--bg": "oklch(0.965 0.004 264)",
+      "--panel": "#ffffff",
+      "--panel-2": "oklch(0.975 0.004 264)",
+      "--line": "oklch(0.9 0.006 264)",
+      "--text": "oklch(0.26 0.013 264)",
+      "--dim": "oklch(0.5 0.013 264)",
+      "--faint": "oklch(0.62 0.011 264)",
+      "--chip": "oklch(0.945 0.006 264)",
+      "--online": "oklch(0.62 0.16 150)",
+      "--off": "oklch(0.8 0.01 264)",
+      "--warn": "oklch(0.66 0.15 60)",
+      "--danger": "oklch(0.58 0.21 25)",
+      "--bub-me": accent,
+      "--bub-them": "oklch(0.97 0.004 264)",
+      "--rail": "oklch(0.99 0.003 264)"
+    };
+  return {
+    ...base,
+    "--ident-l": "0.32",
+    "--bg": "oklch(0.165 0.012 264)",
+    "--panel": "oklch(0.205 0.013 264)",
+    "--panel-2": "oklch(0.235 0.014 264)",
+    "--line": "oklch(0.295 0.014 264)",
+    "--text": "oklch(0.93 0.008 264)",
+    "--dim": "oklch(0.68 0.012 264)",
+    "--faint": "oklch(0.52 0.013 264)",
+    "--chip": "oklch(0.27 0.014 264)",
+    "--online": "oklch(0.78 0.17 150)",
+    "--off": "oklch(0.42 0.01 264)",
+    "--warn": "oklch(0.78 0.15 70)",
+    "--danger": "oklch(0.68 0.2 22)",
+    "--bub-me": accent,
+    "--bub-them": "oklch(0.255 0.014 264)",
+    "--rail": "oklch(0.185 0.013 264)"
+  };
+}
+var STR = {
+  en: {
+    chat: "Chat",
+    network: "Network",
+    apps: "Apps",
+    profile: "Profile",
+    alertMsg: "New message",
+    alertReq: "New friend request",
+    muteSound: "Mute sound for this chat",
+    unmuteSound: "Turn sound back on for this chat",
+    mutedTag: "sound muted",
+    recommended: "Discover",
+    registered: "Names",
+    here: "Here",
+    people: "People",
+    back: "Back",
+    dirAdd: "Add",
+    dirSent: "requested",
+    dirOpenChat: "chat",
+    dirMe: "me",
+    dirSearch: "search name / userid\u2026",
+    dirLoading: "loading directory\u2026",
+    noName: "no name given",
+    friendRequestItem: "Friend request",
+    showAll: "show all",
+    showLess: "show less",
+    dirEmpty: "nobody matches",
+    dirError: "Could not load the directory:",
+    bridgeEmpty: "Nobody else is listed on this bridge yet. You are the first.",
+    bridgePending: "Not verified on this bridge yet \u2014 it may still be running the older protocol.",
+    addPlaceholder: "carrier address or name.beagles.eth\u2026",
+    add: "Add",
+    search: "search peers / ip\u2026",
+    addSending: "sending friend-request\u2026",
+    addSent: "friend-request sent \u2014 delivered when they\u2019re online; appears here once they accept",
+    addFailed: "could not send",
+    requests: "Friend requests",
+    accept: "accept",
+    reject: "reject",
+    peers: "Peers",
+    call: "Voice call",
+    alias: "Set alias",
+    sendFile: "Send file",
+    sendWebrtcFile: "Send file via WebRTC",
+    block: "Block peer",
+    remove: "Remove friend",
+    receivedFile: "Received file",
+    receivedClose: "Close",
+    downloadFile: "Download",
+    attach: "Attach file",
+    message: "Message",
+    send: "Send",
+    pickPeer: "Select a peer to open the conversation",
+    fileWaitsHere: "waits on this computer until they are online",
+    fileOnExpress: "offline \xB7 stored on Express",
+    queued: "queued",
+    sendingMsg: "sending",
+    groupTag: "group",
+    open: "open",
+    retry: "Retry",
+    cancel: "Cancel",
+    friendsSettings: "Friends",
+    autoAcceptLabel: "Auto-accept friend requests",
+    autoAcceptSub: "Off: requests wait in the sidebar for your approval.",
+    groupSenderUnknown: "The group relays only this display name. Register Beagle as a group agent (/agent add <beagle address> in the group) to receive full member identities you can add as friends.",
+    assistantSub: "Local \xB7 APP",
+    loadEarlier: "Load earlier messages",
+    loadingEarlier: "Loading\u2026",
+    pendingFriend: "Waiting for them to accept your friend request \u2014 messages will queue and deliver once they do.",
+    cancelling: "Cancelling\u2026",
+    cancelled: "Transfer cancelled",
+    retrying: "Retrying\u2026",
+    retried: "Transfer restarted",
+    cancelFailed: "Cancel failed",
+    retryFailed: "Retry failed",
+    cancelMissing: "No active transfer was found. Refresh and try again.",
+    retryMissing: "No retryable transfer or original file is unavailable.",
+    myIp: "my ip",
+    copyAddr: "copy address",
+    peersOnline: "peers online",
+    direct: "direct (LAN)",
+    activeEgress: "active egress",
+    directEgress: "direct",
+    noProxy: "no proxy",
+    wireLabel: "wire",
+    lossless: "lossless",
+    reqs: "requests",
+    pending: "pending inbound",
+    peerRouting: "Peer routing",
+    colPeer: "peer",
+    colVip: "virtual ip",
+    colPath: "path",
+    colWire: "wire",
+    openChat: "Open chat",
+    ping: "Ping",
+    exitNodes: "Exit nodes",
+    addExit: "add exit",
+    up: "up",
+    routing: "routing",
+    routeThru: "route",
+    egressVia: "all egress routed via",
+    stopRouting: "stop",
+    exitFailed: "failed",
+    exitReconnect: "Reconnect",
+    exitReconnectAll: "Reconnect all",
+    exitChecking: "checking\u2026",
+    exitNotChecked: "not checked",
+    exitDown: "down",
+    exitRefresh: "Refresh",
+    noExitAvailable: "No exit available \u2014 routing and proxy are off.",
+    noExitHint: "Every exit failed 3 checks in a row and is no longer checked. Press Reconnect to try one again.",
+    routeFellBack: "Routing fell back to direct: every exit it used failed. Reconnect one to route through it again.",
+    identity: "Identity",
+    userId: "user id",
+    carrierAddr: "carrier address",
+    netKey: "network key",
+    ensCard: "Name \xB7 beagles.eth",
+    ensName: "name",
+    ensPlaceholder: "yourname",
+    ensRegister: "register",
+    ensUpdate: "update",
+    ensDone: "saved",
+    ensEth: "ethereum",
+    ensSol: "solana",
+    ensBind: "bind",
+    ensUnbind: "unbind",
+    ensNotBound: "not bound",
+    ensWebOnly: "Registering a beagles.eth name needs the Beagle phone or desktop app. Your avatar can be set above without one.",
+    ensProven: "signed by this wallet",
+    ensUnproven: "no wallet signature yet",
+    ensProve: "sign",
+    ensSigning: "approve the signature in your wallet\u2026",
+    ensAvatar: "avatar",
+    ensChoose: "choose",
+    ensClear: "clear",
+    ensNotSet: "not set",
+    ensUpload: "upload",
+    ensCustom: "custom image",
+    ensTooBig: "image too large even after scaling",
+    ensBadImage: "cannot read that image",
+    ensPickPunk: "choose a punk",
+    ensShuffle: "shuffle",
+    pt_any: "any",
+    pt_female: "female",
+    pt_male: "male",
+    pt_zombie: "zombie",
+    pt_ape: "ape",
+    pt_alien: "alien",
+    linksCard: "Links",
+    linkPlaceholder: "username or profile URL",
+    save: "save",
+    addr: "address",
+    nameCard: "name card",
+    pubMessage: "Message",
+    pubRecommend: "Recommend",
+    pubRecTitle: "send this card to\u2026",
+    pubRecSent: "sent \u2713",
+    updTitle: "Update available",
+    updLater: "Later",
+    brandAbout: "What is Beagle?",
+    viaOutOffline: "posted to the offline relay \u2014 they get it when they come online",
+    viaOutOnline: "sent over a live session (online)",
+    updNow: "Update now",
+    updRestart: "Restart",
+    updBusy: "Updating\u2026 (about a minute)",
+    updDone: "Updated \u2014 restart to apply.",
+    updRestarting: "Restarting\u2026 this page reloads when it\u2019s back. (If it has not come back after a minute, run beagle again.)",
+    updNpx: "Running via npx \u2014 restarting picks up the latest version automatically.",
+    updDev: "Running from a source checkout \u2014 update with:",
+    updPeerDaemon: "The peer version belongs to the running agentnet daemon, not to this app. Update it with:",
+    updUnknown: "Update now runs the global install. If that is not how this was installed, run:",
+    updLanNote: "agentnet (lan): one click reinstalls it and asks the running daemon to restart itself. Manual equivalent:",
+    updCheck: "check for updates",
+    updCheckLabel: "updates",
+    updLatest: "up to date \u2713",
+    updLanNow: "Update lan",
+    updDaemonNote: "The network daemon (agentnet) is behind. Update reinstalls it and restarts it \u2014 messages pause for a few seconds.",
+    updManualHint: "Run it in a terminal, then click Restart to apply.",
+    updLanDone: "lan updated \u2014 daemon restarted with the new version \u2713",
+    updLanNoRestart: "Installed, but the daemon did not come back within a minute \u2014 the new version applies on its next start.",
+    pubOpen: "View public profile",
+    pubNone: "No public profile \u2014 this user has not registered a beagles.eth name.",
+    ensNoEthWallet: "no Ethereum wallet extension found (MetaMask\u2026)",
+    ensNoSolWallet: "no Solana wallet extension found (Phantom\u2026)",
+    ensWalletOwned: "registered via your mobile wallet as",
+    virtualIp: "virtual ip",
+    version: "version",
+    editProfile: "edit",
+    verApp: "app",
+    verDaemon: "daemon",
+    verChannel: "channel",
+    verInstalledHint: "installed on disk \u2014 restart the daemon so it can report what it is actually running",
+    copy: "Copy",
+    copied: "Copied",
+    copyFailed: "Copy failed",
+    needProfile: "Set your name first \u2014 a friend request with no name is just a key.",
+    dangerZone: "Danger zone",
+    deleteNode: "Delete this node",
+    deleteSub: "Permanently remove identity & keys from this device",
+    delete: "delete",
+    settings: "Settings",
+    connected: "connected",
+    mute: "mute",
+    unmute: "unmute",
+    speaker: "speaker",
+    toVideo: "video",
+    audioOnly: "audio",
+    endCall: "end",
+    you: "you",
+    calling: "calling\u2026",
+    remoteRinging: "ringing\u2026",
+    connecting: "connecting\u2026",
+    reconnecting: "reconnecting\u2026",
+    noAnswer: "No answer",
+    cantReach: "Can't reach {name}",
+    callFailed: "Call failed",
+    busy: "Busy",
+    declined: "Declined",
+    answeredElsewhere: "Answered elsewhere",
+    joinGroup: "Join group",
+    cardIsFriend: "Already in your chats.",
+    cardNoEns: "No beagles.eth name registered.",
+    ensVerified: "Verified: this beagles.eth name is registered to this user.",
+    ensVerifiedReplaced: "Registered beagles.eth name for this user. Their device shows {claimed}, which is not registered to them.",
+    ensSelfClaimed: "self-claimed",
+    ensSelfClaimedTip: "Shown by their device. This beagles.eth name is not registered to this user.",
+    voiceMessage: "Voice message",
+    groupFileNotDelivered: "Not delivered to this device: the group sends agents only a description of files.",
+    shareFailed: "Screen share failed",
+    meeting: "Meeting",
+    meetingRooms: "Meeting rooms",
+    nextVersion: "next version",
+    createRoom: "New room",
+    meetingDesc: "Spin up audio & video rooms across servers and invite peers by virtual IP. Group calls, screen share, and shared exit routing land in the next release."
+  },
+  zh: {
+    chat: "\u804A\u5929",
+    network: "\u7F51\u7EDC",
+    apps: "\u5E94\u7528",
+    profile: "\u6211\u7684",
+    alertMsg: "\u65B0\u6D88\u606F",
+    alertReq: "\u65B0\u7684\u597D\u53CB\u8BF7\u6C42",
+    muteSound: "\u5173\u95ED\u6B64\u4F1A\u8BDD\u7684\u63D0\u793A\u97F3",
+    unmuteSound: "\u6062\u590D\u6B64\u4F1A\u8BDD\u7684\u63D0\u793A\u97F3",
+    mutedTag: "\u5DF2\u9759\u97F3",
+    recommended: "\u63A8\u8350",
+    registered: "\u540D\u5F55",
+    here: "\u5728\u573A",
+    people: "\u53D1\u73B0",
+    back: "\u8FD4\u56DE",
+    dirAdd: "\u52A0\u597D\u53CB",
+    dirSent: "\u5DF2\u8BF7\u6C42",
+    dirOpenChat: "\u4F1A\u8BDD",
+    dirMe: "\u6211",
+    dirSearch: "\u641C\u7D22\u540D\u5B57 / userid\u2026",
+    dirLoading: "\u6B63\u5728\u52A0\u8F7D\u540D\u5355\u2026",
+    noName: "\u5BF9\u65B9\u6CA1\u6709\u586B\u540D\u5B57",
+    friendRequestItem: "\u597D\u53CB\u8BF7\u6C42",
+    showAll: "\u5C55\u5F00\u5168\u6587",
+    showLess: "\u6536\u8D77",
+    dirEmpty: "\u6CA1\u6709\u5339\u914D\u7684\u4EBA",
+    dirError: "\u540D\u5355\u52A0\u8F7D\u5931\u8D25\uFF1A",
+    bridgeEmpty: "\u8FD9\u4E2A bridge \u4E0A\u8FD8\u6CA1\u6709\u522B\u4EBA\uFF0C\u4F60\u662F\u7B2C\u4E00\u4E2A\u3002",
+    bridgePending: "\u8FD8\u6CA1\u6709\u5728\u8FD9\u4E2A bridge \u4E0A\u9A8C\u8BC1 \u2014\u2014 \u5B83\u53EF\u80FD\u8FD8\u5728\u8DD1\u65E7\u534F\u8BAE\u3002",
+    addPlaceholder: "carrier \u5730\u5740\u6216 \u540D\u5B57.beagles.eth\u2026",
+    add: "\u6DFB\u52A0",
+    search: "\u641C\u7D22\u597D\u53CB / IP\u2026",
+    addSending: "\u6B63\u5728\u53D1\u9001\u597D\u53CB\u8BF7\u6C42\u2026",
+    addSent: "\u597D\u53CB\u8BF7\u6C42\u5DF2\u53D1\u9001 \u2014 \u5BF9\u65B9\u4E0A\u7EBF\u540E\u9001\u8FBE\uFF0C\u63A5\u53D7\u540E\u51FA\u73B0\u5728\u5217\u8868",
+    addFailed: "\u53D1\u9001\u5931\u8D25",
+    requests: "\u597D\u53CB\u8BF7\u6C42",
+    accept: "\u63A5\u53D7",
+    reject: "\u62D2\u7EDD",
+    peers: "\u597D\u53CB",
+    call: "\u8BED\u97F3\u901A\u8BDD",
+    alias: "\u8BBE\u7F6E\u5907\u6CE8",
+    sendFile: "\u53D1\u9001\u6587\u4EF6",
+    sendWebrtcFile: "\u901A\u8FC7 WebRTC \u53D1\u9001\u6587\u4EF6",
+    block: "\u62C9\u9ED1",
+    remove: "\u5220\u9664\u597D\u53CB",
+    receivedFile: "\u6536\u5230\u6587\u4EF6",
+    receivedClose: "\u5173\u95ED",
+    downloadFile: "\u4E0B\u8F7D",
+    attach: "\u9644\u4EF6",
+    message: "\u6D88\u606F",
+    send: "\u53D1\u9001",
+    pickPeer: "\u9009\u62E9\u4E00\u4F4D\u597D\u53CB\u5F00\u59CB\u4F1A\u8BDD",
+    fileWaitsHere: "\u5728\u672C\u673A\u7B49\u5F85,\u597D\u53CB\u4E0A\u7EBF\u540E\u53D1\u9001",
+    fileOnExpress: "\u79BB\u7EBF \xB7 \u5DF2\u5B58\u5230 Express",
+    queued: "\u5F85\u53D1\u9001",
+    sendingMsg: "\u53D1\u9001\u4E2D",
+    groupTag: "\u7FA4",
+    open: "\u6253\u5F00",
+    retry: "\u91CD\u8BD5",
+    cancel: "\u53D6\u6D88",
+    friendsSettings: "\u597D\u53CB",
+    autoAcceptLabel: "\u81EA\u52A8\u63A5\u53D7\u597D\u53CB\u8BF7\u6C42",
+    autoAcceptSub: "\u5173\u95ED\u540E\uFF0C\u597D\u53CB\u8BF7\u6C42\u4F1A\u7B49\u5F85\u4F60\u5728\u4FA7\u8FB9\u680F\u624B\u52A8\u786E\u8BA4\u3002",
+    groupSenderUnknown: "\u7FA4\u670D\u52A1\u53EA\u8F6C\u53D1\u4E86\u663E\u793A\u540D\uFF0C\u62FF\u4E0D\u5230\u8BE5\u6210\u5458\u7684\u5B8C\u6574\u8EAB\u4EFD\u3002\u5728\u7FA4\u91CC\u6267\u884C /agent add <beagle \u5730\u5740> \u628A Beagle \u6CE8\u518C\u4E3A\u7FA4 agent \u540E\uFF0C\u5373\u53EF\u6536\u5230\u5B8C\u6574\u8EAB\u4EFD\u5E76\u4E00\u952E\u52A0\u597D\u53CB\u3002",
+    assistantSub: "\u672C\u673A \xB7 APP",
+    loadEarlier: "\u52A0\u8F7D\u66F4\u65E9\u7684\u6D88\u606F",
+    loadingEarlier: "\u52A0\u8F7D\u4E2D\u2026",
+    pendingFriend: "\u7B49\u5F85\u5BF9\u65B9\u63A5\u53D7\u597D\u53CB\u8BF7\u6C42 \u2014 \u6D88\u606F\u4F1A\u5148\u6392\u961F\uFF0C\u5BF9\u65B9\u63A5\u53D7\u540E\u81EA\u52A8\u9001\u8FBE\u3002",
+    cancelling: "\u6B63\u5728\u53D6\u6D88\u2026",
+    cancelled: "\u5DF2\u53D6\u6D88\u4F20\u8F93",
+    retrying: "\u6B63\u5728\u91CD\u8BD5\u2026",
+    retried: "\u5DF2\u91CD\u65B0\u5F00\u59CB\u4F20\u8F93",
+    cancelFailed: "\u53D6\u6D88\u5931\u8D25",
+    retryFailed: "\u91CD\u8BD5\u5931\u8D25",
+    cancelMissing: "\u6CA1\u6709\u627E\u5230\u6B63\u5728\u8FDB\u884C\u7684\u4F20\u8F93\uFF1B\u8BF7\u5237\u65B0\u9875\u9762\u540E\u91CD\u8BD5\u3002",
+    retryMissing: "\u6CA1\u6709\u53EF\u91CD\u8BD5\u7684\u4F20\u8F93\uFF0C\u6216\u539F\u6587\u4EF6\u5DF2\u4E0D\u53EF\u7528\u3002",
+    myIp: "\u6211\u7684 IP",
+    copyAddr: "\u590D\u5236\u5730\u5740",
+    peersOnline: "\u5728\u7EBF\u597D\u53CB",
+    direct: "\u76F4\u8FDE (\u5C40\u57DF\u7F51)",
+    activeEgress: "\u5F53\u524D\u51FA\u53E3",
+    directEgress: "\u76F4\u8FDE",
+    noProxy: "\u65E0\u4EE3\u7406",
+    wireLabel: "\u534F\u8BAE",
+    lossless: "\u65E0\u635F",
+    reqs: "\u8BF7\u6C42",
+    pending: "\u5F85\u5904\u7406",
+    peerRouting: "\u8282\u70B9\u8DEF\u7531",
+    colPeer: "\u597D\u53CB",
+    colVip: "\u865A\u62DF IP",
+    colPath: "\u8DEF\u5F84",
+    colWire: "\u534F\u8BAE",
+    openChat: "\u6253\u5F00\u804A\u5929",
+    ping: "Ping",
+    exitNodes: "\u51FA\u53E3\u8282\u70B9",
+    addExit: "\u6DFB\u52A0\u51FA\u53E3",
+    up: "\u5728\u7EBF",
+    routing: "\u4F7F\u7528\u4E2D",
+    routeThru: "\u8DEF\u7531",
+    egressVia: "\u5168\u90E8\u51FA\u53E3\u6D41\u91CF\u7ECF\u7531",
+    stopRouting: "\u505C\u6B62",
+    exitFailed: "\u5DF2\u5931\u8D25",
+    exitReconnect: "\u91CD\u65B0\u8FDE\u63A5",
+    exitReconnectAll: "\u5168\u90E8\u91CD\u8FDE",
+    exitChecking: "\u68C0\u6D4B\u4E2D\u2026",
+    exitNotChecked: "\u672A\u68C0\u6D4B",
+    exitDown: "\u4E0D\u901A",
+    exitRefresh: "\u5237\u65B0",
+    noExitAvailable: "\u6CA1\u6709\u53EF\u7528\u7684\u51FA\u53E3 \u2014\u2014 \u8DEF\u7531\u548C\u4EE3\u7406\u5DF2\u5173\u95ED\u3002",
+    noExitHint: "\u6240\u6709\u51FA\u53E3\u90FD\u8FDE\u7EED 3 \u6B21\u68C0\u6D4B\u5931\u8D25,\u5DF2\u4E0D\u518D\u68C0\u6D4B\u3002\u70B9\u300C\u91CD\u65B0\u8FDE\u63A5\u300D\u518D\u8BD5\u4E00\u6B21\u3002",
+    routeFellBack: "\u8DEF\u7531\u5DF2\u6539\u56DE\u76F4\u8FDE:\u5B83\u4F7F\u7528\u7684\u51FA\u53E3\u5168\u90E8\u5931\u8D25\u3002\u91CD\u65B0\u8FDE\u63A5\u5176\u4E2D\u4E00\u4E2A\u5373\u53EF\u6062\u590D\u3002",
+    identity: "\u8EAB\u4EFD",
+    userId: "\u7528\u6237 ID",
+    carrierAddr: "Carrier \u5730\u5740",
+    netKey: "\u7F51\u7EDC\u516C\u94A5",
+    ensCard: "\u540D\u5B57 \xB7 beagles.eth",
+    ensName: "\u540D\u5B57",
+    ensPlaceholder: "\u4F60\u7684\u540D\u5B57",
+    ensRegister: "\u6CE8\u518C",
+    ensUpdate: "\u66F4\u65B0",
+    ensDone: "\u5DF2\u4FDD\u5B58",
+    ensEth: "ethereum",
+    ensSol: "solana",
+    ensBind: "\u7ED1\u5B9A",
+    ensUnbind: "\u89E3\u7ED1",
+    ensNotBound: "\u672A\u7ED1\u5B9A",
+    ensWebOnly: "\u6CE8\u518C beagles.eth \u540D\u5B57\u9700\u8981 Beagle \u624B\u673A\u6216\u684C\u9762\u5E94\u7528\u3002\u5934\u50CF\u4E0D\u9700\u8981\u540D\u5B57\uFF0C\u53EF\u5728\u4E0A\u65B9\u76F4\u63A5\u8BBE\u7F6E\u3002",
+    ensProven: "\u5DF2\u7531\u8BE5\u94B1\u5305\u7B7E\u540D",
+    ensUnproven: "\u5C1A\u65E0\u94B1\u5305\u7B7E\u540D",
+    ensProve: "\u7B7E\u540D",
+    ensSigning: "\u8BF7\u5728\u94B1\u5305\u4E2D\u786E\u8BA4\u7B7E\u540D\u2026",
+    ensAvatar: "\u5934\u50CF",
+    ensChoose: "\u9009\u62E9",
+    ensClear: "\u6E05\u9664",
+    ensNotSet: "\u672A\u8BBE\u7F6E",
+    ensUpload: "\u4E0A\u4F20",
+    ensCustom: "\u81EA\u5B9A\u4E49\u56FE\u7247",
+    ensTooBig: "\u56FE\u7247\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 100KB",
+    ensBadImage: "\u65E0\u6CD5\u8BFB\u53D6\u8BE5\u56FE\u7247",
+    ensPickPunk: "\u9009\u4E00\u4E2A punk",
+    ensShuffle: "\u6362\u4E00\u6279",
+    pt_any: "\u5168\u90E8",
+    pt_female: "\u5973",
+    pt_male: "\u7537",
+    pt_zombie: "\u50F5\u5C38",
+    pt_ape: "\u733F",
+    pt_alien: "\u5916\u661F\u4EBA",
+    linksCard: "\u793E\u4EA4\u8D26\u53F7",
+    linkPlaceholder: "\u7528\u6237\u540D\u6216\u4E3B\u9875\u94FE\u63A5",
+    save: "\u4FDD\u5B58",
+    addr: "\u5730\u5740",
+    nameCard: "\u540D\u7247",
+    pubMessage: "\u53D1\u6D88\u606F",
+    pubRecommend: "\u63A8\u8350",
+    pubRecTitle: "\u628A\u540D\u7247\u53D1\u9001\u7ED9\u2026",
+    pubRecSent: "\u5DF2\u53D1\u9001 \u2713",
+    updTitle: "\u53D1\u73B0\u65B0\u7248\u672C",
+    updLater: "\u7A0D\u540E",
+    brandAbout: "Beagle \u662F\u4EC0\u4E48?",
+    viaOutOffline: "\u5DF2\u5B58\u5230\u79BB\u7EBF\u4E2D\u8F6C\u2014\u2014\u5BF9\u65B9\u4E0A\u7EBF\u540E\u6536\u5230",
+    viaOutOnline: "\u5728\u7EBF\u76F4\u63A5\u9001\u8FBE",
+    updNow: "\u7ACB\u5373\u66F4\u65B0",
+    updRestart: "\u91CD\u542F",
+    updBusy: "\u66F4\u65B0\u4E2D\u2026(\u7EA6\u4E00\u5206\u949F)",
+    updDone: "\u66F4\u65B0\u5B8C\u6210\u2014\u2014\u91CD\u542F\u540E\u751F\u6548\u3002",
+    updRestarting: "\u6B63\u5728\u91CD\u542F\u2026\u5B8C\u6210\u540E\u672C\u9875\u4F1A\u81EA\u52A8\u5237\u65B0\u3002(\u5982\u679C\u4E00\u5206\u949F\u540E\u8FD8\u6CA1\u56DE\u6765,\u8BF7\u91CD\u65B0\u8FD0\u884C\u4E00\u6B21 beagle\u3002)",
+    updNpx: "\u4F60\u662F\u7528 npx \u8FD0\u884C\u7684\u2014\u2014\u91CD\u542F\u5373\u81EA\u52A8\u83B7\u53D6\u6700\u65B0\u7248\u3002",
+    updDev: "\u5F53\u524D\u4ECE\u6E90\u7801\u76EE\u5F55\u8FD0\u884C,\u8BF7\u624B\u52A8\u66F4\u65B0:",
+    updPeerDaemon: "peer \u7684\u7248\u672C\u5C5E\u4E8E\u6B63\u5728\u8FD0\u884C\u7684 agentnet daemon,\u4E0D\u5C5E\u4E8E\u672C\u5E94\u7528\u3002\u8BF7\u7528\u8FD9\u6761\u547D\u4EE4\u66F4\u65B0:",
+    updUnknown: "\u300C\u7ACB\u5373\u66F4\u65B0\u300D\u4F1A\u6267\u884C\u5168\u5C40\u5B89\u88C5\u3002\u5982\u679C\u4E0D\u662F\u8FD9\u6837\u88C5\u7684,\u8BF7\u8FD0\u884C:",
+    updLanNote: "agentnet(lan):\u4E00\u952E\u91CD\u88C5\u5E76\u8BA9\u8FD0\u884C\u4E2D\u7684 daemon \u81EA\u6211\u91CD\u542F\u3002\u7B49\u4EF7\u624B\u52A8\u547D\u4EE4:",
+    updCheck: "\u68C0\u67E5\u66F4\u65B0",
+    updCheckLabel: "\u66F4\u65B0",
+    updLatest: "\u5DF2\u662F\u6700\u65B0\u7248\u672C \u2713",
+    updLanNow: "\u66F4\u65B0 lan",
+    updDaemonNote: "\u7F51\u7EDC\u5B88\u62A4\u8FDB\u7A0B(agentnet)\u6709\u65B0\u7248\u672C\u3002\u70B9\u300C\u7ACB\u5373\u66F4\u65B0\u300D\u4F1A\u91CD\u88C5\u5E76\u91CD\u542F\u5B83,\u6D88\u606F\u4F1A\u6682\u505C\u51E0\u79D2\u3002",
+    updManualHint: "\u5728\u7EC8\u7AEF\u91CC\u6267\u884C\u4E0A\u9762\u7684\u547D\u4EE4,\u5B8C\u6210\u540E\u70B9\u300C\u91CD\u542F\u300D\u751F\u6548\u3002",
+    updLanDone: "lan \u5DF2\u66F4\u65B0\u2014\u2014daemon \u5DF2\u7528\u65B0\u7248\u91CD\u542F \u2713",
+    updLanNoRestart: "\u5DF2\u5B89\u88C5,\u4F46 daemon \u4E00\u5206\u949F\u5185\u6CA1\u6709\u91CD\u65B0\u8D77\u6765\u2014\u2014\u4E0B\u6B21\u542F\u52A8\u65F6\u751F\u6548\u3002",
+    pubOpen: "\u67E5\u770B\u516C\u5F00\u8D44\u6599",
+    pubNone: "\u6682\u65E0\u516C\u5F00\u8D44\u6599\u2014\u2014\u5BF9\u65B9\u8FD8\u6CA1\u6709\u6CE8\u518C beagles.eth \u540D\u5B57\u3002",
+    ensNoEthWallet: "\u672A\u68C0\u6D4B\u5230\u4EE5\u592A\u574A\u94B1\u5305\u63D2\u4EF6(MetaMask \u7B49)",
+    ensNoSolWallet: "\u672A\u68C0\u6D4B\u5230 Solana \u94B1\u5305\u63D2\u4EF6(Phantom \u7B49)",
+    ensWalletOwned: "\u5DF2\u901A\u8FC7\u624B\u673A\u94B1\u5305\u6CE8\u518C\u4E3A",
+    virtualIp: "\u865A\u62DF IP",
+    version: "\u7248\u672C",
+    editProfile: "\u7F16\u8F91",
+    verApp: "\u5E94\u7528",
+    verDaemon: "\u5B88\u62A4\u8FDB\u7A0B",
+    verChannel: "\u901A\u9053",
+    verInstalledHint: "\u8FD9\u662F\u78C1\u76D8\u4E0A\u5DF2\u5B89\u88C5\u7684\u7248\u672C\uFF1B\u91CD\u542F\u5B88\u62A4\u8FDB\u7A0B\u540E\u624D\u80FD\u663E\u793A\u5B83\u771F\u6B63\u8FD0\u884C\u7684\u7248\u672C",
+    copy: "\u590D\u5236",
+    copied: "\u5DF2\u590D\u5236",
+    copyFailed: "\u590D\u5236\u5931\u8D25",
+    needProfile: "\u5148\u8BBE\u7F6E\u6635\u79F0 \u2014\u2014 \u6CA1\u6709\u540D\u5B57\u7684\u597D\u53CB\u8BF7\u6C42\u5C31\u53EA\u662F\u4E00\u4E32\u5BC6\u94A5\u3002",
+    dangerZone: "\u5371\u9669\u64CD\u4F5C",
+    deleteNode: "\u5220\u9664\u6B64\u8282\u70B9",
+    deleteSub: "\u4ECE\u672C\u8BBE\u5907\u6C38\u4E45\u79FB\u9664\u8EAB\u4EFD\u4E0E\u5BC6\u94A5",
+    delete: "\u5220\u9664",
+    settings: "\u8BBE\u7F6E",
+    connected: "\u5DF2\u8FDE\u63A5",
+    mute: "\u9759\u97F3",
+    unmute: "\u53D6\u6D88\u9759\u97F3",
+    speaker: "\u626C\u58F0\u5668",
+    toVideo: "\u89C6\u9891",
+    audioOnly: "\u8BED\u97F3",
+    endCall: "\u6302\u65AD",
+    you: "\u6211",
+    calling: "\u547C\u53EB\u4E2D\u2026",
+    remoteRinging: "\u5BF9\u65B9\u54CD\u94C3\u4E2D\u2026",
+    connecting: "\u8FDE\u63A5\u4E2D\u2026",
+    reconnecting: "\u91CD\u65B0\u8FDE\u63A5\u4E2D\u2026",
+    noAnswer: "\u65E0\u4EBA\u63A5\u542C",
+    cantReach: "\u65E0\u6CD5\u8054\u7CFB {name}",
+    callFailed: "\u901A\u8BDD\u5931\u8D25",
+    busy: "\u5BF9\u65B9\u5FD9",
+    declined: "\u5BF9\u65B9\u5DF2\u62D2\u7EDD",
+    answeredElsewhere: "\u5DF2\u5728\u5176\u4ED6\u8BBE\u5907\u63A5\u542C",
+    joinGroup: "\u52A0\u5165\u7FA4",
+    cardIsFriend: "\u5DF2\u5728\u4F60\u7684\u4F1A\u8BDD\u91CC\u3002",
+    cardNoEns: "\u5BF9\u65B9\u8FD8\u6CA1\u6709\u6CE8\u518C beagles.eth \u540D\u5B57\u3002",
+    ensVerified: "\u5DF2\u9A8C\u8BC1:\u8FD9\u4E2A beagles.eth \u540D\u5B57\u6CE8\u518C\u5728\u6B64\u7528\u6237\u540D\u4E0B\u3002",
+    ensVerifiedReplaced: "\u6B64\u7528\u6237\u6CE8\u518C\u7684 beagles.eth \u540D\u5B57\u3002\u5BF9\u65B9\u8BBE\u5907\u663E\u793A\u7684\u662F {claimed},\u5B83\u5E76\u6CA1\u6709\u6CE8\u518C\u5728\u5BF9\u65B9\u540D\u4E0B\u3002",
+    ensSelfClaimed: "\u81EA\u79F0",
+    ensSelfClaimedTip: "\u8FD9\u662F\u5BF9\u65B9\u8BBE\u5907\u81EA\u5DF1\u586B\u5199\u7684\u540D\u5B57,\u8FD9\u4E2A beagles.eth \u540D\u5B57\u5E76\u6CA1\u6709\u6CE8\u518C\u5728\u6B64\u7528\u6237\u540D\u4E0B\u3002",
+    voiceMessage: "\u8BED\u97F3\u6D88\u606F",
+    groupFileNotDelivered: "\u672A\u9001\u8FBE\u672C\u8BBE\u5907\uFF1A\u7FA4\u7EC4\u53EA\u5411\u4EE3\u7406\u53D1\u9001\u6587\u4EF6\u8BF4\u660E\uFF0C\u4E0D\u542B\u6587\u4EF6\u5185\u5BB9\u3002",
+    shareFailed: "\u5C4F\u5E55\u5171\u4EAB\u5931\u8D25",
+    meeting: "\u4F1A\u8BAE",
+    meetingRooms: "\u4F1A\u8BAE\u623F\u95F4",
+    nextVersion: "\u4E0B\u4E2A\u7248\u672C",
+    createRoom: "\u65B0\u5EFA\u623F\u95F4",
+    meetingDesc: "\u8DE8\u670D\u52A1\u5668\u521B\u5EFA\u97F3\u89C6\u9891\u623F\u95F4\uFF0C\u901A\u8FC7\u865A\u62DF IP \u9080\u8BF7\u597D\u53CB\u3002\u7FA4\u7EC4\u901A\u8BDD\u3001\u5C4F\u5E55\u5171\u4EAB\u4E0E\u5171\u4EAB\u51FA\u53E3\u8DEF\u7531\u5C06\u5728\u4E0B\u4E2A\u7248\u672C\u4E0A\u7EBF\u3002"
+  }
+};
+function RailBtn({ icon, label, active, soon, onClick, svgPath }) {
+  return /* @__PURE__ */ React.createElement("button", { onClick, title: label, style: {
+    width: 52,
+    height: 52,
+    borderRadius: 11,
+    cursor: "pointer",
+    fontFamily: "var(--mono)",
+    position: "relative",
+    border: "1px solid " + (active ? "var(--line)" : "transparent"),
+    background: active ? "var(--panel-2)" : "transparent",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 3
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: icon, svgPath, size: 20, stroke: active ? 2.1 : 1.8, color: active ? "var(--accent)" : "var(--dim)" }), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 9, fontWeight: 600, letterSpacing: 0.2, color: active ? "var(--accent)" : "var(--faint)" } }, label), soon && /* @__PURE__ */ React.createElement("span", { style: { position: "absolute", top: 5, right: 6, width: 6, height: 6, borderRadius: 999, background: "var(--warn)" } }));
+}
+function TabBarBtn({ icon, label, active, badge, onClick, svgPath }) {
+  return /* @__PURE__ */ React.createElement("button", { onClick, style: {
+    flex: 1,
+    minWidth: 0,
+    height: 54,
+    border: "none",
+    background: "transparent",
+    cursor: "pointer",
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 3,
+    fontFamily: "var(--mono)"
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: icon, svgPath, size: 22, stroke: active ? 2.1 : 1.8, color: active ? "var(--accent)" : "var(--dim)" }), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 10, fontWeight: 600, color: active ? "var(--accent)" : "var(--faint)", whiteSpace: "nowrap" } }, label), badge ? /* @__PURE__ */ React.createElement("span", { style: { position: "absolute", top: 4, left: "50%", marginLeft: 6 } }, /* @__PURE__ */ React.createElement(Unread, { n: badge })) : null);
+}
+var DK_PEOPLE_TABS = ["here", "recommended", "registered"];
+var HostTabPane = class extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { err: null };
+  }
+  static getDerivedStateFromError(err) {
+    return { err };
+  }
+  componentDidCatch(err) {
+    try {
+      console.error("[beagle-ui] host tab failed", err);
+    } catch (e) {
+    }
+  }
+  render() {
+    var _a;
+    const { tab, props, lang } = this.props;
+    if (this.state.err) {
+      return /* @__PURE__ */ React.createElement("div", { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 24, textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--mono)", fontSize: 12.5, color: "var(--faint)", maxWidth: 420 } }, lang === "zh" ? `"${pickText(tab.label, lang, tab.id)}" \u8FD9\u4E2A\u6807\u7B7E\u9875\u51FA\u9519\u4E86\u3002\u5176\u5B83\u6807\u7B7E\u9875\u4E0D\u53D7\u5F71\u54CD\u3002` : `The "${pickText(tab.label, lang, tab.id)}" tab failed to render. The rest of the app is unaffected.`));
+    }
+    try {
+      return (_a = tab.render(props)) != null ? _a : null;
+    } catch (e) {
+      return null;
+    }
+  }
+};
+function Brand({ T, children, style }) {
+  if (!hostBrandHref)
+    return /* @__PURE__ */ React.createElement("span", { style }, children);
+  return /* @__PURE__ */ React.createElement(
+    "a",
+    {
+      href: hostBrandHref,
+      target: "_blank",
+      rel: "noopener noreferrer",
+      title: T.brandAbout || "What is Beagle?",
+      style: { textDecoration: "none", color: "inherit", display: "flex", alignItems: "center", ...style }
+    },
+    children
+  );
+}
+function DkUpdateModal({ T, info, onClose }) {
+  const [phase, setPhase] = React.useState("idle");
+  const [err, setErr] = React.useState(null);
+  const behind = (info.updates || []).filter((u) => u.behind);
+  const peerIsDaemons = info.peerOwner === "daemon";
+  const appBehind = behind.some((u) => u.pkg !== "@decentnetwork/lan" && !(peerIsDaemons && u.pkg === "@decentnetwork/peer"));
+  const lanBehind = behind.find((u) => u.pkg === "@decentnetwork/lan");
+  const daemonPeerBehind = peerIsDaemons && behind.some((u) => u.pkg === "@decentnetwork/peer");
+  const short = (pkg) => pkg.replace("@decentnetwork/", "");
+  const doUpdate = () => {
+    setPhase("running");
+    setErr(null);
+    fetch("/api/update-run", { method: "POST", headers: { "content-type": "application/json" }, body: "{}" }).then((r) => r.json()).then((d) => {
+      if (d.ok)
+        setPhase("done");
+      else {
+        setPhase("error");
+        setErr(d.error || "update failed");
+      }
+    }).catch((e) => {
+      setPhase("error");
+      setErr(String(e && e.message || e));
+    });
+  };
+  const doLanUpdate = () => {
+    setPhase("running");
+    setErr(null);
+    fetch("/api/update-run", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ pkg: "lan" }) }).then((r) => r.json()).then((d) => {
+      if (d.ok)
+        setPhase(d.restarted ? "lan-done" : "lan-norestart");
+      else {
+        setPhase("error");
+        setErr(d.error || "update failed");
+      }
+    }).catch((e) => {
+      setPhase("error");
+      setErr(String(e && e.message || e));
+    });
+  };
+  const doRestart = () => {
+    setPhase("restarting");
+    fetch("/api/update-restart", { method: "POST" }).catch(() => {
+    });
+    const poll = setInterval(() => {
+      fetch("/api/update-check").then((r) => {
+        if (r.ok) {
+          clearInterval(poll);
+          window.location.reload();
+        }
+      }).catch(() => {
+      });
+    }, 1500);
+  };
+  const btn = (label, onClick, tone) => /* @__PURE__ */ React.createElement("button", { onClick, style: {
+    padding: "7px 14px",
+    borderRadius: 9,
+    cursor: "pointer",
+    fontFamily: "var(--ui)",
+    fontSize: 12.5,
+    border: tone ? "none" : "1px solid var(--line)",
+    background: tone ? "var(--accent)" : "transparent",
+    color: tone ? "#fff" : "var(--text)"
+  } }, label);
+  return /* @__PURE__ */ React.createElement("div", { style: { position: "fixed", inset: 0, zIndex: 95, background: "color-mix(in oklab, #000, transparent 38%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 } }, /* @__PURE__ */ React.createElement("div", { style: { width: 430, maxWidth: "94vw", background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 16, padding: "20px 22px", display: "flex", flexDirection: "column", gap: 14 } }, /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 13.5, fontWeight: 700, color: "var(--text)" } }, T.updTitle || "Update available"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6 } }, behind.map((u) => /* @__PURE__ */ React.createElement("div", { key: u.pkg, style: { display: "flex", alignItems: "center", gap: 10, fontFamily: "var(--mono)", fontSize: 12.5 } }, /* @__PURE__ */ React.createElement("span", { style: { width: 70, color: "var(--faint)" } }, short(u.pkg)), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--dim)" } }, u.current), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--faint)" } }, "\u2192"), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--accent)", fontWeight: 700 } }, u.latest)))), phase === "idle" && info.selfUpdatable === false && // Say it before the button is pressed. The card used to offer an
+  // update, fail on permissions, and hand back `sudo npm i -g` — which
+  // works once and leaves the directory root-owned, so the next update
+  // fails identically. That advice was the loop. This is the command
+  // that ends it, and it is needed once.
+  /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "var(--ui)",
+    fontSize: 12,
+    color: "var(--dim)",
+    lineHeight: 1.6,
+    borderLeft: "2px solid var(--danger)",
+    paddingLeft: 10
+  } }, T.updNoPerm || "This install lives under a system-owned prefix, so updating it is a privileged operation and this button cannot do it. Run it in a terminal:", /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6, alignItems: "center", marginTop: 6 } }, /* @__PURE__ */ React.createElement("code", { style: {
+    flex: 1,
+    minWidth: 0,
+    fontFamily: "var(--mono)",
+    fontSize: 11.5,
+    color: "var(--text)",
+    background: "var(--panel-2)",
+    border: "1px solid var(--line)",
+    borderRadius: 8,
+    padding: "8px 10px",
+    userSelect: "all",
+    wordBreak: "break-all"
+  } }, ownershipFix(info)), /* @__PURE__ */ React.createElement(Btn, { size: "sm", icon: "copy", title: T.copy || "Copy", onClick: () => dkCopy(ownershipFix(info)) })), /* @__PURE__ */ React.createElement("div", { style: { marginTop: 6, fontSize: 11.5, color: "var(--faint)" } }, T.updNoPermAlt || "Do not widen permissions there to make this button work \u2014 a group-writable bin directory lets any admin user replace programs that root later runs. For one-click updates, move npm out of the system prefix instead: `npm config set prefix ~/.npm-global`, then put `~/.npm-global/bin` first on your PATH.")), phase === "idle" && appBehind && info.mode === "dev" && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--dim)", lineHeight: 1.5 } }, T.updDev || "Running from a source checkout \u2014 update with:", /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("code", { style: { fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--text)" } }, "git pull && npm run build")), phase === "idle" && appBehind && info.mode === "unknown" && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--dim)", lineHeight: 1.5 } }, T.updUnknown || "Update now runs the global install. If that is not how this was installed, run:", /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginTop: 6 } }, /* @__PURE__ */ React.createElement("code", { style: { flex: 1, minWidth: 0, fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--text)", background: "var(--panel-2)", border: "1px solid var(--line)", borderRadius: 8, padding: "8px 10px", userSelect: "all", wordBreak: "break-all" } }, "npm i -g @decentnetwork/beagle@latest"), /* @__PURE__ */ React.createElement(Btn, { size: "sm", icon: "copy", title: T.copy || "Copy", onClick: () => dkCopy("npm i -g @decentnetwork/beagle@latest") }))), phase === "idle" && appBehind && info.mode === "npx" && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--dim)", lineHeight: 1.5 } }, T.updNpx || "Running via npx \u2014 restarting picks up the latest version automatically."), (daemonPeerBehind || lanBehind) && phase === "idle" && // One button, no terminal. The command this used to print ran the
+  // shell's npm, which on an nvm machine is often a different node from
+  // the one launchd runs the daemon with — it installed where nothing
+  // looks, and the daemon kept the old peer (Weili's two Macs,
+  // 2026-09-18). The server's update runs with the app's own node and
+  // restarts the daemon the launchd-safe way. Reinstalling lan also
+  // pulls the newest peer it allows, which is what moves the peer row.
+  /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--dim)", lineHeight: 1.5 } }, T.updDaemonNote || "The network daemon (agentnet) is behind. Update reinstalls it and restarts it \u2014 messages pause for a few seconds."), phase === "lan-done" && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--online)" } }, T.updLanDone || "lan updated \u2014 daemon restarted with the new version \u2713"), phase === "lan-norestart" && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--warn, #f59e0b)" } }, T.updLanNoRestart || "Installed, but the daemon did not come back within a minute \u2014 the new version applies on its next start."), phase === "running" && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--dim)" } }, T.updBusy || "Updating\u2026 (about a minute)"), phase === "done" && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--online)" } }, T.updDone || "Updated \u2014 restart to apply."), phase === "restarting" && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12.5, color: "var(--dim)" } }, T.updRestarting || "Restarting\u2026 this page reloads when it\u2019s back. (If beagle was started by hand in a terminal, run it again.)"), phase === "error" && (() => {
+    const m = /`([^`]+)`/.exec(err || "");
+    return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 12, color: "var(--danger)", wordBreak: "break-word" } }, m ? err.replace("`" + m[1] + "`", "") : err), m && /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement("code", { style: { flex: 1, minWidth: 0, fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--text)", background: "var(--panel-2)", border: "1px solid var(--line)", borderRadius: 8, padding: "8px 10px", userSelect: "all", wordBreak: "break-all" } }, m[1]), /* @__PURE__ */ React.createElement(Btn, { size: "sm", icon: "copy", title: T.copy || "Copy", onClick: () => dkCopy(m[1]) })), m && /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "var(--ui)", fontSize: 11.5, color: "var(--dim)" } }, T.updManualHint || "Run it in a terminal, then click Restart to apply."));
+  })(), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "flex-end", gap: 8 } }, (phase === "idle" || phase === "error" || phase === "lan-done" || phase === "lan-norestart") && btn(phase === "idle" ? T.updLater || "Later" : T.receivedClose || "Close", onClose), phase === "idle" && (lanBehind || daemonPeerBehind) && btn(appBehind ? T.updLanNow || "Update lan" : T.updNow || "Update now", doLanUpdate, !appBehind), phase === "idle" && appBehind && (info.mode === "global" || info.mode === "unknown") && btn(T.updNow || "Update now", doUpdate, true), phase === "idle" && appBehind && info.mode === "npx" && btn(T.updRestart || "Restart", doRestart, true), phase === "error" && btn(T.updRestart || "Restart", doRestart, true), phase === "done" && btn(T.updRestart || "Restart", doRestart, true))));
+}
+function DkApp() {
+  const [t, setTweak] = useTweaks({ ...DK_DEFAULTS, lang: dkDetectLang() });
+  const tabs = React.useMemo(() => resolveTabs(hostTabs), []);
+  const showPeople = hasTab(tabs, "people");
+  const showNetwork = hasTab(tabs, "network");
+  const showProfile = hasTab(tabs, "profile");
+  const firstTab = tabs[0] ? tabs[0].id === "people" ? "here" : tabs[0].id : "chat";
+  const [tab, setTab] = React.useState(() => {
+    const want = t.startTab || "chat";
+    if (want === "chat" && hasTab(tabs, "chat"))
+      return "chat";
+    return hasTab(tabs, want) || DK_PEOPLE_TABS.includes(want) && showPeople ? want : firstTab;
+  });
+  const [activeId, setActiveId] = React.useState(null);
+  const data = useDaemonData({ exits: tab === "network" });
+  const me = data.me;
+  const [upd, setUpd] = React.useState(null);
+  React.useEffect(() => {
+    let dead = false;
+    const check = () => fetch("/api/update-check").then((r) => r.json()).then((d) => {
+      if (dead || !d.ok)
+        return;
+      const behind = (d.updates || []).filter((u) => u.behind);
+      if (!behind.length)
+        return;
+      const key = behind.map((u) => u.pkg + "@" + u.latest).join(",");
+      if (localStorage.getItem("dk-upd-dismissed") === key)
+        return;
+      setUpd({ ...d, key });
+    }).catch(() => {
+    });
+    check();
+    const timer = setInterval(check, 6 * 3600 * 1e3);
+    return () => {
+      dead = true;
+      clearInterval(timer);
+    };
+  }, []);
+  const [backend, setBackend] = React.useState(null);
+  const refreshBackend = React.useCallback(() => {
+    dkGet("/api/backend").then((b) => {
+      if (b && b.ok)
+        setBackend(b);
+    }).catch(() => {
+    });
+  }, []);
+  React.useEffect(() => {
+    if (!showNetwork)
+      return void 0;
+    refreshBackend();
+    const ms = backend && backend.state === "releasing" ? 1500 : 8e3;
+    const t2 = setInterval(refreshBackend, ms);
+    return () => clearInterval(t2);
+  }, [refreshBackend, backend && backend.state, showNetwork]);
+  const armLan = React.useCallback(async () => {
+    await dkPost("/api/lan-arm", {});
+    refreshBackend();
+  }, [refreshBackend]);
+  const cancelLan = React.useCallback(async () => {
+    await dkPost("/api/lan-cancel", {});
+    refreshBackend();
+  }, [refreshBackend]);
+  React.useEffect(() => {
+    const mine = window.__DK_UI_VERSION;
+    const served = me && me.beagleVer;
+    if (!mine || !served || mine === served)
+      return;
+    const key = "dk-reloaded-for-" + served;
+    if (sessionStorage.getItem(key))
+      return;
+    sessionStorage.setItem(key, "1");
+    window.location.reload();
+  }, [me && me.beagleVer]);
+  const [assistantTs, setAssistantTs] = React.useState(loadAssistantTs);
+  const peers = React.useMemo(() => (data.peers || []).concat(hostAssistant ? [Object.assign({}, ASSISTANT_PEER, {
+    lastTs: assistantTs,
+    lastTime: assistantTs ? dkClock(assistantTs) : ""
+  })] : []), [data.peers, assistantTs]);
+  const dkUserIdFromAddress = (raw) => {
+    const s = String(raw || "").trim();
+    if (!s) return "";
+    if (isUserId(s)) return s;
+    if (!isCarrierAddress(s)) return "";
+    try {
+      return base58Encode(base58Decode(s).slice(0, 32));
+    } catch (e) {
+      return "";
+    }
+  };
+  const dkItemIds = (item) => {
+    if (!item) return [];
+    const out = [];
+    const push = (v) => {
+      const s = typeof v === "string" ? v.trim() : "";
+      if (s && !out.includes(s)) out.push(s);
+    };
+    push(item.userId);
+    push(item.userid);
+    push(item.carrier);
+    push(item.pubkey);
+    push(item.id);
+    push(item.address);
+    const fromAddr = dkUserIdFromAddress(item.address);
+    if (fromAddr) push(fromAddr);
+    const fromCarrier = dkUserIdFromAddress(item.carrier);
+    if (fromCarrier) push(fromCarrier);
+    return out;
+  };
+  const dkMatchesPending = (item, rawAddr, uid) => {
+    if (!item || !rawAddr) return false;
+    const ids = dkItemIds(item);
+    return ids.includes(rawAddr) || (uid && ids.includes(uid));
+  };
+  const rpKnownPeersKey = "rp-beagle-known-peers:v1";
+  const rpActiveUidKey = "rp-beagle-active-uid";
+  const rpReadKnownPeers = (uid) => {
+    if (!uid) return [];
+    try {
+      const map = JSON.parse(localStorage.getItem(rpKnownPeersKey) || "{}");
+      return Array.isArray(map[uid]) ? map[uid] : [];
+    } catch (e) {
+      return [];
+    }
+  };
+  const rpWriteKnownPeers = (uid, ids) => {
+    if (!uid) return;
+    try {
+      const map = JSON.parse(localStorage.getItem(rpKnownPeersKey) || "{}");
+      map[uid] = [...new Set(ids.filter(Boolean))];
+      localStorage.setItem(rpKnownPeersKey, JSON.stringify(map));
+    } catch (e) {
+    }
+  };
+  const rpForgetKnownPeer = (uid, peer) => {
+    if (!uid || !peer) return;
+    const drop = new Set(dkItemIds(peer));
+    if (!drop.size) return;
+    rpWriteKnownPeers(uid, rpReadKnownPeers(uid).filter((x) => !drop.has(x)));
+  };
+  const activeUidHint = React.useMemo(() => {
+    if (me && me.userId) return me.userId;
+    try {
+      return localStorage.getItem(rpActiveUidKey) || "";
+    } catch (e) {
+      return "";
+    }
+  }, [me && me.userId]);
+  const realPeers = React.useMemo(
+    () => (peers || []).filter((p) => p && p.id !== ASSISTANT_ID),
+    [peers],
+  );
+  const peerIdSet = React.useMemo(() => {
+    const s = /* @__PURE__ */ new Set();
+    for (const p of realPeers) {
+      for (const id of dkItemIds(p)) s.add(id);
+    }
+    return s;
+  }, [realPeers]);
+  React.useEffect(() => {
+    if (!data.loaded || !(me && me.userId)) return;
+    try {
+      localStorage.setItem(rpActiveUidKey, me.userId);
+    } catch (e) {
+    }
+    if (realPeers.length > 0) {
+      const next = [];
+      for (const p of realPeers) {
+        for (const id of dkItemIds(p)) next.push(id);
+      }
+      rpWriteKnownPeers(me.userId, next);
+    }
+  }, [data.loaded, me && me.userId, realPeers]);
+  const dupRequests = React.useMemo(
+    () => (data.requests || []).filter((r) => dkItemIds(r).some((id) => peerIdSet.has(id))),
+    [data.requests, peerIdSet],
+  );
+  const requests = React.useMemo(
+    () => (data.requests || []).filter((r) => !dkItemIds(r).some((id) => peerIdSet.has(id))),
+    [data.requests, peerIdSet],
+  );
+  const autoClearedReqs = React.useRef(/* @__PURE__ */ new Set());
+  React.useEffect(() => {
+    for (const r of dupRequests) {
+      const key = r.id || r.userid || r.userId || r.carrier;
+      if (!key || autoClearedReqs.current.has(key)) continue;
+      autoClearedReqs.current.add(key);
+      const uid = r.userid || r.userId || r.carrier || r.id;
+      dkApi.accept(uid).then(() => data.refresh()).catch(() => {});
+    }
+  }, [dupRequests]);
+  const [pendingAddr, setPendingAddr] = React.useState(() => dkParseDeepLinkAddress());
+  React.useEffect(() => {
+    const onHash = () => {
+      const a = dkParseDeepLinkAddress();
+      if (a) {
+        setPendingAddr(a);
+      } else if (/^#\/chat(?:$|[?#])/.test(window.location.hash || "")) {
+        setPendingAddr("");
+        setActiveId(null);
+      }
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+  const pendingUid = React.useMemo(() => dkUserIdFromAddress(pendingAddr), [pendingAddr]);
+  const pendingPeerHit = React.useMemo(
+    () => pendingAddr ? realPeers.find((p) => dkMatchesPending(p, pendingAddr, pendingUid)) || null : null,
+    [pendingAddr, pendingUid, realPeers],
+  );
+  const pendingReqHit = React.useMemo(
+    () => pendingAddr ? requests.find((r) => dkMatchesPending(r, pendingAddr, pendingUid)) || null : null,
+    [pendingAddr, pendingUid, requests],
+  );
+  const pendingKnownHit = React.useMemo(() => {
+    if (!pendingAddr || !activeUidHint) return false;
+    const known = rpReadKnownPeers(activeUidHint);
+    return known.includes(pendingAddr) || (pendingUid ? known.includes(pendingUid) : false);
+  }, [pendingAddr, pendingUid, activeUidHint, realPeers]);
+  const [prefillSettled, setPrefillSettled] = React.useState(false);
+  const [knownTimedOut, setKnownTimedOut] = React.useState(false);
+  React.useEffect(() => {
+    setPrefillSettled(false);
+    setKnownTimedOut(false);
+  }, [pendingAddr]);
+  const hasIdentity = Boolean(data.loaded && me && me.userId);
+  React.useEffect(() => {
+    if (!pendingAddr || pendingPeerHit || pendingReqHit) return;
+    let ticks = 0;
+    const iv = setInterval(() => {
+      ticks += 1;
+      data.refresh();
+      if (ticks >= 20) clearInterval(iv);
+    }, 250);
+    return () => clearInterval(iv);
+  }, [pendingAddr, pendingPeerHit, pendingReqHit, data.refresh]);
+  React.useEffect(() => {
+    if (!pendingAddr || pendingPeerHit || pendingReqHit || !hasIdentity) return;
+    if (pendingKnownHit) {
+      const tmo = setTimeout(() => setKnownTimedOut(true), 5000);
+      return () => clearTimeout(tmo);
+    }
+    const tmo = setTimeout(() => setPrefillSettled(true), 1800);
+    return () => clearTimeout(tmo);
+  }, [pendingAddr, pendingPeerHit, pendingReqHit, hasIdentity, pendingKnownHit]);
+  const deepLinkPending = Boolean(
+    pendingAddr
+    && !pendingPeerHit
+    && !pendingReqHit
+    && (!hasIdentity || (pendingKnownHit ? !knownTimedOut : !prefillSettled)),
+  );
+  const effectivePrefill = !pendingAddr || pendingPeerHit || pendingReqHit || deepLinkPending ? "" : pendingAddr;
+  const jumpedFor = React.useRef("");
+  React.useEffect(() => {
+    if (!pendingAddr) {
+      jumpedFor.current = "";
+      return;
+    }
+    if (jumpedFor.current !== pendingAddr) {
+      jumpedFor.current = pendingAddr;
+      setTab("chat");
+    }
+    if (!hasIdentity)
+      return;
+    if (pendingPeerHit) {
+      setActiveId(pendingPeerHit.id);
+      setPendingAddr("");
+      try {
+        window.history.replaceState(null, "", window.location.pathname);
+      } catch (e) {
+      }
+    } else if (pendingReqHit) {
+      setPendingAddr("");
+      try {
+        window.history.replaceState(null, "", window.location.pathname);
+      } catch (e) {
+      }
+    } else if (!deepLinkPending) {
+      try {
+        window.history.replaceState(null, "", window.location.pathname);
+      } catch (e) {
+      }
+    }
+  }, [pendingAddr, pendingPeerHit, pendingReqHit, hasIdentity, deepLinkPending]);
+  const exits = data.exits;
+  const activeExit = data.activeExit;
+  const [welcome, setWelcome] = React.useState(false);
+  const [welcomeDone, setWelcomeDone] = React.useState(false);
+  React.useEffect(() => {
+    if (!hostNeedsWelcome || !data.loaded || welcomeDone)
+      return;
+    if (!me.onboarded && !String(me.name || "").trim())
+      setWelcome(true);
+  }, [data.loaded, me.onboarded, me.name, welcomeDone]);
+  const T = STR[t.lang] || STR.en;
+  const vars = dkTheme(t.theme, t.accent);
+  const rowPad = t.density === "comfortable" ? "11px 12px" : "7px 10px";
+  const mutedIds = Array.isArray(t.alertMuted) ? t.alertMuted : [];
+  const onToggleMute = (id) => setTweak("alertMuted", mutedIds.includes(id) ? mutedIds.filter((x) => x !== id) : mutedIds.concat(id));
+  const isProtocol = React.useMemo(() => protocolTest(hostIsProtocolMessage), []);
+  const protocolFix = useProtocolTails(peers, isProtocol, !!hostIsProtocolMessage);
+  useIncomingAlerts({
+    T,
+    peers,
+    requests,
+    loaded: data.loaded,
+    activeId,
+    sound: t.alertSound !== false,
+    flash: t.alertFlash !== false,
+    muted: mutedIds,
+    isProtocol
+  });
+  const assistant = useAssistant({
+    lang: t.lang,
+    T,
+    muted: mutedIds,
+    onToggleMute,
+    onActivity: setAssistantTs,
+    sound: t.alertSound !== false,
+    flash: t.alertFlash !== false,
+    setAlert: (which, on) => setTweak(which === "sound" ? "alertSound" : "alertFlash", on),
+    onReloadFriends: () => data.refresh()
+  });
+  const callCtl = useCallController(me.userId, (peerId, video, direction) => {
+    const text = `WebRTC ${video ? "video" : "audio"} call: ${direction}`;
+    dkApi.logLocal(peerId, direction === "outgoing" ? "out" : "in", text).then(() => {
+      data.loadThread(peerId);
+      data.refresh();
+    });
+  });
+  const onCall = (peerId, video) => callCtl.start(peerId, !!video);
+  const rtcFileCtl = useRtcFileController(me.userId, (peerId, name, blob) => {
+    if (!blob)
+      return;
+    dkApi.saveWebrtcFile(peerId, name, blob).then((r) => {
+      if (!r || r.ok === false) {
+        return dkApi.logLocal(peerId, "in", "received file via WebRTC: " + name + " (" + dkFileSize(blob.size) + ")");
+      }
+    }).then(() => {
+      data.loadThread(peerId);
+      data.refresh();
+    });
+  });
+  const phone = useIsPhone();
+  const [sharing, setSharing] = React.useState(false);
+  const headerActions = (hostHeaderActions || []).filter((a) => a && a.id && typeof a.onClick === "function");
+  const headerActionBtns = headerActions.map((a) => {
+    let on = false;
+    try {
+      on = typeof a.active === "function" ? !!a.active() : false;
+    } catch (e) {
+      on = false;
+    }
+    const label = pickText(a.label, t.lang, a.id);
+    return /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        key: a.id,
+        title: label,
+        "aria-label": label,
+        "aria-pressed": on,
+        onClick: () => {
+          try {
+            a.onClick({ T, t, me, activeId, phone });
+          } catch (e) {
+          }
+        },
+        style: {
+          width: 32,
+          height: 32,
+          flexShrink: 0,
+          borderRadius: 8,
+          cursor: "pointer",
+          padding: 0,
+          border: "1px solid " + (on ? "var(--accent)" : "var(--line)"),
+          background: on ? "color-mix(in oklab, var(--accent), transparent 86%)" : "transparent",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }
+      },
+      /* @__PURE__ */ React.createElement(
+        Icon,
+        {
+          name: typeof a.icon === "string" ? a.icon : void 0,
+          svgPath: a.icon && typeof a.icon === "object" ? a.icon.svgPath : void 0,
+          size: 16,
+          stroke: 2,
+          color: on ? "var(--accent)" : "var(--dim)"
+        }
+      )
+    );
+  });
+  const shareBtn = /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setSharing(true),
+      title: t.lang === "zh" ? "\u5206\u4EAB\u6211\u7684\u94FE\u63A5" : "Share my link",
+      "aria-label": "share",
+      style: { width: 32, height: 32, flexShrink: 0, borderRadius: 8, border: "1px solid var(--line)", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }
+    },
+    /* @__PURE__ */ React.createElement(Icon, { name: "share", size: 16, stroke: 2, color: "var(--accent)" })
+  );
+  React.useEffect(() => {
+    if (phone || activeId)
+      return;
+    const first = (peers || []).find((p) => !p.app);
+    if (first)
+      setActiveId(first.id);
+  }, [peers, activeId, phone]);
+  React.useEffect(() => {
+    if (!phone)
+      return void 0;
+    const onPop = () => setActiveId(null);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [phone]);
+  const openConversation = (id) => {
+    setActiveId(id);
+    if (phone && id) {
+      try {
+        window.history.pushState({ dkConv: id }, "");
+      } catch (e) {
+      }
+    }
+  };
+  const closeConversation = () => {
+    const st = window.history.state;
+    if (st && st.dkConv)
+      window.history.back();
+    else
+      setActiveId(null);
+  };
+  React.useEffect(() => {
+    if (!activeId)
+      return;
+    if (activeId === ASSISTANT_ID)
+      return;
+    data.loadThread(activeId, { reset: true });
+    dkApi.markRead(activeId).then(data.refresh);
+    const iv = setInterval(() => {
+      data.loadThread(activeId);
+      dkApi.markRead(activeId);
+    }, 2500);
+    return () => clearInterval(iv);
+  }, [activeId]);
+  const onSelect = (id) => openConversation(id);
+  const onAct = (id, kind) => {
+    const r = requests.find((x) => x.id === id);
+    const uid = r && r.userid || id;
+    return (kind === "accept" ? dkApi.accept(uid) : dkApi.reject(uid)).then((res) => {
+      data.refresh();
+      return res;
+    });
+  };
+  const onRemove = (peer) => {
+    rpForgetKnownPeer(me && me.userId, peer);
+    dkApi.remove(peer.id).then(data.refresh);
+    if (peer.id === activeId)
+      setActiveId(null);
+  };
+  const onAdd = (address, hint) => {
+    if (!address || !address.trim())
+      return Promise.resolve({ ok: false, error: "empty address" });
+    if (hostNeedsWelcome && !String(me.name || "").trim()) {
+      setWelcome(true);
+      return Promise.resolve({ ok: false, error: T.needProfile || "set your name first" });
+    }
+    return dkApi.add(address.trim()).then(async (r) => {
+      if (r && r.ok !== false && hint && hint.userid && hint.name) {
+        try {
+          await dkApi.alias(hint.userid, hint.name);
+        } catch {
+        }
+      }
+      data.refresh();
+      return r;
+    });
+  };
+  const onSend = (text) => {
+    if (!activeId || !text || !text.trim())
+      return;
+    if (activeId === ASSISTANT_ID) {
+      assistant.handle(text.trim());
+      return;
+    }
+    dkApi.send(activeId, text.trim()).then(() => data.loadThread(activeId)).then(data.refresh);
+  };
+  const peerTakesRtcFile = (id) => {
+    if (!hostPrefersRtcFile)
+      return false;
+    const p = (peers || []).find((x) => x.id === id || x.userId === id);
+    const plat = String(p && p.platform || "").toLowerCase();
+    return plat === "js" || plat === "browser" || plat === "web";
+  };
+  const onSendFile = (file, onProgress) => {
+    if (!activeId || !file)
+      return Promise.resolve({ ok: false });
+    const peerId = activeId;
+    const toxcore = () => dkApi.sendFile(peerId, file).then((rr) => {
+      data.loadThread(peerId);
+      data.refresh();
+      return rr;
+    });
+    if (!peerTakesRtcFile(peerId))
+      return toxcore();
+    return rtcFileCtl.sendFile(peerId, file, onProgress).then((r) => {
+      if (r && r.ok && r.via === "webrtc") {
+        return fetch(
+          "/api/webrtc-file-save?dir=out&userid=" + encodeURIComponent(peerId) + "&name=" + encodeURIComponent(file.name),
+          { method: "POST", body: file }
+        ).then(() => {
+          data.loadThread(peerId);
+          data.refresh();
+          return { ok: true, via: "webrtc" };
+        });
+      }
+      return toxcore();
+    }).catch(() => toxcore());
+  };
+  const onSendRtcFile = (file, onProgress) => {
+    if (!activeId || !file)
+      return Promise.resolve({ ok: false, error: "no active peer or file" });
+    const peerId = activeId;
+    return rtcFileCtl.sendFile(peerId, file, onProgress).then((r) => {
+      if (r && r.ok && r.via === "webrtc") {
+        return fetch(
+          "/api/webrtc-file-save?dir=out&userid=" + encodeURIComponent(peerId) + "&name=" + encodeURIComponent(file.name),
+          { method: "POST", body: file }
+        ).then(() => ({ ok: true, via: "webrtc" }));
+      }
+      return { ok: false, error: r && r.error || "WebRTC file send failed" };
+    }).then((r) => {
+      data.loadThread(peerId);
+      data.refresh();
+      return r;
+    });
+  };
+  const onAlias = (peer) => {
+    const a = window.prompt("Set alias for this peer (empty to clear):", peer.alias || "");
+    if (a !== null)
+      dkApi.alias(peer.id, a).then(data.refresh);
+  };
+  const onEdit = (name, description) => dkApi.setProfile(name, description).then(data.refresh);
+  const onSetExit = () => {
+  };
+  const onReconnectExit = (ip) => (ip ? dkApi.reconnectExit(ip) : dkApi.reconnectAllExits()).then((r) => {
+    data.refresh();
+    return r;
+  });
+  const onRefreshExits = () => dkApi.refreshExits().then((r) => {
+    data.refresh();
+    return r;
+  });
+  const onOpenChat = (id) => {
+    setTab("chat");
+    openConversation(id);
+  };
+  const onOpenNet = showNetwork ? () => setTab("network") : null;
+  const RAIL_FOR = {
+    chat: [{ id: "chat", icon: "message", label: T.chat }],
+    people: [
+      { id: "here", icon: "users", label: T.here },
+      { id: "recommended", icon: "sparkles", label: T.recommended },
+      { id: "registered", icon: "at", label: T.registered }
+    ],
+    network: [{ id: "network", icon: "network", label: T.network }],
+    apps: [{ id: "apps", icon: "grid", label: T.apps }],
+    profile: []
+  };
+  const nav = tabs.flatMap((x) => x.kind === "builtin" ? RAIL_FOR[x.id] || [] : [{ id: x.id, icon: x.icon, label: pickText(x.label, t.lang, x.id) }]);
+  const peopleTab = DK_PEOPLE_TABS.includes(tab);
+  const lastPeople = React.useRef("here");
+  if (peopleTab)
+    lastPeople.current = tab;
+  const unreadTotal = rosterUnreadTotal(peers, isProtocol, protocolFix) + (requests || []).length;
+  const NAV_FOR = {
+    chat: { icon: "message", label: T.chat, active: tab === "chat", badge: unreadTotal, go: () => setTab("chat") },
+    people: { icon: "users", label: T.people, active: peopleTab, go: () => setTab(lastPeople.current) },
+    network: { icon: "network", label: T.network, active: tab === "network", go: () => setTab("network") },
+    apps: { icon: "grid", label: T.apps, active: tab === "apps", go: () => setTab("apps") },
+    profile: { icon: "userRound", label: T.profile, active: tab === "profile", go: () => setTab("profile") }
+  };
+  const phoneNav = tabs.map((x) => x.kind === "builtin" ? { id: x.id, ...NAV_FOR[x.id] } : {
+    id: x.id,
+    icon: typeof x.icon === "string" ? x.icon : void 0,
+    svgPath: x.icon && typeof x.icon === "object" ? x.icon.svgPath : void 0,
+    label: pickText(x.label, t.lang, x.id),
+    active: tab === x.id,
+    // A host badge is called on every render, like the unread count beside
+    // it; a throwing one must not take the tab bar down with it.
+    badge: (() => {
+      try {
+        return x.badge ? x.badge() : 0;
+      } catch (e) {
+        return 0;
+      }
+    })(),
+    go: () => setTab(x.id)
+  });
+  const inConversation = phone && tab === "chat" && !!activeId && (peers || []).some((p) => p.id === activeId);
+  return /* @__PURE__ */ React.createElement("div", { style: { ...vars, "--row-pad": rowPad, position: "fixed", inset: 0, display: "flex", flexDirection: phone ? "column" : "row", background: "var(--bg)", color: "var(--text)", fontFamily: "var(--ui)" } }, /* @__PURE__ */ React.createElement(DkPhoneStyles, null), !phone && /* @__PURE__ */ React.createElement("div", { style: { width: 68, flexShrink: 0, borderRight: "1px solid var(--line)", background: "var(--rail)", display: "flex", flexDirection: "column", alignItems: "center", padding: "14px 0", gap: 8 } }, /* @__PURE__ */ React.createElement(Brand, { T, style: { width: 38, height: 38, borderRadius: 10, background: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 8, flexShrink: 0 } }, /* @__PURE__ */ React.createElement(Icon, { name: "terminal", size: 20, color: "#fff", stroke: 2.2 })), nav.map((n) => /* @__PURE__ */ React.createElement(
+    RailBtn,
+    {
+      key: n.id,
+      icon: typeof n.icon === "string" ? n.icon : void 0,
+      svgPath: n.icon && typeof n.icon === "object" ? n.icon.svgPath : void 0,
+      label: n.label,
+      active: tab === n.id,
+      soon: n.soon,
+      onClick: () => setTab(n.id)
+    }
+  )), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), showProfile && /* @__PURE__ */ React.createElement("button", { onClick: () => setTab("profile"), title: T.profile, style: {
+    padding: 4,
+    borderRadius: 12,
+    cursor: "pointer",
+    display: "flex",
+    border: "1px solid " + (tab === "profile" ? "var(--line)" : "transparent"),
+    background: tab === "profile" ? "var(--panel-2)" : "transparent"
+  } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer: { ...me, id: me.userId, agent: false }, size: 36, radius: 9 }))), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0, minHeight: 0, display: "flex", flexDirection: "column" } }, !inConversation && /* @__PURE__ */ React.createElement(DkBrowserNotice, { lang: t.lang }), !inConversation && /* @__PURE__ */ React.createElement("div", { style: { height: 46, boxSizing: "content-box", paddingTop: phone ? "env(safe-area-inset-top, 0px)" : 0, flexShrink: 0, borderBottom: "1px solid var(--line)", background: "var(--panel)", display: "flex", alignItems: "center", gap: phone ? 8 : 12, paddingLeft: phone ? 12 : 16, paddingRight: phone ? 12 : 16 } }, /* @__PURE__ */ React.createElement(Brand, { T, style: { gap: 12, flexShrink: 0 } }, /* @__PURE__ */ React.createElement("svg", { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "var(--accent)", strokeWidth: 2.2, strokeLinecap: "round", strokeLinejoin: "round", style: { display: "block", flexShrink: 0 } }, /* @__PURE__ */ React.createElement("path", { d: "m4.5 17 6-6-6-6" }), /* @__PURE__ */ React.createElement("path", { d: "M12 18.5h7.5" })), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 14, fontWeight: 700, letterSpacing: -0.3, color: "var(--text)" } }, "beagle")), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12, color: "var(--faint)", whiteSpace: "nowrap" } }, "\xB7 ", (nav.find((n) => n.id === tab) || { label: T.profile }).label.toLowerCase()), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }), phone ? /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(StatusDot, { online: me.online }), headerActionBtns, shareBtn, /* @__PURE__ */ React.createElement("button", { onClick: () => setTab("profile"), title: T.profile, style: { padding: 0, border: "none", background: "transparent", cursor: "pointer", display: "flex" } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer: { ...me, id: me.userId, agent: false }, size: 28, radius: 7, dot: false }))) : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Tag, { tone: "accent" }, me.channel, " \xB7 lan ", me.lanVer), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 7, padding: "0 4px" } }, /* @__PURE__ */ React.createElement(StatusDot, { online: me.online }), /* @__PURE__ */ React.createElement(Mono, { size: 12.5, copy: me.ip }, me.ip)), /* @__PURE__ */ React.createElement("span", { style: { width: 1, height: 22, background: "var(--line)" } }), headerActionBtns, shareBtn, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, /* @__PURE__ */ React.createElement(DkAvatar, { peer: { ...me, id: me.userId, agent: false }, size: 26, radius: 7 }), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: "var(--mono)", fontSize: 12.5, fontWeight: 600, color: "var(--text)" } }, me.name)))), phone && peopleTab && /* @__PURE__ */ React.createElement("div", { style: { flexShrink: 0, display: "flex", gap: 6, padding: "8px 12px", borderBottom: "1px solid var(--line)", background: "var(--panel)", overflowX: "auto" } }, nav.filter((n) => DK_PEOPLE_TABS.includes(n.id)).map((n) => /* @__PURE__ */ React.createElement("button", { key: n.id, onClick: () => setTab(n.id), style: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    padding: "6px 12px",
+    borderRadius: 999,
+    cursor: "pointer",
+    whiteSpace: "nowrap",
+    border: "1px solid var(--line)",
+    fontFamily: "var(--mono)",
+    fontSize: 12,
+    fontWeight: 600,
+    background: tab === n.id ? "var(--accent)" : "transparent",
+    color: tab === n.id ? "#fff" : "var(--dim)"
+  } }, /* @__PURE__ */ React.createElement(Icon, { name: n.icon, size: 14, stroke: 2, color: tab === n.id ? "#fff" : "var(--dim)" }), n.label))), tab === "chat" && /* @__PURE__ */ React.createElement(ChatTab, { T, lang: t.lang, phone, isProtocol, protocolFix, onBack: closeConversation, peers, requests, activeId, thread: activeId === ASSISTANT_ID ? assistant.thread : data.threads[activeId], onSelect, onAct, onAdd, onSend, onSendFile, onSendRtcFile, onAlias, onRemove, onOpenNet, onCall, onReloadThread: () => activeId && data.loadThread(activeId), hasEarlier: !!(activeId && activeId !== ASSISTANT_ID && data.earlier[activeId]), onAssistantRemove: activeId === ASSISTANT_ID ? assistant.removeFriends : null, onAssistantAdopt: activeId === ASSISTANT_ID ? assistant.adoptServicePeers : null, onLoadEarlier: () => activeId && data.loadEarlier(activeId), prefillAddr: effectivePrefill, deepLinkPending, onPrefillConsumed: () => setPendingAddr(""), muted: mutedIds, onToggleMute }), tab === "here" && /* @__PURE__ */ React.createElement(DiscoverTab, { T, kind: "bridge", peers, meId: me.userId, onAdd, onOpenChat }), tab === "recommended" && /* @__PURE__ */ React.createElement(DiscoverTab, { T, kind: "recommended", peers, meId: me.userId, onAdd, onOpenChat }), tab === "registered" && /* @__PURE__ */ React.createElement(DiscoverTab, { T, kind: "registered", peers, meId: me.userId, onAdd, onOpenChat }), tab === "network" && /* @__PURE__ */ React.createElement(NetworkTab, { T, me, peers, exits, activeExit, exitFeature: data.exitFeature, routeFallback: data.routeFallback, onReconnectExit, onRefreshExits, reqCount: requests.length, onSetExit, onOpenChat, backend, onArmLan: armLan, onCancelLan: cancelLan }), tab === "apps" && /* @__PURE__ */ React.createElement(AppsTab, { T, t, me, peers, phone, setTab }), tabs.map((x) => x.kind === "host" && tab === x.id ? /* @__PURE__ */ React.createElement(HostTabPane, { key: x.id, tab: x, props: { T, t, me, peers, phone, setTab }, lang: t.lang }) : null), tab === "profile" && /* @__PURE__ */ React.createElement(
+    ProfileTab,
+    {
+      T,
+      me,
+      onEdit,
+      t,
+      setTweak,
+      onSetAvatar: (p) => dkApi.setProfileFull(p).then((r) => {
+        data.refresh();
+        return r;
+      }),
+      sections: hostProfileSections,
+      sectionProps: { T, t, me, peers, phone, setTab }
+    }
+  )), phone && !inConversation && /* @__PURE__ */ React.createElement("div", { style: { flexShrink: 0, display: "flex", borderTop: "1px solid var(--line)", background: "var(--rail)", paddingBottom: "env(safe-area-inset-bottom, 0px)" } }, phoneNav.map((n) => /* @__PURE__ */ React.createElement(TabBarBtn, { key: n.id, icon: n.icon, svgPath: n.svgPath, label: n.label, active: n.active, badge: n.badge, onClick: n.go }))), data.locked && /* @__PURE__ */ React.createElement(
+    DkLockedOut,
+    {
+      compact: true,
+      lang: t.lang,
+      onTakeover: () => window.BeagleWeb.takeover().then((st) => {
+        data.refresh();
+        return st;
+      }),
+      onLocate: () => window.BeagleWeb.locate()
+    }
+  ), !data.locked && welcome && /* @__PURE__ */ React.createElement(
+    DkWelcome,
+    {
+      lang: t.lang,
+      onLang: (v) => setTweak("lang", v),
+      me,
+      onSave: (p) => dkApi.setProfileFull(p).then(data.refresh),
+      onAdd: (address) => dkApi.add(address).then((r) => {
+        data.refresh();
+        return r;
+      }),
+      onCreateIdentity: () => dkApi.createIdentity().then((r) => {
+        data.refresh();
+        return r;
+      }),
+      onClose: () => {
+        setWelcome(false);
+        setWelcomeDone(true);
+      }
+    }
+  ), sharing && /* @__PURE__ */ React.createElement(DkShareSheet, { T, me, zh: t.lang === "zh", onClose: () => setSharing(false) }), /* @__PURE__ */ React.createElement(IncomingCallModal, { T, ctl: callCtl, peers }), /* @__PURE__ */ React.createElement(CallOverlay, { T, ctl: callCtl, peers }), /* @__PURE__ */ React.createElement(RtcFileInbox, { T, peers, ctl: rtcFileCtl }), upd && /* @__PURE__ */ React.createElement(
+    DkUpdateModal,
+    {
+      T,
+      info: upd,
+      onClose: () => {
+        localStorage.setItem("dk-upd-dismissed", upd.key);
+        setUpd(null);
+      }
+    }
+  ));
+}
+Object.assign(window, { DkUpdateModal });
+function mount(el) {
+  ReactDOM.createRoot(el).render(/* @__PURE__ */ React.createElement(DkApp, null));
+  const boot = document.getElementById("boot");
+  if (boot)
+    boot.remove();
+  try {
+    performance.mark("beagle:mounted");
+  } catch (e) {
+  }
+}
+export {
+  Btn,
+  DkAvatar,
+  DkEnsAvatar,
+  DkIdenticon,
+  DkImgAvatar,
+  DkPunkAvatar,
+  Icon,
+  Mono,
+  Section,
+  StatusDot,
+  Tag,
+  dkApi,
+  dkCopy,
+  dkFileSize,
+  dkGet,
+  dkPost,
+  mount,
+  setUiHost,
+  shortKey
+};
